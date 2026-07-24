@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - PadelSync</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container d-flex justify-between align-center">
+      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span></a>
+      <div class="nav-links">
+        <span id="lang-toggle"></span>
+        <a href="dashboard.html" class="active" data-i18n="nav.dashboard">Dashboard</a>
+        <a href="book.html" data-i18n="nav.bookCourt">Book Court</a>
+        <a href="reservations.html" data-i18n="nav.reservations">Reservations</a>
+        <a href="#" onclick="auth.logout()" class="btn btn-outline" data-i18n="nav.logout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="d-flex justify-between align-center mb-2">
+      <h2 id="welcome-msg">Welcome back!</h2>
+      <a href="book.html" class="btn btn-primary" data-i18n="dash.smashIt">Smash It</a>
+    </div>
+    <div class="grid grid-3 mb-3">
+      <div class="card stat-card">
+        <div class="stat-icon"><img src="../assets/icons/calendar.svg" alt=""></div>
+        <div class="stat-info"><h3 id="upcoming-count">0</h3><p data-i18n="dash.upcoming">Upcoming</p></div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon"><img src="../assets/icons/ball.svg" alt=""></div>
+        <div class="stat-info"><h3 id="courts-count">0</h3><p data-i18n="dash.activeCourts">Active Courts</p></div>
+      </div>
+    </div>
+    <h3 data-i18n="dash.nextReservations">Next Reservations</h3>
+    <div id="upcoming-list" class="grid grid-3 mt-1"><div class="spinner"></div></div>
+  </main>
+
+  <script src="../js/db.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>document.getElementById('lang-toggle').innerHTML = window.i18n ? window.i18n.renderLangToggle() : '';</script>
+  <script src="../js/pagination.js"></script>
+  <script src="../js/memberDashboard.js"></script>
+</body>
+</html>
