@@ -30,10 +30,47 @@ function getDB() {
     var raw = localStorage.getItem(DB_KEY);
     if (raw) {
       var parsed = JSON.parse(raw);
-      if (parsed._version === DB_VERSION) return parsed;
+      if (parsed._version === DB_VERSION) {
+        // Keep the booking window rolling: top up any missing slots
+        // for the next 7 days on every load, so it never runs dry.
+        if (ensureUpcomingSlots(parsed)) saveDB(parsed);
+        return parsed;
+      }
     }
   } catch (e) {}
   return seedDB();
+}
+
+// Make sure every active court has slots for today through the next 6 days.
+// Returns true if any slots were added.
+function ensureUpcomingSlots(db) {
+  var existing = {};
+  for (var i = 0; i < db.slots.length; i++) {
+    var s = db.slots[i];
+    existing[s.courtId + '|' + s.date + '|' + s.timeBlock] = true;
+  }
+
+  var changed = false;
+  for (var c = 0; c < db.courts.length; c++) {
+    if (db.courts[c].status !== 'active') continue;
+    var courtId = db.courts[c]._id;
+
+    for (var i2 = 0; i2 < 7; i2++) {
+      var d = new Date();
+      d.setDate(d.getDate() + i2);
+      var dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+
+      for (var t = 0; t < TIME_BLOCKS.length; t++) {
+        var key = courtId + '|' + dateStr + '|' + TIME_BLOCKS[t];
+        if (!existing[key]) {
+          db.slots.push({ _id: genId(), courtId: courtId, date: dateStr, timeBlock: TIME_BLOCKS[t], isBooked: false, bookedBy: null, bookedAt: null, equipment: 'None', payment: null });
+          existing[key] = true;
+          changed = true;
+        }
+      }
+    }
+  }
+  return changed;
 }
 
 // Save the database to localStorage
@@ -178,11 +215,12 @@ function dbGetAllActiveCourts() {
   return active;
 }
 
-// Create a new court
+// Create a new court and automatically generate its time slots for the next 7 days
 function dbCreateCourt(name, description, image) {
   var db = getDB();
   var court = { _id: genId(), name: name, description: description || '', status: 'active', image: image || null, createdAt: new Date().toISOString() };
   db.courts.push(court);
+  ensureUpcomingSlots(db);
   saveDB(db);
   return { ok: true, court: court };
 }
@@ -439,40 +477,114 @@ function dbCancelSlot(slotId, userId, userRole) {
   return { ok: false, message: 'Slot not found' };
 }
 
-// Generate slots for a given date
-function dbGenerateSlots(date) {
+// Get all users with pagination, including how many active bookings each has
+function dbGetUsers(page, limit) {
   var db = getDB();
-  var activeCourts = [];
-  for (var i = 0; i < db.courts.length; i++) {
-    if (db.courts[i].status === 'active') activeCourts.push(db.courts[i]);
-  }
-  if (activeCourts.length === 0) return { ok: false, message: 'No active courts available' };
 
-  var created = 0;
-  var skipped = 0;
-
-  for (var c = 0; c < activeCourts.length; c++) {
-    var court = activeCourts[c];
-    for (var t = 0; t < TIME_BLOCKS.length; t++) {
-      var block = TIME_BLOCKS[t];
-      var exists = false;
-      for (var k = 0; k < db.slots.length; k++) {
-        if (db.slots[k].courtId === court._id && db.slots[k].date === date && db.slots[k].timeBlock === block) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        db.slots.push({ _id: genId(), courtId: court._id, date: date, timeBlock: block, isBooked: false, bookedBy: null, bookedAt: null, equipment: 'None', payment: null });
-        created++;
-      } else {
-        skipped++;
-      }
+  var activeCounts = {};
+  for (var i = 0; i < db.slots.length; i++) {
+    if (db.slots[i].isBooked && db.slots[i].bookedBy) {
+      activeCounts[db.slots[i].bookedBy] = (activeCounts[db.slots[i].bookedBy] || 0) + 1;
     }
   }
 
+  var all = [];
+  for (var j = 0; j < db.users.length; j++) {
+    var u = db.users[j];
+    all.push({
+      _id: u._id,
+      name: u.name,
+      email: u.email,
+      password: u.password,
+      role: u.role,
+      createdAt: u.createdAt,
+      activeBookings: activeCounts[u._id] || 0
+    });
+  }
+
+  all.sort(function(a, b) { return (a.createdAt || '').localeCompare(b.createdAt || ''); });
+
+  page = page || 1;
+  limit = limit || 20;
+  var total = all.length;
+  var start = (page - 1) * limit;
+  return { data: all.slice(start, start + limit), pagination: { page: page, limit: limit, total: total, totalPages: Math.ceil(total / limit) } };
+}
+
+// Update a user's name, email, password, or role
+function dbUpdateUser(id, data, actingUserId) {
+  var db = getDB();
+  for (var i = 0; i < db.users.length; i++) {
+    if (db.users[i]._id !== id) continue;
+
+    if (data.email !== undefined && data.email !== db.users[i].email) {
+      for (var e = 0; e < db.users.length; e++) {
+        if (db.users[e]._id !== id && db.users[e].email === data.email) {
+          return { ok: false, message: 'Another user already has this email' };
+        }
+      }
+      db.users[i].email = data.email;
+    }
+
+    if (data.name !== undefined) db.users[i].name = data.name;
+    if (data.password !== undefined) db.users[i].password = data.password;
+
+    if (data.role !== undefined && data.role !== db.users[i].role) {
+      if (id === actingUserId) return { ok: false, message: 'You cannot change your own role' };
+      if (db.users[i].role === 'admin' && data.role !== 'admin') {
+        var otherAdmins = 0;
+        for (var a = 0; a < db.users.length; a++) {
+          if (db.users[a].role === 'admin' && db.users[a]._id !== id) otherAdmins++;
+        }
+        if (otherAdmins === 0) return { ok: false, message: 'There must be at least one administrator' };
+      }
+      db.users[i].role = data.role;
+    }
+
+    saveDB(db);
+    return { ok: true, user: { id: db.users[i]._id, name: db.users[i].name, email: db.users[i].email, role: db.users[i].role } };
+  }
+  return { ok: false, message: 'User not found' };
+}
+
+// Delete a user account. Any courts they currently have booked are freed up.
+function dbDeleteUser(id, actingUserId) {
+  if (id === actingUserId) return { ok: false, message: 'You cannot delete your own account' };
+
+  var db = getDB();
+  var target = null;
+  for (var i = 0; i < db.users.length; i++) {
+    if (db.users[i]._id === id) target = db.users[i];
+  }
+  if (!target) return { ok: false, message: 'User not found' };
+
+  if (target.role === 'admin') {
+    var otherAdmins = 0;
+    for (var a = 0; a < db.users.length; a++) {
+      if (db.users[a].role === 'admin' && db.users[a]._id !== id) otherAdmins++;
+    }
+    if (otherAdmins === 0) return { ok: false, message: 'There must be at least one administrator' };
+  }
+
+  // Free up any slots this user currently has booked
+  for (var s = 0; s < db.slots.length; s++) {
+    if (db.slots[s].isBooked && db.slots[s].bookedBy === id) {
+      db.slots[s].isBooked = false;
+      db.slots[s].bookedBy = null;
+      db.slots[s].bookedAt = null;
+      db.slots[s].equipment = 'None';
+      db.slots[s].payment = null;
+    }
+  }
+
+  var newUsers = [];
+  for (var u = 0; u < db.users.length; u++) {
+    if (db.users[u]._id !== id) newUsers.push(db.users[u]);
+  }
+  db.users = newUsers;
+
   saveDB(db);
-  return { ok: true, createdCount: created, skippedCount: skipped, message: 'Slots generated: ' + created + ' created, ' + skipped + ' skipped' };
+  return { ok: true, message: 'User deleted' };
 }
 
 // Get site statistics
@@ -535,6 +647,9 @@ window.db = {
   login: dbLogin,
   register: dbRegister,
   getUser: dbGetUser,
+  getUsers: dbGetUsers,
+  updateUser: dbUpdateUser,
+  deleteUser: dbDeleteUser,
   getCourts: dbGetCourts,
   getAllActiveCourts: dbGetAllActiveCourts,
   createCourt: dbCreateCourt,
@@ -545,7 +660,6 @@ window.db = {
   getMyBookings: dbGetMyBookings,
   bookSlot: dbBookSlot,
   cancelSlot: dbCancelSlot,
-  generateSlots: dbGenerateSlots,
   getStats: dbGetStats,
   getCancellations: dbGetCancellations,
   courtPrice: COURT_PRICE,

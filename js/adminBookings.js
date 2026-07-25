@@ -9,16 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var now = new Date();
   var today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
   document.getElementById('filter-date').value = today;
-  document.getElementById('gen-date').value = today;
 
   // Reload bookings when filter date changes
   document.getElementById('filter-date').addEventListener('change', function() {
     bookingsPage = 1;
     fetchBookings(this.value, 1);
   });
-
-  // Generate slots button
-  document.getElementById('gen-btn').addEventListener('click', generateSlots);
 
   // Load bookings for today on page load
   fetchBookings(today, 1);
@@ -121,31 +117,4 @@ function fetchCancelledSchedules() {
       '</tr>';
   }
   body.innerHTML = rows;
-}
-
-// Generate time slots for a given date
-function generateSlots() {
-  var date = document.getElementById('gen-date').value;
-  if (!date) {
-    auth.showToast(window.i18n ? window.i18n.t('toast.selectDate') : 'Please select a date', 'error');
-    return;
-  }
-
-  var btn = document.getElementById('gen-btn');
-  btn.disabled = true;
-  btn.textContent = window.i18n ? window.i18n.t('bookings.generating') : 'Generating...';
-
-  try {
-    var result = db.generateSlots(date);
-    if (!result.ok) throw new Error(result.message);
-    auth.showToast(window.i18n ? window.i18n.t('toast.slotsGenerated', { created: result.createdCount, skipped: result.skippedCount }) : 'Slots generated: ' + result.createdCount + ' created, ' + result.skippedCount + ' skipped');
-    if (date === document.getElementById('filter-date').value) {
-      fetchBookings(date, 1);
-    }
-  } catch (err) {
-    auth.showToast(err.message, 'error');
-  }
-
-  btn.disabled = false;
-  btn.textContent = window.i18n ? window.i18n.t('bookings.generate') : 'Generate';
 }

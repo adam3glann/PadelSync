@@ -62,11 +62,6 @@ function logout() {
   window.location.href = getLoginPath();
 }
 
-// Return empty headers (placeholder for future use)
-function authHeaders() {
-  return {};
-}
-
 // Check if user is logged in and has the right role
 function checkAuth(requiredRole) {
   var token = getToken();
@@ -145,7 +140,6 @@ window.auth = {
   getUser: getUser,
   saveAuth: saveAuth,
   logout: logout,
-  authHeaders: authHeaders,
   checkAuth: checkAuth,
   showToast: showToast,
   showModal: showModal,

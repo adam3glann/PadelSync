@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users - PadelSync</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar" style="border-bottom-color: #005BC5;">
+    <div class="container d-flex justify-between align-center">
+      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span> <span class="badge badge-admin" data-i18n="nav.admin">Admin</span></a>
+      <div class="nav-links">
+        <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
+        <a href="courts.html" data-i18n="nav.courts">Courts</a>
+        <a href="bookings.html" data-i18n="nav.bookings">Bookings</a>
+        <a href="users.html" class="active" data-i18n="nav.users">Users</a>
+        <a href="#" onclick="auth.logout()" class="btn btn-outline" data-i18n="nav.logout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2 class="mb-2" data-i18n="users.title">Users</h2>
+
+    <div class="card">
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="users.name">Name</th>
+              <th data-i18n="users.email">Email</th>
+              <th data-i18n="users.password">Password</th>
+              <th data-i18n="users.role">Role</th>
+              <th data-i18n="users.joined">Joined</th>
+              <th data-i18n="users.activeBookings">Active Bookings</th>
+              <th data-i18n="bookings.actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="7" class="text-center"><div class="spinner" style="margin: 0 auto;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="users-pagination" style="margin-top:20px;"></div>
+  </main>
+
+  <script src="../js/db.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/validation.js"></script>
+  <script src="../js/pagination.js"></script>
+  <script src="../js/adminUsers.js"></script>
+</body>
+</html>

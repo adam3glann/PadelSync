@@ -228,7 +228,7 @@ main {
   border: 1px solid #333333;
   border-radius: 4px;
   padding: 30px;
-  margin-bottom: 20px;
+  margin-top: 20px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   animation: rise-in 0.45s ease both;
 }
@@ -330,6 +330,18 @@ main {
   background-color: #112244;
   color: #5da8ff;
   border: 1px solid #005BC5;
+}
+
+.badge-admin {
+  background-color: #2a1144;
+  color: #b98bff;
+  border: 1px solid #8a4fff;
+}
+
+.badge-member {
+  background-color: #0d2a3a;
+  color: #5da8ff;
+  border: 1px solid #2b8fd6;
 }
 
 /* Grids */
@@ -534,17 +546,6 @@ main {
 
 .modal-actions button {
   margin-left: 10px;
-}
-
-/* Role Switcher */
-.role-switcher-btn {
-  padding: 5px 10px;
-  border-radius: 4px;
-  border: 1px solid #005BC5;
-  background-color: transparent;
-  color: #5da8ff;
-  font-size: 12px;
-  cursor: pointer;
 }
 
 /* Spinner */
@@ -781,13 +782,6 @@ html[data-theme="light"] .policy-box strong { color: #526900; }
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-}
-
-/* Court Card Image */
-.court-card-img {
-  width: 100%;
-  height: 160px;
-  margin-bottom: 15px;
 }
 
 /* Pagination */
