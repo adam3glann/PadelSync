@@ -830,32 +830,6 @@ html[data-theme="light"] .policy-box strong { color: #526900; }
   border-color: #005BC5;
 }
 
-/* Language Toggle */
-.lang-toggle-btn {
-  padding: 5px 10px;
-  border: 1px solid #444444;
-  background-color: transparent;
-  color: #ffffff;
-  cursor: pointer;
-  margin-right: 15px;
-}
-
-/* RTL Support */
-[dir="rtl"] body {
-  direction: rtl;
-  text-align: right;
-}
-
-[dir="rtl"] .nav-links a {
-  margin-left: 0;
-  margin-right: 20px;
-}
-
-[dir="rtl"] .stat-icon {
-  margin-right: 0;
-  margin-left: 25px;
-}
-
 /* Mobile Menu */
 .hamburger {
   display: none;

@@ -1,8 +1,5 @@
 // Update the home page navbar and CTA button based on login status
 document.addEventListener('DOMContentLoaded', function() {
-  // Render the language toggle button
-  document.getElementById('lang-toggle').innerHTML = window.i18n ? window.i18n.renderLangToggle() : '';
-
   var user = auth.getUser();
   var ctaContainer = document.getElementById('cta-container');
   var navLinks = document.querySelector('.nav-links');
@@ -11,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // If logged in, show dashboard link and logout button
     var dashLink = user.role === 'admin' ? 'admin/dashboard.html' : 'member/dashboard.html';
     navLinks.innerHTML =
-      '<span id="lang-toggle">' + (window.i18n ? window.i18n.renderLangToggle() : '') + '</span>' +
       auth.renderThemeButton() +
       '<a href="' + dashLink + '" data-i18n="nav.dashboard">Dashboard</a>' +
       '<a href="#" onclick="auth.logout()" data-i18n="nav.logout">Logout</a>';
