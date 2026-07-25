@@ -77,10 +77,7 @@ function t(key, params) {
   return text;
 }
 
-function applyTranslations() {
-  // The HTML already contains the final English labels. Do not replace it,
-  // because some headings contain useful nested elements such as the selected date.
-}
+
 
 document.addEventListener('DOMContentLoaded', function() {
   document.documentElement.lang = 'en';
