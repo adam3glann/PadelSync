@@ -15,29 +15,38 @@
           <h2 data-i18n="auth.joinTitle">Join PadelSync</h2>
           <p style="color: #aaaaaa;" data-i18n="auth.registerSubtitle">Create your account and start booking.</p>
         </div>
+        
         <div class="card">
           <form id="registerForm" novalidate>
             <div class="form-group">
               <label for="name" data-i18n="auth.fullName">Full Name</label>
               <input type="text" id="name" required placeholder="Your full name">
             </div>
+
             <div class="form-group">
               <label for="email" data-i18n="auth.email">Email</label>
               <input type="email" id="email" required placeholder="you@example.com">
             </div>
+
             <div class="form-group">
               <label for="password" data-i18n="auth.password">Password</label>
               <input type="password" id="password" required minlength="6" placeholder="Min 6 characters">
+              <label class="password-toggle"><input type="checkbox" id="show-register-password"> Show password</label>
             </div>
+
             <div class="form-group">
               <label for="confirmPassword" data-i18n="auth.confirmPassword">Confirm Password</label>
               <input type="password" id="confirmPassword" required placeholder="Repeat your password">
+              <label class="password-toggle"><input type="checkbox" id="show-confirm-password"> Show password</label>
             </div>
+
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="regBtn" data-i18n="auth.createAccount">Create Account</button>
           </form>
+
           <div class="text-center mt-2">
             <p style="color: #aaaaaa; font-size: 14px;">
               <span data-i18n="auth.hasAccount">Already a member?</span> <a href="login.html" data-i18n="auth.signInLink">Sign in</a>
+
             </p>
           </div>
         </div>

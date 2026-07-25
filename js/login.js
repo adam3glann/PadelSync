@@ -4,19 +4,20 @@ if (_user && _user.role) {
   window.location.href = _user.role === 'admin' ? 'admin/dashboard.html' : 'member/dashboard.html';
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var loginForm = document.getElementById('loginForm');
   var emailInput = document.getElementById('email');
   var passwordInput = document.getElementById('password');
+var showPassword = document.getElementById('show-login-password');
+  
+ showPassword.addEventListener('change', function() {
+    passwordInput.type = showPassword.checked ? 'text' : 'password';
+  });
 
   // Validate fields when user leaves them
   emailInput.addEventListener('blur', function() {
     validateField(emailInput, validationRules.email);
   });
-  passwordInput.addEventListener('blur', function() {
-    validateField(passwordInput, validationRules.password);
-  });
-
   // Clear error styling when user types
   emailInput.addEventListener('input', function() {
     emailInput.style.borderColor = '';
@@ -25,8 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
     passwordInput.style.borderColor = '';
   });
 
+
   // Handle form submission
-  loginForm.addEventListener('submit', function(e) {
+  loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Validate both fields before submitting
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Save login data and redirect
     auth.saveAuth(result.data);
     auth.showToast(window.i18n ? window.i18n.t('toast.signedIn') : 'Signed in successfully');
-    setTimeout(function() {
+    setTimeout(function () {
       window.location.href = result.data.user.role === 'admin' ? 'admin/dashboard.html' : 'member/dashboard.html';
     }, 800);
   });

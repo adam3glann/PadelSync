@@ -15,22 +15,29 @@
           <h2 data-i18n="auth.welcomeBack">Welcome Back</h2>
           <p style="color: #aaaaaa;" data-i18n="auth.signInSubtitle">Sign in to your PadelSync account.</p>
         </div>
+        
         <div class="card">
           <form id="loginForm" novalidate>
             <div class="form-group">
               <label for="email" data-i18n="auth.email">Email</label>
               <input type="email" id="email" required placeholder="you@example.com">
             </div>
+
             <div class="form-group">
               <label for="password" data-i18n="auth.password">Password</label>
               <input type="password" id="password" required placeholder="Enter your password">
+              <label class="password-toggle"><input type="checkbox" id="show-login-password"> Show password</label>
             </div>
+
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="loginBtn" data-i18n="auth.signIn">Sign In</button>
           </form>
+
           <div class="text-center mt-2">
             <p style="color: #aaaaaa; font-size: 14px;">
-              <span data-i18n="auth.noAccount">No account?</span> <a href="register.html" data-i18n="auth.register">Register</a>
+              <span data-i18n="auth.noAccount">No account?</span> 
+              <a href="register.html" data-i18n="auth.register">Register</a>
             </p>
+
           </div>
         </div>
       </div>
