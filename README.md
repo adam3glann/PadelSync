@@ -2,17 +2,15 @@
 
 > A modern web application for discovering, booking, and managing padel courts.
 
-![PadelSync Banner](assets/banner.png)
-
 ---
 
-## 📖 Overview
+# 📖 Overview
 
-PadelSync is a responsive web application developed as part of the **SWE230 – Web Application Development** course.
+PadelSync is a responsive web application developed as part of the **SWE230 – Web Application Development** course at **Misr International University (MIU)**.
 
-The system allows users to browse available padel courts, create an account, log in securely, reserve courts, and manage their bookings. Administrators have access to management tools for courts, users, and reservations.
+The system allows users to browse available padel courts, create an account, log in securely, reserve courts, and manage their reservations. Administrators can manage courts, bookings, and users through a dedicated dashboard.
 
-The project focuses on modern UI/UX, responsive design, client-side validation, and team collaboration using Git and GitHub.
+The project focuses on responsive design, modern UI/UX, JavaScript validation, and team collaboration using Git and GitHub.
 
 ---
 
@@ -20,24 +18,24 @@ The project focuses on modern UI/UX, responsive design, client-side validation, 
 
 ## 👤 Member
 
-- User Registration
-- User Login
-- Password Visibility Toggle
-- Browse Available Courts
-- Book a Court
-- View Reservations
-- Responsive Dashboard
-- Client-side Form Validation
+- Register a new account
+- Secure login
+- Password visibility toggle
+- Browse available courts
+- Book a court
+- View reservations
+- Responsive member dashboard
+- Client-side form validation
 
 ---
 
-## 🛠 Admin
+## 🛠️ Administrator
 
-- Admin Dashboard
-- Manage Courts
-- Manage Bookings
-- Manage Users
-- View System Information
+- Admin dashboard
+- Manage courts
+- Manage bookings
+- Manage users
+- View system information
 
 ---
 
@@ -51,7 +49,8 @@ The project focuses on modern UI/UX, responsive design, client-side validation, 
 
 ### Development Tools
 
-- Visual Studio Code / Visual Studio 2022
+- Visual Studio Code
+- Visual Studio 2022
 - Git
 - GitHub
 
@@ -73,13 +72,10 @@ PadelSync/
 │   ├── reservations.html
 │   └── book.html
 │
-├── css/
-│
-├── js/
-│
 ├── assets/
-│
-├── images/
+├── css/
+├── js/
+├── screenshots/
 │
 ├── index.html
 ├── login.html
@@ -94,112 +90,154 @@ PadelSync/
 
 ## 🏠 Home Page
 
-![Home](assets/home.png)
+![Home Page](screenshots/home.png)
 
 ---
 
 ## 🔐 Login
 
-![Login](assets/login.png)
+![Login](screenshots/login.png)
 
 ---
 
 ## 📝 Register
 
-![Register](assets/register.png)
+![Register](screenshots/register.png)
+
+---
+
+## 👤 Member Dashboard
+
+![Member Dashboard](screenshots/member-dashboard.png)
+
+---
+
+## 📅 My Reservations
+
+![Reservations](screenshots/reservations.png)
 
 ---
 
 ## 🎾 Book Court
 
-![Booking](assets/booking.png)
+![Book Court](screenshots/book-court.png)
 
 ---
 
-## 📅 Reservations
+## 🛠️ Admin Dashboard
 
-![Reservations](assets/reservations.png)
-
----
-
-## 🛠 Admin Dashboard
-
-![Admin](assets/admin-dashboard.png)
+![Admin Dashboard](screenshots/admin-dashboard.png)
 
 ---
 
-# ✔ Validation
+## 👥 Manage Users
+
+![Manage Users](screenshots/manage-users.png)
+
+---
+
+## 📋 Manage Bookings
+
+![Manage Bookings](screenshots/manage-bookings.png)
+
+---
+
+## 🎾 Manage Courts
+
+![Manage Courts](screenshots/manage-courts.png)
+
+---
+
+# ✔️ Validation
 
 The project includes client-side validation using JavaScript.
 
-Implemented validation includes:
+Validation features include:
 
-- Required Fields
-- Email Format Validation
-- Password Validation
-- Confirm Password Matching
-- Booking Form Validation
-- Error Messages
-- Password Visibility Toggle
-
----
-
-# 🎨 UI/UX Highlights
-
-- Responsive Design
-- Modern Interface
-- Smooth Navigation
-- Interactive Buttons
-- Hover Effects
-- Clean Layout
-- Mobile Friendly
+- Required field validation
+- Email format validation
+- Password validation
+- Confirm password matching
+- Booking form validation
+- User-friendly error messages
+- Password visibility toggle
 
 ---
 
-# 🔒 User Roles
+# 🎨 UI / UX Highlights
+
+- Responsive design
+- Modern interface
+- Clean layout
+- Interactive buttons
+- Hover effects
+- Mobile-friendly pages
+- Smooth navigation
+
+---
+
+# 👥 User Roles
 
 ## Member
 
 - Register
 - Login
-- Book Courts
-- View Reservations
+- Browse courts
+- Book courts
+- View reservations
+
+### Member Pages
+
+- Home
+- Login
+- Register
+- Book Court
+- Reservations
+- Dashboard
+
+---
 
 ## Administrator
 
+- Dashboard
 - Manage Courts
 - Manage Bookings
 - Manage Users
-- System Administration
 
 ---
 
-# 💡 Innovation
+# 💡 Project Highlights
 
-The project includes modern usability improvements such as:
-
-- Password Visibility Toggle
-- Responsive Layout
-- Interactive User Interface
-- Modern Dashboard Design
+- Modern responsive interface
+- Organized project structure
+- Password visibility feature
+- Interactive booking system
+- Modular JavaScript files
+- Git & GitHub collaboration workflow
 
 ---
 
-# ⚙ Installation
+# 🌍 Browser Support
 
-Clone the repository
+- ✅ Google Chrome
+- ✅ Microsoft Edge
+- ✅ Mozilla Firefox
+
+---
+
+# ⚙️ Installation
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/adam3glann/PadelSync.git
 ```
 
-Open the project
+Navigate to the project folder:
 
 ```bash
 cd PadelSync
 ```
-
-Launch
 
 Open `index.html` in your preferred web browser.
 
@@ -209,19 +247,19 @@ Open `index.html` in your preferred web browser.
 
 | Name | Role |
 |------|------|
-| Adam Adel | Frontend Developer |
-| Omar Yassseen | Frontend Developer |
-| Mafdy Nader | Frontend Developer |
-| Sayed Mohamed | Frontend Developer |
-| Sayed Said | Frontend Developer
+| Adam Adel | Frontend Development & UI Design |
+| Omar Yassseen | Frontend Development |
+| Mafdy Nader | Frontend Development |
+| Sayed Mohamed | Frontend Development |
+| Sayed Said | Frontend Development |
 
 ---
 
-# 📌 GitHub Workflow
+# 🔀 GitHub Workflow
 
 Each team member works on a dedicated branch.
 
-Example:
+Branches used in this project:
 
 - `main`
 - `adam`
@@ -230,20 +268,39 @@ Example:
 - `sayed-mohamed`
 - `sayed`
 
-All changes are committed to individual branches and merged into the `main` branch through GitHub.
+Workflow:
+
+1. Create or switch to your branch.
+2. Develop your assigned feature.
+3. Commit your changes.
+4. Push your branch to GitHub.
+5. Open a Pull Request.
+6. Merge the Pull Request into `main`.
 
 ---
 
-# 📜 Course Information
+# 🚀 Future Improvements
+
+- Backend integration
+- Online payment support
+- Email notifications
+- Court availability filtering
+- User profile management
+- Booking history
+- Admin analytics dashboard
+
+---
+
+# 📚 Course Information
 
 **Course:** SWE230 – Web Application Development
 
-Faculty of Computer Science
+**Faculty:** Computer Science
 
-Misr International University (MIU)
+**University:** Misr International University (MIU)
 
 ---
 
 # 📄 License
 
-This project was developed for educational purposes as part of the SWE230 course.
+This project was developed for educational purposes as part of the SWE230 – Web Application Development course.
