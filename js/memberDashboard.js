@@ -69,13 +69,19 @@ function renderUpcoming(bookings) {
       paymentDisplay = '<p style="font-size:0.85rem;margin-top:0.5rem;"><span style="color:var(--text-muted);">Deposit paid:</span> EGP ' + b.payment.depositAmount + ' <br><span style="color:var(--text-muted);">Cash due at court:</span> EGP ' + b.payment.cashAmount + '</p>';
     }
 
-    html += '<div class="card">' +
-      '<h4 style="color: var(--padel-blue); font-size: 1.1rem; font-style: normal;">' + b.courtId.name + '</h4>' +
-      '<p style="font-size:0.9rem;"><strong>' + b.date + '</strong> &mdash; ' + b.timeBlock + '</p>' +
+    html += '<div><div class="ticket-card">' +
+      '<div class="ticket-main">' +
+      '<div class="ticket-title">' + b.courtId.name + '</div>' +
+      '<div class="ticket-datetime">' + b.date + ' &mdash; ' + b.timeBlock + '</div>' +
+      '<div class="ticket-details">' +
       equipDisplay +
       paymentDisplay +
-      '<button class="btn btn-danger mt-1" style="width: 100%;" onclick="cancelBooking(\'' + b._id + '\')">' + cancelLabel + '</button>' +
-      '</div>';
+      '</div>' +
+      '</div>' +
+      '<div class="ticket-stub">' +
+      '<button class="btn btn-danger" style="padding: 10px; width: 100%; font-size: 0.9rem;" onclick="cancelBooking(\'' + b._id + '\')">' + cancelLabel + '</button>' +
+      '</div>' +
+      '</div></div>';
   }
 
   list.innerHTML = html;
