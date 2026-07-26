@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Bookings - PadelSync</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
   <nav class="navbar" style="border-bottom-color: #005BC5;">
     <div class="container d-flex justify-between align-center">
-      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span> <span class="badge badge-admin" data-i18n="nav.admin">Admin</span></a>
+      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span> <span class="badge badge-admin"
+          data-i18n="nav.admin">Admin</span></a>
       <div class="nav-links">
         <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
         <a href="courts.html" data-i18n="nav.courts">Courts</a>
@@ -24,7 +27,8 @@
     <div class="d-flex justify-between align-center mb-2">
       <h2 data-i18n="bookings.scheduleTitle">Schedule & Equipment Orders</h2>
       <div class="d-flex align-center">
-        <label for="filter-date" style="color: #aaaaaa; font-size: 14px; margin-right: 10px;" data-i18n="bookings.date">Date:</label>
+        <label for="filter-date" style="color: #aaaaaa; font-size: 14px; margin-right: 10px;"
+          data-i18n="bookings.date">Date:</label>
         <input type="date" id="filter-date" class="form-group" style="margin-bottom: 0;">
       </div>
     </div>
@@ -44,7 +48,11 @@
             </tr>
           </thead>
           <tbody id="bookings-table-body">
-            <tr><td colspan="7" class="text-center"><div class="spinner" style="margin: 0 auto;"></div></td></tr>
+            <tr>
+              <td colspan="7" class="text-center">
+                <div class="spinner" style="margin: 0 auto;"></div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -73,7 +81,9 @@
             </tr>
           </thead>
           <tbody id="cancelled-table-body">
-            <tr><td colspan="7" class="text-center">No cancelled schedules yet.</td></tr>
+            <tr>
+              <td colspan="7" class="text-center">No cancelled schedules yet.</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -86,4 +96,5 @@
   <script src="../js/pagination.js"></script>
   <script src="../js/adminBookings.js"></script>
 </body>
+
 </html>

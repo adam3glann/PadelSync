@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Courts - PadelSync</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
   <nav class="navbar" style="border-bottom-color: #005BC5;">
     <div class="container d-flex justify-between align-center">
-      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span> <span class="badge badge-admin" data-i18n="nav.admin">Admin</span></a>
+      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span> <span class="badge badge-admin"
+          data-i18n="nav.admin">Admin</span></a>
       <div class="nav-links">
         <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
         <a href="courts.html" class="active" data-i18n="nav.courts">Courts</a>
@@ -41,7 +44,9 @@
     </div>
 
     <h2 class="mb-2" data-i18n="courts.title">Courts</h2>
-    <div id="courts-list" class="grid grid-3"><div class="spinner"></div></div>
+    <div id="courts-list" class="grid grid-3">
+      <div class="spinner"></div>
+    </div>
     <div id="courts-pagination"></div>
   </main>
 
@@ -52,4 +57,5 @@
   <script src="../js/pagination.js"></script>
   <script src="../js/manageCourts.js"></script>
 </body>
+
 </html>

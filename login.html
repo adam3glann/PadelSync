@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - PadelSync</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
   <div class="auth-split">
     <div class="auth-image-panel" style="background-image: url('assets/login-bg.jpg');"></div>
@@ -15,7 +17,7 @@
           <h2 data-i18n="auth.welcomeBack">Welcome Back</h2>
           <p style="color: #aaaaaa;" data-i18n="auth.signInSubtitle">Sign in to your PadelSync account.</p>
         </div>
-        
+
         <div class="card">
           <form id="loginForm" novalidate>
             <div class="form-group">
@@ -29,12 +31,13 @@
               <label class="password-toggle"><input type="checkbox" id="show-login-password"> Show password</label>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="loginBtn" data-i18n="auth.signIn">Sign In</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="loginBtn"
+              data-i18n="auth.signIn">Sign In</button>
           </form>
 
           <div class="text-center mt-2">
             <p style="color: #aaaaaa; font-size: 14px;">
-              <span data-i18n="auth.noAccount">No account?</span> 
+              <span data-i18n="auth.noAccount">No account?</span>
               <a href="register.html" data-i18n="auth.register">Register</a>
             </p>
 
@@ -50,4 +53,5 @@
   <script src="js/validation.js"></script>
   <script src="js/login.js"></script>
 </body>
+
 </html>

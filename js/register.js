@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var emailInput = document.getElementById('email');
   var passwordInput = document.getElementById('password');
   var confirmInput = document.getElementById('confirmPassword');
-   var showPassword = document.getElementById('show-register-password');
+  var showPassword = document.getElementById('show-register-password');
   var showConfirmPassword = document.getElementById('show-confirm-password');
 
-   showPassword.addEventListener('change', function() {
+  showPassword.addEventListener('change', function () {
     passwordInput.type = showPassword.checked ? 'text' : 'password';
   });
-  showConfirmPassword.addEventListener('change', function() {
+  showConfirmPassword.addEventListener('change', function () {
     confirmInput.type = showConfirmPassword.checked ? 'text' : 'password';
   });
 
@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
   emailInput.addEventListener('blur', function () {
     validateField(emailInput, validationRules.email);
   });
-   // Clear errors when user starts typing
+  // Clear errors when user starts typing
   var allInputs = [nameInput, emailInput, passwordInput, confirmInput];
   for (var i = 0; i < allInputs.length; i++) {
-    allInputs[i].addEventListener('input', function() {
+    allInputs[i].addEventListener('input', function () {
       this.style.borderColor = '';
       var err = this.parentElement.querySelector('.field-error');
       if (err) err.remove();
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.disabled = false;
       btn.textContent = window.i18n ? window.i18n.t('auth.createAccount') : 'Create Account';
       return;
-    } 
+    }
 
     // Save login data and go to member dashboard
     auth.saveAuth(result.data);

@@ -8,21 +8,21 @@ document.addEventListener('DOMContentLoaded', function () {
   var loginForm = document.getElementById('loginForm');
   var emailInput = document.getElementById('email');
   var passwordInput = document.getElementById('password');
-var showPassword = document.getElementById('show-login-password');
-  
- showPassword.addEventListener('change', function() {
+  var showPassword = document.getElementById('show-login-password');
+
+  showPassword.addEventListener('change', function () {
     passwordInput.type = showPassword.checked ? 'text' : 'password';
   });
 
   // Validate fields when user leaves them
-  emailInput.addEventListener('blur', function() {
+  emailInput.addEventListener('blur', function () {
     validateField(emailInput, validationRules.email);
   });
   // Clear error styling when user types
-  emailInput.addEventListener('input', function() {
+  emailInput.addEventListener('input', function () {
     emailInput.style.borderColor = '';
   });
-  passwordInput.addEventListener('input', function() {
+  passwordInput.addEventListener('input', function () {
     passwordInput.style.borderColor = '';
   });
 

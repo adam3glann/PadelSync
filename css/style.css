@@ -318,6 +318,7 @@ main {
   border-color: #005BC5;
   outline: none;
 }
+
 .form-group .password-toggle {
   display: inline-flex;
   align-items: center;
@@ -346,6 +347,7 @@ main {
   font-size: 12px;
   margin-top: 5px;
 }
+
 .password-toggle {
   display: inline-flex !important;
   align-items: center;
