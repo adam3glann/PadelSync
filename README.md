@@ -247,7 +247,7 @@ Open `index.html` in your preferred web browser.
 
 | Name | Role |
 |------|------|
-| Adam Adel | Frontend Development & UI Design |
+| Adam Adel | Frontend Development |
 | Omar Yassseen | Frontend Development |
 | Mafdy Nader | Frontend Development |
 | Sayed Mohamed | Frontend Development |
