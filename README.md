@@ -1,46 +1,249 @@
-# PadelSync
+# 🎾 PadelSync
 
-A simple front-end padel court booking website made with HTML, CSS, and JavaScript. It saves demonstration data in the browser's local storage, so no server or database installation is required.
+> A modern web application for discovering, booking, and managing padel courts.
 
-## Open the project
+![PadelSync Banner](assets/banner.png)
 
-Open `index.html` in a web browser. For the most reliable local-storage behaviour, run the folder with a simple local server such as VS Code Live Server.
+---
 
-## Demo accounts
+## 📖 Overview
 
-| Role | Email | Password |
-| --- | --- | --- |
-| Administrator | admin@padelsync.com | admin123 |
-| Member | ali@example.com | member123 |
+PadelSync is a responsive web application developed as part of the **SWE230 – Web Application Development** course.
 
-## Included validation
+The system allows users to browse available padel courts, create an account, log in securely, reserve courts, and manage their bookings. Administrators have access to management tools for courts, users, and reservations.
 
-- Full name: required, at least 2 letters.
-- Email: required and checked using an email pattern.
-- Password: required, at least 6 characters, including a number.
-- Confirm password: must match the password.
-- Court name: required, 2 to 30 characters.
+The project focuses on modern UI/UX, responsive design, client-side validation, and team collaboration using Git and GitHub.
 
-The project also prevents a court time block from being booked twice and allows an owner or administrator to cancel a booking.
+---
 
-## Reservation payment policy
+# ✨ Features
 
-- Court price: EGP 300.
-- The member pays a 50% deposit (EGP 150) to reserve a court.
-- The other EGP 150 is paid in cash at the court.
-- Cancel within 2 hours of booking: 100% of the deposit is refunded.
-- Cancel between 2 and 3 hours of booking: 25% of the deposit is refunded.
-- Cancel after 3 hours: the deposit is not refunded.
+## 👤 Member
 
-This is a front-end demonstration only: card details are validated but never saved, and no real payment is charged.
+- User Registration
+- User Login
+- Password Visibility Toggle
+- Browse Available Courts
+- Book a Court
+- View Reservations
+- Responsive Dashboard
+- Client-side Form Validation
 
-## Admin finance and cancellation view
+---
 
-The administrator dashboard shows:
+## 🛠 Admin
 
-- Online deposits earned (including the retained part of cancelled deposits).
-- Cash still due at the court for active reservations.
-- Expected revenue for active reservations.
-- Refunds issued and the number of cancelled schedules.
+- Admin Dashboard
+- Manage Courts
+- Manage Bookings
+- Manage Users
+- View System Information
 
-The Bookings page keeps a cancellation history with the court, member, schedule, deposit, refund, retained amount, and cancellation time.
+---
+
+# 🚀 Technologies Used
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript (ES6)
+
+### Development Tools
+
+- Visual Studio Code / Visual Studio 2022
+- Git
+- GitHub
+
+---
+
+# 📂 Project Structure
+
+```text
+PadelSync/
+│
+├── admin/
+│   ├── dashboard.html
+│   ├── bookings.html
+│   ├── courts.html
+│   └── users.html
+│
+├── member/
+│   ├── dashboard.html
+│   ├── reservations.html
+│   └── book.html
+│
+├── css/
+│
+├── js/
+│
+├── assets/
+│
+├── images/
+│
+├── index.html
+├── login.html
+├── register.html
+├── 404.html
+└── README.md
+```
+
+---
+
+# 📸 Screenshots
+
+## 🏠 Home Page
+
+![Home](assets/home.png)
+
+---
+
+## 🔐 Login
+
+![Login](assets/login.png)
+
+---
+
+## 📝 Register
+
+![Register](assets/register.png)
+
+---
+
+## 🎾 Book Court
+
+![Booking](assets/booking.png)
+
+---
+
+## 📅 Reservations
+
+![Reservations](assets/reservations.png)
+
+---
+
+## 🛠 Admin Dashboard
+
+![Admin](assets/admin-dashboard.png)
+
+---
+
+# ✔ Validation
+
+The project includes client-side validation using JavaScript.
+
+Implemented validation includes:
+
+- Required Fields
+- Email Format Validation
+- Password Validation
+- Confirm Password Matching
+- Booking Form Validation
+- Error Messages
+- Password Visibility Toggle
+
+---
+
+# 🎨 UI/UX Highlights
+
+- Responsive Design
+- Modern Interface
+- Smooth Navigation
+- Interactive Buttons
+- Hover Effects
+- Clean Layout
+- Mobile Friendly
+
+---
+
+# 🔒 User Roles
+
+## Member
+
+- Register
+- Login
+- Book Courts
+- View Reservations
+
+## Administrator
+
+- Manage Courts
+- Manage Bookings
+- Manage Users
+- System Administration
+
+---
+
+# 💡 Innovation
+
+The project includes modern usability improvements such as:
+
+- Password Visibility Toggle
+- Responsive Layout
+- Interactive User Interface
+- Modern Dashboard Design
+
+---
+
+# ⚙ Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/adam3glann/PadelSync.git
+```
+
+Open the project
+
+```bash
+cd PadelSync
+```
+
+Launch
+
+Open `index.html` in your preferred web browser.
+
+---
+
+# 👥 Team Members
+
+| Name | Role |
+|------|------|
+| Adam Adel | Frontend Developer |
+| Omar Yassseen | Frontend Developer |
+| Mafdy Nader | Frontend Developer |
+| Sayed Mohamed | Frontend Developer |
+| Sayed Said | Frontend Developer
+
+---
+
+# 📌 GitHub Workflow
+
+Each team member works on a dedicated branch.
+
+Example:
+
+- `main`
+- `adam`
+- `omar`
+- `mafdy`
+- `sayed-mohamed`
+- `sayed`
+
+All changes are committed to individual branches and merged into the `main` branch through GitHub.
+
+---
+
+# 📜 Course Information
+
+**Course:** SWE230 – Web Application Development
+
+Faculty of Computer Science
+
+Misr International University (MIU)
+
+---
+
+# 📄 License
+
+This project was developed for educational purposes as part of the SWE230 course.
