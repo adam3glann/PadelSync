@@ -243,6 +243,27 @@ Open `index.html` in your preferred web browser.
 
 ---
 
+# 🔑 Demo Accounts
+
+> **Use the following demo accounts to explore the application without creating new users.**
+
+### 👤 Member Accounts
+
+| Email | Password |
+|-------|----------|
+| `ali@example.com` | `member123` |
+| `sara@example.com` | `member123` |
+
+### 🛠️ Administrator Account
+
+| Email | Password |
+|-------|----------|
+| `admin@padelsync.com` | `admin123` |
+
+> **Note:** These accounts are provided for demonstration and testing purposes.
+
+---
+
 # 👥 Team Members
 
 | Name | Role |
@@ -266,11 +287,11 @@ Branches used in this project:
 - `omar`
 - `mafdy`
 - `sayed-mohamed`
-- `sayed-Said`
+- `sayed`
 
 Workflow:
 
-1. Create or switch to your branch.
+1. Switch to your assigned branch.
 2. Develop your assigned feature.
 3. Commit your changes.
 4. Push your branch to GitHub.
@@ -303,4 +324,4 @@ Workflow:
 
 # 📄 License
 
-This project was developed for educational purposes as part of the SWE230 – Web Application Development course.
+This project was developed for educational purposes as part of the **SWE230 – Web Application Development** course at **Misr International University (MIU)**.
