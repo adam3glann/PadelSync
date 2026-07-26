@@ -1,6 +1,6 @@
 // Book a slot: show equipment and the required 50% reservation deposit.
 function bookSlot(slotId, courtName, timeBlock, date) {
-  var tFn = window.i18n ? window.i18n.t.bind(window.i18n) : function(k) { return k; };
+  var tFn = window.i18n ? window.i18n.t.bind(window.i18n) : function (k) { return k; };
   var total = db.courtPrice;
   var deposit = total / 2;
 
@@ -36,7 +36,7 @@ function bookSlot(slotId, courtName, timeBlock, date) {
     '<p>Within 2 hours: 100% of the deposit refunded. Within 3 hours: 25% refunded. After 3 hours: no refund.</p>' +
     '</div>';
 
-  auth.showModal(tFn('book.confirmBooking'), modalHTML, function() {
+  auth.showModal(tFn('book.confirmBooking'), modalHTML, function () {
     var cardName = document.getElementById('card-name').value.trim();
     var cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
     if (cardName.length < 2 || !/^\d{16}$/.test(cardNumber)) {
@@ -54,8 +54,8 @@ function bookSlot(slotId, courtName, timeBlock, date) {
 
 // Cancel a booked slot with confirmation
 function cancelSlot(slotId) {
-  var tFn = window.i18n ? window.i18n.t.bind(window.i18n) : function(k) { return k; };
-  auth.showModal(tFn('modal.cancelBooking'), tFn('modal.cancelBookingMsg'), function() {
+  var tFn = window.i18n ? window.i18n.t.bind(window.i18n) : function (k) { return k; };
+  auth.showModal(tFn('modal.cancelBooking'), tFn('modal.cancelBookingMsg'), function () {
     var user = auth.getUser();
     var result = db.cancelSlot(slotId, user.id, user.role);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }
@@ -72,7 +72,7 @@ var calendar;
 var availBar;
 
 // Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   auth.checkAuth('member');
 
   var today = formatDate(new Date());
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
   availBar = initAvailabilityBar('availability-summary');
 
   // Create the mini calendar with a callback for when a date is selected
-  calendar = new MiniCalendar('mini-calendar', function(dateStr) {
+  calendar = new MiniCalendar('mini-calendar', function (dateStr) {
     updateDateDisplay(dateStr);
     fetchSlots(dateStr);
   });

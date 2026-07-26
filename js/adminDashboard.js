@@ -1,5 +1,5 @@
 // Load dashboard stats when the page loads
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   auth.checkAuth('admin');
   fetchStats();
 });

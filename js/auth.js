@@ -97,7 +97,7 @@ function showToast(message, type) {
   toast.className = 'toast ' + type;
   toast.textContent = message;
   container.appendChild(toast);
-  setTimeout(function() { toast.remove(); }, 3000);
+  setTimeout(function () { toast.remove(); }, 3000);
 }
 
 // Show a confirmation modal
@@ -122,10 +122,10 @@ function showModal(title, message, onConfirm) {
   var newConfirm = confirmBtn.cloneNode(true);
   confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
 
-  document.getElementById('modal-cancel').addEventListener('click', function() {
+  document.getElementById('modal-cancel').addEventListener('click', function () {
     overlay.classList.remove('active');
   });
-  document.getElementById('modal-confirm').addEventListener('click', function() {
+  document.getElementById('modal-confirm').addEventListener('click', function () {
     // A callback can return false to keep the modal open after a validation error.
     var closeModal = !onConfirm || onConfirm() !== false;
     if (closeModal) overlay.classList.remove('active');
@@ -151,7 +151,7 @@ window.auth = {
 applyTheme(localStorage.getItem('padelsync_theme') || 'dark');
 
 // Add hamburger mobile menu on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var links = document.querySelector('.nav-links');
   if (links && !links.querySelector('.theme-toggle')) links.insertAdjacentHTML('afterbegin', renderThemeButton());
   updateThemeButton();
@@ -171,22 +171,22 @@ document.addEventListener('DOMContentLoaded', function() {
   overlay.className = 'nav-overlay';
 
   // Toggle menu on hamburger click
-  hamburger.addEventListener('click', function() {
+  hamburger.addEventListener('click', function () {
     hamburger.classList.toggle('active');
     navLinks.classList.toggle('open');
     overlay.classList.toggle('active');
   });
 
   // Close menu when clicking the overlay
-  overlay.addEventListener('click', function() {
+  overlay.addEventListener('click', function () {
     hamburger.classList.remove('active');
     navLinks.classList.remove('open');
     overlay.classList.remove('active');
   });
 
   // Close menu when clicking any nav link
-  navLinks.querySelectorAll('a').forEach(function(link) {
-    link.addEventListener('click', function() {
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
       hamburger.classList.remove('active');
       navLinks.classList.remove('open');
       overlay.classList.remove('active');

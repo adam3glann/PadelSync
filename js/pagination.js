@@ -1,7 +1,7 @@
 // Render pagination buttons inside a container
 function renderPagination(containerId, pagination, onPageChange) {
   var container = document.getElementById(containerId);
-  
+
   // If no container or less than 2 pages, don't show pagination
   if (!container || !pagination || pagination.totalPages <= 1) {
     if (container) container.innerHTML = '';
@@ -12,7 +12,7 @@ function renderPagination(containerId, pagination, onPageChange) {
   var totalPages = pagination.totalPages;
   var total = pagination.total;
   var limit = pagination.limit;
-  
+
   var from = (page - 1) * limit + 1;
   var to = Math.min(page * limit, total);
 
@@ -39,20 +39,20 @@ function renderPagination(containerId, pagination, onPageChange) {
   var prevDisabled = page <= 1 ? 'disabled' : '';
   var nextDisabled = page >= totalPages ? 'disabled' : '';
 
-  container.innerHTML = 
+  container.innerHTML =
     '<div class="pagination">' +
-      '<span class="pag-info">' + infoText + '</span>' +
-      '<div class="pag-controls">' +
-        '<button class="pag-btn" data-page="' + (page - 1) + '" ' + prevDisabled + '>&#8249; ' + prevLabel + '</button>' +
-        pagesHTML +
-        '<button class="pag-btn" data-page="' + (page + 1) + '" ' + nextDisabled + '>' + nextLabel + ' &#8250;</button>' +
-      '</div>' +
+    '<span class="pag-info">' + infoText + '</span>' +
+    '<div class="pag-controls">' +
+    '<button class="pag-btn" data-page="' + (page - 1) + '" ' + prevDisabled + '>&#8249; ' + prevLabel + '</button>' +
+    pagesHTML +
+    '<button class="pag-btn" data-page="' + (page + 1) + '" ' + nextDisabled + '>' + nextLabel + ' &#8250;</button>' +
+    '</div>' +
     '</div>';
 
   // Attach click events to all active buttons
   var buttons = container.querySelectorAll('.pag-btn:not([disabled])');
   for (var j = 0; j < buttons.length; j++) {
-    buttons[j].addEventListener('click', function() {
+    buttons[j].addEventListener('click', function () {
       var p = parseInt(this.getAttribute('data-page'), 10);
       if (p >= 1 && p <= totalPages) {
         onPageChange(p);
