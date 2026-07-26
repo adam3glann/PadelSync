@@ -84,4 +84,4 @@ document.addEventListener('DOMContentLoaded', function () {
   document.documentElement.dir = 'ltr';
 });
 
-window.i18n = { t: t, getLang: function () { return 'en'; }, applyTranslations: applyTranslations };
+window.i18n = { t: t, getLang: function () { return 'en'; },  };
