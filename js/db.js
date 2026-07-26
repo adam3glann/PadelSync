@@ -179,6 +179,23 @@ function dbRegister(name, email, password) {
   };
 }
 
+// Reset password
+function dbResetPassword(email, newPassword) {
+  var db = getDB();
+  for (var i = 0; i < db.users.length; i++) {
+    if (db.users[i].email === email) {
+      if (db.users[i].password === newPassword) {
+        return { ok: false, errorType: 'same_password', message: 'You already used this password' };
+      }
+      db.users[i].password = newPassword;
+      saveDB(db);
+      return { ok: true, message: 'Password reset successfully' };
+    }
+  }
+  return { ok: false, errorType: 'not_found', message: 'User not found' };
+}
+
+
 // Get a user by ID
 function dbGetUser(userId) {
   var db = getDB();
@@ -646,6 +663,7 @@ window.db = {
   reset: resetDB,
   login: dbLogin,
   register: dbRegister,
+  resetPassword: dbResetPassword,
   getUser: dbGetUser,
   getUsers: dbGetUsers,
   updateUser: dbUpdateUser,

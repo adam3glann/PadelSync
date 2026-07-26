@@ -10,14 +10,53 @@ document.addEventListener('DOMContentLoaded', function () {
   var passwordInput = document.getElementById('password');
   var showPassword = document.getElementById('show-login-password');
 
+  var loginCard = document.getElementById('loginCard');
+  var resetCard = document.getElementById('resetCard');
+  var loginHeader = document.getElementById('loginHeader');
+  var resetHeader = document.getElementById('resetHeader');
+  var showResetBtn = document.getElementById('showResetBtn');
+  var showLoginBtn = document.getElementById('showLoginBtn');
+
+  var resetForm = document.getElementById('resetForm');
+  var resetEmail = document.getElementById('resetEmail');
+  var resetPassword = document.getElementById('resetPassword');
+  var showResetPassword = document.getElementById('show-reset-password');
+
   showPassword.addEventListener('change', function () {
     passwordInput.type = showPassword.checked ? 'text' : 'password';
+  });
+
+  showResetPassword.addEventListener('change', function () {
+    resetPassword.type = showResetPassword.checked ? 'text' : 'password';
+  });
+
+  showResetBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    loginCard.style.display = 'none';
+    loginHeader.style.display = 'none';
+    resetCard.style.display = 'block';
+    resetHeader.style.display = 'block';
+  });
+
+  showLoginBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    resetCard.style.display = 'none';
+    resetHeader.style.display = 'none';
+    loginCard.style.display = 'block';
+    loginHeader.style.display = 'block';
   });
 
   // Validate fields when user leaves them
   emailInput.addEventListener('blur', function () {
     validateField(emailInput, validationRules.email);
   });
+  resetEmail.addEventListener('blur', function () {
+    validateField(resetEmail, validationRules.email);
+  });
+  resetPassword.addEventListener('blur', function () {
+    validateField(resetPassword, validationRules.password);
+  });
+  
   // Clear error styling when user types
   emailInput.addEventListener('input', function () {
     emailInput.style.borderColor = '';
@@ -25,7 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
   passwordInput.addEventListener('input', function () {
     passwordInput.style.borderColor = '';
   });
-
+  resetEmail.addEventListener('input', function () {
+    resetEmail.style.borderColor = '';
+  });
+  resetPassword.addEventListener('input', function () {
+    resetPassword.style.borderColor = '';
+  });
 
   // Handle form submission
   loginForm.addEventListener('submit', function (e) {
@@ -54,5 +98,35 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () {
       window.location.href = result.data.user.role === 'admin' ? 'admin/dashboard.html' : 'member/dashboard.html';
     }, 800);
+  });
+
+  // Handle reset form submission
+  resetForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    if (!validateForm(resetForm, { resetEmail: validationRules.email, resetPassword: validationRules.password })) return;
+
+    var btn = document.getElementById('resetBtn');
+    var originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    var result = db.resetPassword(resetEmail.value.trim(), resetPassword.value);
+
+    setTimeout(function () {
+      btn.disabled = false;
+      btn.textContent = originalText;
+      if (result.ok) {
+        auth.showToast(window.i18n ? window.i18n.t('toast.passwordReset') : 'Password reset successfully');
+        resetForm.reset();
+        showLoginBtn.click();
+      } else {
+        if (result.errorType === 'same_password') {
+          auth.showToast(window.i18n ? window.i18n.t('val.samePassword') : result.message, 'error');
+        } else {
+          auth.showToast(window.i18n ? window.i18n.t('val.userNotFound') : 'User not found', 'error');
+        }
+      }
+    }, 500);
   });
 });

@@ -13,12 +13,16 @@
     <div class="auth-image-panel" style="background-image: url('assets/login-bg.jpg');"></div>
     <div class="auth-form-panel">
       <div style="width: 100%; max-width: 380px;">
-        <div class="text-center mb-2">
+        <div class="text-center mb-2" id="loginHeader">
           <h2 data-i18n="auth.welcomeBack">Welcome Back</h2>
           <p style="color: #aaaaaa;" data-i18n="auth.signInSubtitle">Sign in to your PadelSync account.</p>
         </div>
+        <div class="text-center mb-2" id="resetHeader" style="display: none;">
+          <h2 data-i18n="auth.resetPasswordTitle">Reset Password</h2>
+          <p style="color: #aaaaaa;" data-i18n="auth.resetPasswordSubtitle">Enter your email to set a new password.</p>
+        </div>
 
-        <div class="card">
+        <div class="card" id="loginCard">
           <form id="loginForm" novalidate>
             <div class="form-group">
               <label for="email" data-i18n="auth.email">Email</label>
@@ -31,6 +35,10 @@
               <label class="password-toggle"><input type="checkbox" id="show-login-password"> Show password</label>
             </div>
 
+            <div class="text-right" style="margin-top: -10px; margin-bottom: 10px;">
+              <a href="#" id="showResetBtn" data-i18n="auth.forgotPassword" style="font-size: 14px;">Forgot Password?</a>
+            </div>
+
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="loginBtn"
               data-i18n="auth.signIn">Sign In</button>
           </form>
@@ -40,7 +48,30 @@
               <span data-i18n="auth.noAccount">No account?</span>
               <a href="register.html" data-i18n="auth.register">Register</a>
             </p>
+          </div>
+        </div>
 
+        <div class="card" id="resetCard" style="display: none;">
+          <form id="resetForm" novalidate>
+            <div class="form-group">
+              <label for="resetEmail" data-i18n="auth.email">Email</label>
+              <input type="email" id="resetEmail" required placeholder="you@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="resetPassword" data-i18n="auth.newPassword">New Password</label>
+              <input type="password" id="resetPassword" required placeholder="Enter new password">
+              <label class="password-toggle"><input type="checkbox" id="show-reset-password"> Show password</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="resetBtn"
+              data-i18n="auth.resetAction">Reset Password</button>
+          </form>
+
+          <div class="text-center mt-2">
+            <p style="color: #aaaaaa; font-size: 14px;">
+              <a href="#" id="showLoginBtn" data-i18n="auth.backToLogin">Back to Login</a>
+            </p>
           </div>
         </div>
       </div>
