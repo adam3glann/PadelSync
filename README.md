@@ -266,7 +266,7 @@ Branches used in this project:
 - `omar`
 - `mafdy`
 - `sayed-mohamed`
-- `sayed`
+- `sayed-Said`
 
 Workflow:
 
