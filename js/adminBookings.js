@@ -2,7 +2,7 @@
 var bookingsPage = 1;
 var BOOKINGS_PER_PAGE = 10;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   auth.checkAuth('admin');
 
   // Set default date to today
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('filter-date').value = today;
 
   // Reload bookings when filter date changes
-  document.getElementById('filter-date').addEventListener('change', function() {
+  document.getElementById('filter-date').addEventListener('change', function () {
     bookingsPage = 1;
     fetchBookings(this.value, 1);
   });
@@ -70,7 +70,7 @@ function fetchBookings(date, page) {
     // Render pagination if needed
     if (pagination && pagination.totalPages > 1) {
       var pagEl = document.getElementById('bookings-pagination');
-      if (pagEl) renderPagination('bookings-pagination', pagination, function(p) { fetchBookings(date, p); });
+      if (pagEl) renderPagination('bookings-pagination', pagination, function (p) { fetchBookings(date, p); });
     }
   } catch (error) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="color: var(--danger);">Failed to load bookings.</td></tr>';
@@ -81,7 +81,7 @@ function fetchBookings(date, page) {
 function adminCancel(id) {
   var title = window.i18n ? window.i18n.t('modal.cancelMemberBooking') : 'Cancel Member Booking';
   var msg = window.i18n ? window.i18n.t('modal.cancelMemberMsg') : 'Are you sure you want to cancel this booking?';
-  auth.showModal(title, msg, function() {
+  auth.showModal(title, msg, function () {
     var user = auth.getUser();
     var result = db.cancelSlot(id, user.id, user.role);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }

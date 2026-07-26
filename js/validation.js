@@ -72,27 +72,27 @@ function _vmsg(key) {
 // Validation rules for each type of field
 var validationRules = {
   name: [
-    { required: true, getMessage: function() { return _vmsg('val.nameRequired'); } },
-    { minLength: 2, getMessage: function() { return _vmsg('val.nameMin'); } },
-    { pattern: /^[a-zA-Z\u0600-\u06FF\s]+$/, getMessage: function() { return _vmsg('val.namePattern'); } }
+    { required: true, getMessage: function () { return _vmsg('val.nameRequired'); } },
+    { minLength: 2, getMessage: function () { return _vmsg('val.nameMin'); } },
+    { pattern: /^[a-zA-Z\u0600-\u06FF\s]+$/, getMessage: function () { return _vmsg('val.namePattern'); } }
   ],
   email: [
-    { required: true, getMessage: function() { return _vmsg('val.emailRequired'); } },
-    { pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, getMessage: function() { return _vmsg('val.emailInvalid'); } }
+    { required: true, getMessage: function () { return _vmsg('val.emailRequired'); } },
+    { pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, getMessage: function () { return _vmsg('val.emailInvalid'); } }
   ],
   password: [
-    { required: true, getMessage: function() { return _vmsg('val.passwordRequired'); } },
-    { minLength: 6, getMessage: function() { return _vmsg('val.passwordMin'); } },
-    { custom: function(v) { return /\d/.test(v); }, getMessage: function() { return _vmsg('val.passwordNumber'); } }
+    { required: true, getMessage: function () { return _vmsg('val.passwordRequired'); } },
+    { minLength: 6, getMessage: function () { return _vmsg('val.passwordMin'); } },
+    { custom: function (v) { return /\d/.test(v); }, getMessage: function () { return _vmsg('val.passwordNumber'); } }
   ],
   confirmPassword: [
-    { required: true, getMessage: function() { return _vmsg('val.confirmRequired'); } }
+    { required: true, getMessage: function () { return _vmsg('val.confirmRequired'); } }
   ],
   'court-name': [
-    { required: true, getMessage: function() { return _vmsg('val.courtNameRequired'); } },
-    { minLength: 2, getMessage: function() { return _vmsg('val.courtNameMin'); } },
-    { maxLength: 30, getMessage: function() { return _vmsg('val.courtNameMax'); } },
-    { pattern: /^[a-zA-Z0-9\u0600-\u06FF\s\-]+$/, getMessage: function() { return _vmsg('val.courtNamePattern'); } }
+    { required: true, getMessage: function () { return _vmsg('val.courtNameRequired'); } },
+    { minLength: 2, getMessage: function () { return _vmsg('val.courtNameMin'); } },
+    { maxLength: 30, getMessage: function () { return _vmsg('val.courtNameMax'); } },
+    { pattern: /^[a-zA-Z0-9\u0600-\u06FF\s\-]+$/, getMessage: function () { return _vmsg('val.courtNamePattern'); } }
   ]
 };
 

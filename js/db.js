@@ -37,7 +37,7 @@ function getDB() {
         return parsed;
       }
     }
-  } catch (e) {}
+  } catch (e) { }
   return seedDB();
 }
 
@@ -301,7 +301,7 @@ function dbGetSlots(date) {
     });
   }
 
-  slots.sort(function(a, b) { return a.timeBlock.localeCompare(b.timeBlock); });
+  slots.sort(function (a, b) { return a.timeBlock.localeCompare(b.timeBlock); });
   return slots;
 }
 
@@ -340,7 +340,7 @@ function dbGetAllBookings(date, page, limit) {
     });
   }
 
-  all.sort(function(a, b) { return (a.date + a.timeBlock).localeCompare(b.date + b.timeBlock); });
+  all.sort(function (a, b) { return (a.date + a.timeBlock).localeCompare(b.date + b.timeBlock); });
 
   page = page || 1;
   limit = limit || 20;
@@ -375,7 +375,7 @@ function dbGetMyBookings(userId, page, limit) {
     });
   }
 
-  all.sort(function(a, b) { return (a.date + a.timeBlock).localeCompare(b.date + b.timeBlock); });
+  all.sort(function (a, b) { return (a.date + a.timeBlock).localeCompare(b.date + b.timeBlock); });
 
   page = page || 1;
   limit = limit || 20;
@@ -502,7 +502,7 @@ function dbGetUsers(page, limit) {
     });
   }
 
-  all.sort(function(a, b) { return (a.createdAt || '').localeCompare(b.createdAt || ''); });
+  all.sort(function (a, b) { return (a.createdAt || '').localeCompare(b.createdAt || ''); });
 
   page = page || 1;
   limit = limit || 20;
@@ -637,7 +637,7 @@ function dbGetStats() {
 function dbGetCancellations() {
   var db = getDB();
   var records = db.cancellations.slice();
-  records.sort(function(a, b) { return b.cancelledAt.localeCompare(a.cancelledAt); });
+  records.sort(function (a, b) { return b.cancelledAt.localeCompare(a.cancelledAt); });
   return records;
 }
 

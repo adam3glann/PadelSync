@@ -3,7 +3,7 @@ var usersPage = 1;
 var USERS_PER_PAGE = 10;
 var revealedPasswords = {};
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   auth.checkAuth('admin');
   fetchUsers(1);
 });
@@ -43,8 +43,8 @@ function fetchUsers(page) {
       var roleBtnHtml = isSelf
         ? ''
         : '<button class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="toggleUserRole(\'' + u._id + '\', \'' + u.role + '\')">' +
-          (isAdmin ? (window.i18n ? window.i18n.t('users.makeMember') : 'Make Member') : (window.i18n ? window.i18n.t('users.makeAdmin') : 'Make Admin')) +
-          '</button>';
+        (isAdmin ? (window.i18n ? window.i18n.t('users.makeMember') : 'Make Member') : (window.i18n ? window.i18n.t('users.makeAdmin') : 'Make Admin')) +
+        '</button>';
 
       var deleteBtnHtml = isSelf
         ? ''
@@ -54,21 +54,21 @@ function fetchUsers(page) {
         '<td>' + escapeHtml(u.name) + (isSelf ? ' <span style="color: var(--text-muted); font-size: 0.75rem;">(' + (window.i18n ? window.i18n.t('users.you') : 'you') + ')</span>' : '') + '</td>' +
         '<td style="color: var(--text-muted);">' + escapeHtml(u.email) + '</td>' +
         '<td><span class="user-password" style="font-family: monospace;">' + passwordDisplay + '</span> ' +
-          '<button class="btn btn-outline" style="padding: 0.15rem 0.5rem; font-size: 0.75rem;" onclick="togglePasswordVisible(\'' + u._id + '\')">' + toggleLabel + '</button></td>' +
+        '<button class="btn btn-outline" style="padding: 0.15rem 0.5rem; font-size: 0.75rem;" onclick="togglePasswordVisible(\'' + u._id + '\')">' + toggleLabel + '</button></td>' +
         '<td><span class="badge ' + roleBadgeClass + '">' + roleLabel + '</span></td>' +
         '<td>' + joined + '</td>' +
         '<td class="text-center">' + u.activeBookings + '</td>' +
         '<td><div class="d-flex" style="gap: 8px; flex-wrap: wrap;">' +
-          '<button class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="openChangePassword(\'' + u._id + '\', \'' + escapeHtml(u.name).replace(/'/g, "\\'") + '\')">' + (window.i18n ? window.i18n.t('users.changePassword') : 'Change Password') + '</button>' +
-          roleBtnHtml +
-          deleteBtnHtml +
+        '<button class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="openChangePassword(\'' + u._id + '\', \'' + escapeHtml(u.name).replace(/'/g, "\\'") + '\')">' + (window.i18n ? window.i18n.t('users.changePassword') : 'Change Password') + '</button>' +
+        roleBtnHtml +
+        deleteBtnHtml +
         '</div></td>' +
         '</tr>';
     }
     tbody.innerHTML = rows;
 
     if (pagination && pagination.totalPages > 1) {
-      renderPagination('users-pagination', pagination, function(p) { fetchUsers(p); });
+      renderPagination('users-pagination', pagination, function (p) { fetchUsers(p); });
     } else {
       var pagEl = document.getElementById('users-pagination');
       if (pagEl) pagEl.innerHTML = '';
@@ -92,7 +92,7 @@ function openChangePassword(id, name) {
     '<input type="password" id="modal-new-password" placeholder="At least 6 characters, with a number">' +
     '</div>';
 
-  auth.showModal(title, msg, function() {
+  auth.showModal(title, msg, function () {
     var input = document.getElementById('modal-new-password');
     var rules = validationRules.password;
     if (!validateField(input, rules)) return false;
@@ -112,7 +112,7 @@ function toggleUserRole(id, currentRole) {
     ? (window.i18n ? window.i18n.t('users.confirmMakeAdmin') : 'Give this user administrator access?')
     : (window.i18n ? window.i18n.t('users.confirmMakeMember') : 'Remove administrator access from this user?');
 
-  auth.showModal(title, msg, function() {
+  auth.showModal(title, msg, function () {
     var me = auth.getUser();
     var result = db.updateUser(id, { role: newRole }, me.id);
     if (!result.ok) { auth.showToast(result.message, 'error'); return false; }
@@ -126,7 +126,7 @@ function deleteUserAccount(id, name) {
   var title = window.i18n ? window.i18n.t('users.deleteAccount') : 'Delete Account';
   var msg = window.i18n ? window.i18n.t('users.deleteAccountMsg', { name: name }) : 'Delete <strong>' + name + '</strong>\'s account? Any courts they currently have booked will be freed up. This cannot be undone.';
 
-  auth.showModal(title, msg, function() {
+  auth.showModal(title, msg, function () {
     var me = auth.getUser();
     var result = db.deleteUser(id, me.id);
     if (!result.ok) { auth.showToast(result.message, 'error'); return false; }

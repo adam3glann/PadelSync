@@ -111,13 +111,13 @@ function initAvailabilityBar(containerId) {
   return {
     total: 0,
     booked: 0,
-    render: function() {
+    render: function () {
       var pct = this.total > 0 ? Math.round((this.booked / this.total) * 100) : 0;
       var avail = this.total - this.booked;
       var el = document.getElementById(containerId);
       if (!el) return;
 
-      var tFn = (window.i18n && window.i18n.t.bind(window.i18n)) || function(k) { return k; };
+      var tFn = (window.i18n && window.i18n.t.bind(window.i18n)) || function (k) { return k; };
 
       el.innerHTML =
         '<div class="avail-bar">' +

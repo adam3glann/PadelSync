@@ -3,7 +3,7 @@ var reservationsPage = 1;
 var RESERVATIONS_PER_PAGE = 6;
 
 // Load reservations when the page is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   auth.checkAuth('member');
   fetchReservations(1);
 });
@@ -80,7 +80,7 @@ function fetchReservations(page) {
 function cancelBooking(id) {
   var title = window.i18n ? window.i18n.t('modal.cancelBooking') : 'Cancel Booking';
   var msg = window.i18n ? window.i18n.t('modal.cancelBookingMsg') : 'Are you sure you want to cancel this reservation?';
-  auth.showModal(title, msg, function() {
+  auth.showModal(title, msg, function () {
     var user = auth.getUser();
     var result = db.cancelSlot(id, user.id, user.role);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }

@@ -79,9 +79,9 @@ function t(key, params) {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   document.documentElement.lang = 'en';
   document.documentElement.dir = 'ltr';
 });
 
-window.i18n = { t: t, getLang: function() { return 'en'; }, applyTranslations: applyTranslations };
+window.i18n = { t: t, getLang: function () { return 'en'; }, applyTranslations: applyTranslations };

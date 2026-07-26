@@ -2,17 +2,17 @@
 var courtsPage = 1;
 var COURTS_PER_PAGE = 6;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   auth.checkAuth('admin');
   fetchCourts(1);
 
   // Validate court name field on blur
   var courtName = document.getElementById('court-name');
   if (courtName) {
-    courtName.addEventListener('blur', function() {
+    courtName.addEventListener('blur', function () {
       validateField(courtName, validationRules['court-name']);
     });
-    courtName.addEventListener('input', function() {
+    courtName.addEventListener('input', function () {
       courtName.style.borderColor = '';
       var err = courtName.parentElement.querySelector('.field-error');
       if (err) err.remove();
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Handle new court form submission
-  document.getElementById('create-court-form').addEventListener('submit', function(e) {
+  document.getElementById('create-court-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Validate court name field
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // If an image was uploaded, read it as base64 first
     if (imageFile) {
       var reader = new FileReader();
-      reader.onload = function(ev) {
+      reader.onload = function (ev) {
         doCreateCourt(name, description, ev.target.result);
       };
       reader.readAsDataURL(imageFile);
@@ -132,7 +132,7 @@ function toggleStatus(id, newStatus) {
 function deleteCourt(id, name) {
   var title = window.i18n ? window.i18n.t('modal.deleteCourt') : 'Delete Court';
   var msg = window.i18n ? window.i18n.t('modal.deleteCourtMsg', { name: name }) : 'Delete <strong>' + name + '</strong> and all its time slots?';
-  auth.showModal(title, msg, function() {
+  auth.showModal(title, msg, function () {
     var result = db.deleteCourt(id);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }
     auth.showToast(window.i18n ? window.i18n.t('toast.courtDeleted') : 'Court deleted');

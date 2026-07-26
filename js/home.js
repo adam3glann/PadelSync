@@ -1,5 +1,5 @@
 // Update the home page navbar and CTA button based on login status
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var user = auth.getUser();
   var ctaContainer = document.getElementById('cta-container');
   var navLinks = document.querySelector('.nav-links');
