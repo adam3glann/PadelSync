@@ -1294,3 +1294,76 @@ html[data-theme="light"] .policy-box strong {
 .grid-2>* {
   width: 50%;
 }
+
+/* Settings: a few clear classes so the page is easy to change later. */
+.settings-page {
+  padding-top: 110px;
+  padding-bottom: 50px;
+}
+
+.settings-heading {
+  margin-bottom: 24px;
+}
+
+.settings-heading h1 {
+  font-size: 2.4rem;
+}
+
+.settings-heading p:last-child,
+.settings-preferences p {
+  color: var(--text-muted);
+}
+
+.eyebrow {
+  color: var(--optic-yellow);
+  font-size: .8rem;
+  font-weight: bold;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.settings-card {
+  margin-top: 0;
+  padding: 28px;
+}
+
+.settings-card h2 {
+  margin-bottom: 18px;
+  font-size: 1.5rem;
+}
+
+.simple-form {
+  display: grid;
+  gap: 4px;
+}
+
+.settings-preferences {
+  grid-column: 1 / -1;
+}
+
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    padding-top: 90px;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-preferences {
+    grid-column: auto;
+  }
+}

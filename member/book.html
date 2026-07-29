@@ -2,65 +2,62 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Court - PadelSync</title>
-  <link rel="stylesheet" href="../css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Court - PadelSync</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-  <nav class="navbar">
-    <div class="container d-flex justify-between align-center">
-      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span></a>
-      <div class="nav-links">
-        <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
-        <a href="book.html" class="active" data-i18n="nav.bookCourt">Book Court</a>
-        <a href="reservations.html" data-i18n="nav.reservations">Reservations</a>
-        <a href="#" onclick="auth.logout()" class="btn btn-outline" data-i18n="nav.logout">Logout</a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="container">
-    <div class="d-flex mb-2" style="align-items: flex-start;">
-      <div class="card" style="width: 300px; margin-right: 20px;">
-        <h3 data-i18n="book.pickDate">Pick a Date</h3>
-        <div id="mini-calendar"></div>
-        <div class="mt-1 d-flex">
-          <button class="btn btn-outline" style="flex:1; padding:10px; font-size:12px; margin-right: 5px;"
-            onclick="pickToday()" data-i18n="book.today">Today</button>
-          <button class="btn btn-outline" style="flex:1; padding:10px; font-size:12px; margin-right: 5px;"
-            onclick="pickTomorrow()" data-i18n="book.tomorrow">Tomorrow</button>
-          <button class="btn btn-outline" style="flex:1; padding:10px; font-size:12px;" onclick="pickNext(3)"
-            data-i18n="book.plus3Days">+3 Days</button>
+    <nav class="navbar">
+        <div class="container d-flex justify-between align-center"> <a href="dashboard.html"
+                class="navbar-brand">PadelSync<span class="ball"></span></a>
+            <div class="nav-links"> <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a> <a href="book.html"
+                    class="active" data-i18n="nav.bookCourt">Book Court</a> <a href="reservations.html"
+                    data-i18n="nav.reservations">Reservations</a> <a href="settings.html"
+                    data-i18n="nav.settings">Settings</a> <a href="#" onclick="auth.logout()" class="btn btn-outline"
+                    data-i18n="nav.logout">Logout</a> </div>
         </div>
-      </div>
-      <div style="flex: 1;">
-        <div class="card mb-2">
-          <div class="d-flex justify-between align-center">
-            <div>
-              <h2 data-i18n="book.matchDay">Match Day: <span id="selected-date-display"></span></h2>
-              <p style="color: #aaaaaa; font-size: 14px;" data-i18n="book.timeBlocks">90-minute padel time blocks</p>
+    </nav>
+    <main class="container">
+        <div class="d-flex mb-2" style="align-items: flex-start;">
+            <div class="card" style="width: 300px; margin-right: 20px;">
+                <h3 data-i18n="book.pickDate">Pick a Date</h3>
+                <div id="mini-calendar"></div>
+                <div class="mt-1 d-flex"> <button class="btn btn-outline"
+                        style="flex:1; padding:10px; font-size:12px; margin-right: 5px;" onclick="pickToday()"
+                        data-i18n="book.today">Today</button> <button class="btn btn-outline"
+                        style="flex:1; padding:10px; font-size:12px; margin-right: 5px;" onclick="pickTomorrow()"
+                        data-i18n="book.tomorrow">Tomorrow</button> <button class="btn btn-outline"
+                        style="flex:1; padding:10px; font-size:12px;" onclick="pickNext(3)"
+                        data-i18n="book.plus3Days">+3 Days</button> </div>
             </div>
-            <div id="availability-summary" style="width: 200px;"></div>
-          </div>
+            <div style="flex: 1;">
+                <div class="card mb-2">
+                    <div class="d-flex justify-between align-center">
+                        <div>
+                            <h2 data-i18n="book.matchDay">Match Day: <span id="selected-date-display"></span></h2>
+                            <p style="color: #aaaaaa; font-size: 14px;" data-i18n="book.timeBlocks">90-minute padel time
+                                blocks</p>
+                        </div>
+                        <div id="availability-summary" style="width: 200px;"></div>
+                    </div>
+                </div>
+                <div class="policy-box mb-2"> <strong data-i18n="booking.policyTitle">Reservation and cancellation
+                        policy</strong>
+                    <p data-i18n="booking.policyText">Pay 50% online to reserve your court. Pay the remaining 50% in
+                        cash at the court. Cancel within 2 hours for a full deposit refund, within 3 hours for a 25%
+                        refund, and after 3 hours the deposit is not refunded.</p>
+                </div>
+                <div id="grid-container"></div>
+            </div>
         </div>
-        <div class="policy-box mb-2">
-          <strong data-i18n="booking.policyTitle">Reservation and cancellation policy</strong>
-          <p data-i18n="booking.policyText">Pay 50% online to reserve your court. Pay the remaining 50% in cash at the
-            court. Cancel within 2 hours for
-            a full deposit refund, within 3 hours for a 25% refund, and after 3 hours the deposit is not refunded.</p>
-        </div>
-        <div id="grid-container"></div>
-      </div>
-    </div>
-  </main>
-
-  <script src="../js/db.js"></script>
-  <script src="../js/i18n.js"></script>
-  <script src="../js/auth.js"></script>
-  <script src="../js/calendar.js"></script>
-  <script src="../js/booking.js"></script>
+    </main>
+    <script src="../js/db.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/calendar.js"></script>
+    <script src="../js/booking.js"></script>
 </body>
 
 </html>

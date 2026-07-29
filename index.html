@@ -2,68 +2,61 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PadelSync - Court Scheduling Platform</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PadelSync - Court Scheduling Platform</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-  <nav class="navbar">
-    <div class="container d-flex justify-between align-center">
-      <a href="index.html" class="navbar-brand">PadelSync<span class="ball"></span></a>
-      <div class="nav-links">
-        <a href="login.html" data-i18n="nav.login">Login</a>
-        <a href="register.html" class="btn btn-outline" data-i18n="nav.register">Register</a>
-      </div>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-bg" style="background-image: url('assets/hero-bg.png');"></div>
-    <div class="hero-content">
-      <h1 data-i18n="hero.title">The Glass Court</h1>
-      <p data-i18n="hero.subtitle">Reserve your padel court. Pre-order your gear. Walk in and smash it.</p>
-      <div id="cta-container"></div>
-    </div>
-  </section>
-
-  <section class="container mt-3">
-    <div class="grid grid-3">
-      <div class="card text-center">
-        <img src="assets/icons/calendar.svg" alt="Schedule" style="width:36px;opacity:0.5;margin-bottom:10px;">
-        <h3 data-i18n="hero.feature1Title">90-Min Blocks</h3>
-        <p class="mt-1" style="color: #aaaaaa;" data-i18n="hero.feature1Desc">Fixed time slots. No overflows, no
-          surprises. You get the court for a full match window.</p>
-      </div>
-      <div class="card text-center">
-        <img src="assets/icons/racquet.svg" alt="Gear" style="width:36px;opacity:0.5;margin-bottom:10px;">
-        <h3 data-i18n="hero.feature2Title">Gear Ready</h3>
-        <p class="mt-1" style="color: #aaaaaa;" data-i18n="hero.feature2Desc">Order racquets and balls with your
-          booking. Equipment prepped before you step on court.</p>
-      </div>
-      <div class="card text-center">
-        <img src="assets/icons/ball.svg" alt="No conflicts" style="width:36px;opacity:0.5;margin-bottom:10px;">
-        <h3 data-i18n="hero.feature3Title">No Double Bookings</h3>
-        <p class="mt-1" style="color: #aaaaaa;" data-i18n="hero.feature3Desc">The schedule checks each court and time
-          block before saving a booking.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <p>&copy; 2026 PadelSync<span class="ball"
-          style="width:6px;height:6px;margin:0 2px;vertical-align:middle;display:inline-block;background-color:#DFFF00;border-radius:50%;"></span>
-        <span data-i18n="footer.rights">All rights reserved.</span>
-      </p>
-    </div>
-  </footer>
-
-  <script src="js/db.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/home.js"></script>
+    <nav class="navbar">
+        <div class="container d-flex justify-between align-center"> <a href="index.html"
+                class="navbar-brand">PadelSync<span class="ball"></span></a>
+            <div class="nav-links"> <a href="login.html" data-i18n="nav.login">Login</a> <a href="register.html"
+                    class="btn btn-outline" data-i18n="nav.register">Register</a> </div>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="hero-bg" style="background-image: url('assets/hero-bg.png');"></div>
+        <div class="hero-content">
+            <h1 data-i18n="hero.title">The Glass Court</h1>
+            <p data-i18n="hero.subtitle">Reserve your padel court. Pre-order your gear. Walk in and smash it.</p>
+            <div id="cta-container"></div>
+        </div>
+    </section>
+    <section class="container mt-3">
+        <div class="grid grid-3">
+            <div class="card text-center"> <img src="assets/icons/calendar.svg" alt="Schedule"
+                    style="width:36px;opacity:0.5;margin-bottom:10px;">
+                <h3 data-i18n="hero.feature1Title">90-Min Blocks</h3>
+                <p class="mt-1" style="color: #aaaaaa;" data-i18n="hero.feature1Desc">Fixed time slots. No overflows, no
+                    surprises. You get the court for a full match window.</p>
+            </div>
+            <div class="card text-center"> <img src="assets/icons/racquet.svg" alt="Gear"
+                    style="width:36px;opacity:0.5;margin-bottom:10px;">
+                <h3 data-i18n="hero.feature2Title">Gear Ready</h3>
+                <p class="mt-1" style="color: #aaaaaa;" data-i18n="hero.feature2Desc">Order racquets and balls with your
+                    booking. Equipment prepped before you step on court.</p>
+            </div>
+            <div class="card text-center"> <img src="assets/icons/ball.svg" alt="No conflicts"
+                    style="width:36px;opacity:0.5;margin-bottom:10px;">
+                <h3 data-i18n="hero.feature3Title">No Double Bookings</h3>
+                <p class="mt-1" style="color: #aaaaaa;" data-i18n="hero.feature3Desc">The schedule checks each court and
+                    time block before saving a booking.</p>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 PadelSync<span class="ball"
+                    style="width:6px;height:6px;margin:0 2px;vertical-align:middle;display:inline-block;background-color:#DFFF00;border-radius:50%;"></span>
+                <span data-i18n="footer.rights">All rights reserved.</span> </p>
+        </div>
+    </footer>
+    <script src="js/db.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/home.js"></script>
 </body>
 
 </html>
