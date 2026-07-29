@@ -96,7 +96,7 @@ var validationRules = {
   ]
 };
 
-// Make these functions available globally
+
 window.validateField = validateField;
 window.validateForm = validateForm;
 window.validationRules = validationRules;

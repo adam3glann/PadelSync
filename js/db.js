@@ -564,6 +564,36 @@ function dbUpdateUser(id, data, actingUserId) {
   return { ok: false, message: 'User not found' };
 }
 
+// Update the signed-in member's own details. Password changes require the current password.
+function dbUpdateProfile(id, data) {
+  var db = getDB();
+  var user = null;
+  for (var i = 0; i < db.users.length; i++) {
+    if (db.users[i]._id === id) user = db.users[i];
+  }
+  if (!user) return { ok: false, message: 'User not found' };
+
+  var name = (data.name || '').trim();
+  var email = (data.email || '').trim().toLowerCase();
+  if (name.length < 2) return { ok: false, message: 'Name must be at least 2 characters' };
+  if (!/^\S+@\S+\.\S+$/.test(email)) return { ok: false, message: 'Enter a valid email address' };
+
+  for (var j = 0; j < db.users.length; j++) {
+    if (db.users[j]._id !== id && db.users[j].email === email) return { ok: false, message: 'Another user already has this email' };
+  }
+
+  if (data.newPassword) {
+    if (user.password !== data.currentPassword) return { ok: false, message: 'Your current password is incorrect' };
+    if (data.newPassword.length < 6) return { ok: false, message: 'New password must be at least 6 characters' };
+    user.password = data.newPassword;
+  }
+
+  user.name = name;
+  user.email = email;
+  saveDB(db);
+  return { ok: true, user: { id: user._id, name: user.name, email: user.email, role: user.role } };
+}
+
 // Delete a user account. Any courts they currently have booked are freed up.
 function dbDeleteUser(id, actingUserId) {
   if (id === actingUserId) return { ok: false, message: 'You cannot delete your own account' };
@@ -667,6 +697,7 @@ window.db = {
   getUser: dbGetUser,
   getUsers: dbGetUsers,
   updateUser: dbUpdateUser,
+  updateProfile: dbUpdateProfile,
   deleteUser: dbDeleteUser,
   getCourts: dbGetCourts,
   getAllActiveCourts: dbGetAllActiveCourts,
