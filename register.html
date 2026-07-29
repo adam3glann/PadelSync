@@ -33,13 +33,15 @@
             <div class="form-group">
               <label for="password" data-i18n="auth.password">Password</label>
               <input type="password" id="password" required minlength="6" placeholder="Min 6 characters">
-              <label class="password-toggle"><input type="checkbox" id="show-register-password"> Show password</label>
+              <label class="password-toggle"><input type="checkbox" id="show-register-password"> <span
+                  data-i18n="auth.showPassword">Show password</span></label>
             </div>
 
             <div class="form-group">
               <label for="confirmPassword" data-i18n="auth.confirmPassword">Confirm Password</label>
               <input type="password" id="confirmPassword" required placeholder="Repeat your password">
-              <label class="password-toggle"><input type="checkbox" id="show-confirm-password"> Show password</label>
+              <label class="password-toggle"><input type="checkbox" id="show-confirm-password"> <span
+                  data-i18n="auth.showPassword">Show password</span></label>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="regBtn"

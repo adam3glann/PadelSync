@@ -67,9 +67,41 @@ var TEXT = {
   'modal.cancelMemberBooking': 'Cancel Member Booking', 'modal.cancelMemberMsg': 'Are you sure you want to cancel this booking? The slot will become available again.',
   'pag.prev': 'Previous', 'pag.next': 'Next', 'pag.showing': 'Showing {from}-{to} of {total}'
 };
+var AR = {
+  'nav.dashboard': 'لوحة التحكم', 'nav.courts': 'الملاعب', 'nav.bookings': 'الحجوزات', 'nav.bookCourt': 'احجز ملعباً', 'nav.reservations': 'حجوزاتي', 'nav.logout': 'تسجيل الخروج', 'nav.login': 'تسجيل الدخول', 'nav.register': 'إنشاء حساب', 'nav.admin': 'المدير', 'nav.users': 'المستخدمون',
+  'hero.title': 'الملعب الزجاجي', 'hero.subtitle': 'احجز ملعب البادل، واطلب معداتك مسبقاً، ثم ادخل والعب بقوة.', 'hero.getStarted': 'ابدأ الآن', 'hero.login': 'تسجيل الدخول', 'hero.goDashboard': 'الذهاب للوحة التحكم', 'hero.feature1Title': 'فترات 90 دقيقة', 'hero.feature1Desc': 'مواعيد ثابتة بلا تجاوزات أو مفاجآت. الملعب لك لمباراة كاملة.', 'hero.feature2Title': 'المعدات جاهزة', 'hero.feature2Desc': 'اطلب المضارب والكرات مع حجزك لتكون جاهزة قبل دخولك الملعب.', 'hero.feature3Title': 'لا حجوزات متداخلة', 'hero.feature3Desc': 'يتحقق الجدول من كل ملعب وفترة زمنية قبل حفظ الحجز.', 'footer.rights': 'جميع الحقوق محفوظة.',
+  'auth.welcomeBack': 'مرحباً بعودتك', 'auth.signInSubtitle': 'سجّل الدخول إلى حسابك في PadelSync.', 'auth.email': 'البريد الإلكتروني', 'auth.password': 'كلمة المرور', 'auth.signIn': 'تسجيل الدخول', 'auth.signingIn': 'جارٍ تسجيل الدخول...', 'auth.noAccount': 'ليس لديك حساب؟', 'auth.joinTitle': 'انضم إلى PadelSync', 'auth.registerSubtitle': 'أنشئ حسابك وابدأ الحجز.', 'auth.fullName': 'الاسم الكامل', 'auth.confirmPassword': 'تأكيد كلمة المرور', 'auth.createAccount': 'إنشاء حساب', 'auth.creatingAccount': 'جارٍ إنشاء الحساب...', 'auth.hasAccount': 'لديك حساب بالفعل؟', 'auth.signInLink': 'تسجيل الدخول', 'auth.forgotPassword': 'نسيت كلمة المرور؟', 'auth.resetPasswordTitle': 'إعادة تعيين كلمة المرور', 'auth.resetPasswordSubtitle': 'أدخل بريدك الإلكتروني لتعيين كلمة مرور جديدة.', 'auth.newPassword': 'كلمة المرور الجديدة', 'auth.resetAction': 'إعادة التعيين', 'auth.backToLogin': 'العودة لتسجيل الدخول',
+  'dash.welcomeBack': 'مرحباً بعودتك', 'dash.smashIt': 'العب الآن', 'dash.upcoming': 'القادم', 'dash.activeCourts': 'الملاعب المتاحة', 'dash.nextReservations': 'الحجوزات القادمة', 'dash.noUpcoming': 'لا توجد حجوزات قادمة.', 'dash.bookACourt': 'احجز ملعباً',
+  'admin.title': 'لوحة تحكم المدير', 'admin.todaysBookings': 'حجوزات اليوم', 'admin.members': 'الأعضاء', 'admin.manageCourts': 'إدارة الملاعب', 'admin.viewBookings': 'عرض الحجوزات',
+  'courts.addNew': 'إضافة ملعب جديد', 'courts.name': 'اسم الملعب', 'courts.description': 'الوصف', 'courts.photo': 'صورة الملعب', 'courts.addCourt': 'إضافة الملعب', 'courts.title': 'الملاعب', 'courts.active': 'متاح', 'courts.outOfService': 'خارج الخدمة', 'courts.noDescription': 'لا يوجد وصف', 'courts.setActive': 'تعيين كمتاح', 'courts.delete': 'حذف', 'courts.noImage': 'لا توجد صورة', 'courts.noCourts': 'لا توجد ملاعب بعد.',
+  'bookings.scheduleTitle': 'الجدول وطلبات المعدات', 'bookings.date': 'التاريخ:', 'bookings.court': 'الملعب', 'bookings.dateHeader': 'التاريخ', 'bookings.timeBlock': 'الفترة الزمنية', 'bookings.player': 'اللاعب', 'bookings.email': 'البريد الإلكتروني', 'bookings.equipmentOrder': 'طلب المعدات', 'bookings.actions': 'الإجراءات', 'bookings.cancel': 'إلغاء', 'bookings.noBookings': 'لا توجد حجوزات لهذا التاريخ.', 'bookings.unknown': 'غير معروف', 'bookings.none': 'لا شيء',
+  'users.title': 'المستخدمون', 'users.name': 'الاسم', 'users.email': 'البريد الإلكتروني', 'users.password': 'كلمة المرور', 'users.role': 'الدور', 'users.joined': 'تاريخ الانضمام', 'users.activeBookings': 'الحجوزات النشطة', 'users.noUsers': 'لا يوجد مستخدمون.', 'users.member': 'عضو', 'users.show': 'إظهار', 'users.hide': 'إخفاء', 'users.you': 'أنت', 'users.changePassword': 'تغيير كلمة المرور', 'users.newPasswordFor': 'كلمة المرور الجديدة لـ {name}', 'users.passwordChanged': 'تم تحديث كلمة المرور', 'users.makeAdmin': 'تعيين كمدير', 'users.makeMember': 'تعيين كعضو', 'users.changeRole': 'تغيير الدور', 'users.confirmMakeAdmin': 'هل تريد منح هذا المستخدم صلاحية المدير؟', 'users.confirmMakeMember': 'هل تريد إزالة صلاحية المدير من هذا المستخدم؟', 'users.roleChanged': 'تم تحديث الدور', 'users.delete': 'حذف', 'users.deleteAccount': 'حذف الحساب', 'users.deleteAccountMsg': 'هل تريد حذف حساب <strong>{name}</strong>؟ سيتم إتاحة كل الملاعب التي حجزها. لا يمكن التراجع عن ذلك.', 'users.accountDeleted': 'تم حذف الحساب',
+  'book.pickDate': 'اختر تاريخاً', 'book.today': 'اليوم', 'book.tomorrow': 'غداً', 'book.plus3Days': '+3 أيام', 'book.matchDay': 'يوم المباراة:', 'book.timeBlocks': 'فترات بادل لمدة 90 دقيقة', 'book.smashIt': 'العب الآن', 'book.yourBooking': 'حجزك', 'book.courtInUse': 'الملعب مشغول', 'book.outOfService': 'خارج الخدمة', 'book.free': 'متاح', 'book.confirmBooking': 'تأكيد الحجز', 'book.bookAt': 'حجز {court} الساعة {time} بتاريخ {date}؟', 'book.equipment': 'معدات التأجير', 'book.equipNone': 'لا شيء (سأحضر معداتي)', 'book.equip1': 'مضربان وعلبة كرات واحدة', 'book.equip2': '4 مضارب وعلبة كرات واحدة', 'book.equip3': 'مضربان وعلبتا كرات', 'book.equip4': '4 مضارب وعلبتا كرات', 'book.noSlots': 'لا توجد مواعيد لهذا التاريخ.', 'book.available': 'متاح', 'book.booked': 'محجوز', 'book.total': 'الإجمالي',
+  'res.title': 'حجوزاتي', 'res.noReservations': 'لا توجد حجوزات بعد', 'res.noReservationsDesc': 'لم تحجز أي ملعب بعد.', 'res.bookFirst': 'احجز ملعبك الأول', 'res.bookedAt': 'تم الحجز:', 'res.gear': 'المعدات:',
+  'val.nameRequired': 'الاسم مطلوب', 'val.nameMin': 'يجب أن يتكون الاسم من حرفين على الأقل', 'val.namePattern': 'يجب أن يحتوي الاسم على حروف فقط', 'val.emailRequired': 'البريد الإلكتروني مطلوب', 'val.emailInvalid': 'أدخل بريداً إلكترونياً صحيحاً', 'val.passwordRequired': 'كلمة المرور مطلوبة', 'val.passwordMin': 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل', 'val.passwordNumber': 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل', 'val.confirmRequired': 'يرجى تأكيد كلمة المرور', 'val.courtNameRequired': 'اسم الملعب مطلوب', 'val.courtNameMin': 'يجب أن يتكون الاسم من حرفين على الأقل', 'val.courtNameMax': 'يجب ألا يزيد الاسم على 30 حرفاً', 'val.courtNamePattern': 'استخدم الحروف والأرقام والمسافات والشرطات فقط', 'val.userNotFound': 'المستخدم غير موجود', 'val.samePassword': 'لا يمكنك استخدام كلمة المرور السابقة',
+  'toast.signedIn': 'تم تسجيل الدخول بنجاح', 'toast.accountCreated': 'تم إنشاء الحساب!', 'toast.courtAdded': 'تمت إضافة الملعب', 'toast.courtDeleted': 'تم حذف الملعب', 'toast.passwordReset': 'تمت إعادة تعيين كلمة المرور بنجاح',
+  'modal.deleteCourt': 'حذف الملعب', 'modal.deleteCourtMsg': 'هل تريد حذف <strong>{name}</strong> وكل فتراته الزمنية؟', 'modal.cancelBooking': 'إلغاء الحجز', 'modal.cancelBookingMsg': 'هل أنت متأكد من رغبتك في إلغاء هذا الحجز؟', 'modal.cancelMemberBooking': 'إلغاء حجز العضو', 'modal.cancelMemberMsg': 'هل أنت متأكد من رغبتك في إلغاء هذا الحجز؟ سيتاح الموعد مجدداً.', 'pag.prev': 'السابق', 'pag.next': 'التالي', 'pag.showing': 'عرض {from}-{to} من {total}'
+};
+
+Object.assign(AR, {
+  'auth.showPassword': 'إظهار كلمة المرور',
+  'booking.policyTitle': 'سياسة الحجز والإلغاء',
+  'booking.policyText': 'ادفع 50٪ عبر الإنترنت لحجز ملعبك، وادفع الـ50٪ المتبقية نقداً في الملعب. الإلغاء خلال ساعتين يتيح استرداد كامل العربون، وخلال 3 ساعات يتيح استرداد 25٪، وبعد 3 ساعات لا يُسترد العربون.',
+  'dash.ready': 'هل أنت مستعد لمباراتك القادمة؟ لننزل إلى الملعب.',
+  'admin.deposits': 'الدفعات المقدمة عبر الإنترنت',
+  'admin.cashDue': 'المبلغ النقدي المستحق في الملعب',
+  'admin.cancelledSchedules': 'الجداول الملغاة',
+  'admin.expectedRevenue': 'الإيرادات المتوقعة من الحجوزات النشطة',
+  'admin.refundsIssued': 'المبالغ المستردة',
+  'admin.viewCancellations': 'عرض الإلغاءات'
+});
+
+function getLang() {
+  return localStorage.getItem('padelsync_lang') === 'ar' ? 'ar' : 'en';
+}
 
 function t(key, params) {
-  var text = TEXT[key] || key;
+  var text = (getLang() === 'ar' ? AR[key] : TEXT[key]) || TEXT[key] || key;
   if (params) {
     for (var name in params) {
       if (Object.prototype.hasOwnProperty.call(params, name)) {
@@ -82,9 +114,44 @@ function t(key, params) {
 
 
 
+function translateElement(element, value) {
+  if (element.children.length) {
+    for (var i = 0; i < element.childNodes.length; i++) {
+      if (element.childNodes[i].nodeType === Node.TEXT_NODE && element.childNodes[i].nodeValue.trim()) {
+        element.childNodes[i].nodeValue = value + ' ';
+        return;
+      }
+    }
+  }
+  element.textContent = value;
+}
+
+function translatePage() {
+  document.documentElement.lang = getLang();
+  document.documentElement.dir = getLang() === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(function (element) {
+    translateElement(element, t(element.getAttribute('data-i18n')));
+  });
+}
+
+function addLanguageButton() {
+  var nav = document.querySelector('.nav-links');
+  if (!nav || nav.querySelector('.language-toggle')) return;
+  var button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'language-toggle';
+  button.setAttribute('aria-label', getLang() === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
+  button.textContent = getLang() === 'ar' ? 'English' : 'العربية';
+  button.addEventListener('click', function () {
+    localStorage.setItem('padelsync_lang', getLang() === 'ar' ? 'en' : 'ar');
+    window.location.reload();
+  });
+  nav.insertAdjacentElement('afterbegin', button);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-  document.documentElement.lang = 'en';
-  document.documentElement.dir = 'ltr';
+  translatePage();
+  addLanguageButton();
 });
 
-window.i18n = { t: t, getLang: function () { return 'en'; },  };
+window.i18n = { t: t, getLang: getLang, translatePage: translatePage, addLanguageButton: addLanguageButton };
