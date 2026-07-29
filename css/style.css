@@ -186,6 +186,44 @@ a:hover {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid #4a515c;
+  border-radius: 20px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.language-toggle:hover {
+  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+html[dir="rtl"] body {
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6,
+html[dir="rtl"] .btn {
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] .navbar-brand .ball {
+  margin-left: 0;
+  margin-right: 2px;
+}
+
 main {
   padding-top: 100px;
   padding-bottom: 50px;
@@ -1206,7 +1244,8 @@ html[data-theme="light"] .policy-box strong {
   position: relative;
 }
 
-.ticket-stub::before, .ticket-stub::after {
+.ticket-stub::before,
+.ticket-stub::after {
   content: '';
   position: absolute;
   left: -11px;
@@ -1252,6 +1291,6 @@ html[data-theme="light"] .policy-box strong {
   color: var(--text-muted);
 }
 
-.grid-2 > * {
+.grid-2>* {
   width: 50%;
 }

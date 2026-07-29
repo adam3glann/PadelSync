@@ -30,4 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
       themeButton.querySelector('.theme-label').textContent = isLight ? 'Dark' : 'Light';
     }
   }
+  if (window.i18n) {
+    window.i18n.translatePage();
+    window.i18n.addLanguageButton();
+  }
 });
+
+
