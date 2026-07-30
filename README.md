@@ -1,6 +1,4 @@
-# 🎾 PadelSync
 
-::: {align="center"}
 # 🎾 PadelSync
 
 **A Full-Stack Padel Court Reservation & Management Platform**
