@@ -8,13 +8,21 @@
 Built for **SWE230 -- Web Application Development**\
 **Faculty of Computer Science -- Misr International University (MIU)**
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
-:::
+## 🛠️ Technologies Used
+
+### Frontend
+- HTML5
+- CSS3
+- JavaScript (ES6)
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- bcryptjs
+- dotenv
 
 ------------------------------------------------------------------------
 
@@ -146,44 +154,43 @@ PadelSync/
 
 ## Home
 
-![](PadelSync/PadelSync/frontend/screenshots/home.png)
+![](frontend/screenshots/home.png)
 
 ## Login
 
-![](PadelSync/PadelSync/frontend/screenshots/login.png)
+![](frontend/screenshots/login.png)
 
 ## Register
 
-![](PadelSync/PadelSync/frontend/screenshots/register.png)
+![](frontend/screenshots/register.png)
 
 ## Member Dashboard
 
-![](PadelSync/PadelSync/frontend/screenshots/member-dashboard.png)
+![](frontend/screenshots/member-dashboard.png)
 
 ## Reservations
 
-![](PadelSync/PadelSync/frontend/screenshots/reservations.png)
+![](frontend/screenshots/reservations.png)
 
 ## Book Court
 
-![](PadelSync/PadelSync/frontend/screenshots/book-court.png)
+![](frontend/screenshots/book-court.png)
 
 ## Admin Dashboard
 
-![](PadelSync/PadelSync/frontend/screenshots/admin-dashboard.png)
+![](frontend/screenshots/admin-dashboard.png)
 
 ## Manage Users
 
-![](PadelSync/PadelSync/frontend/screenshots/manage-users.png)
+![](frontend/screenshots/manage-users.png)
 
 ## Manage Bookings
 
-![](PadelSync/PadelSync/frontend/screenshots/manage-bookings.png)
+![](frontend/screenshots/manage-bookings.png)
 
 ## Manage Courts
 
-![](PadelSync/PadelSync/frontend/screenshots/manage-courts.png)
-
+![](frontend/screenshots/manage-courts.png)
 ------------------------------------------------------------------------
 
 # 🔐 Backend
@@ -270,14 +277,14 @@ or use Live Server.
 
 ------------------------------------------------------------------------
 
-# 👥 Team
+# 👥 Team Members
 
-  Name            Contribution
-  --------------- --------------------
-  Adam Adel       Frontend & Backend
-  Omar Yassien    Frontend & Backend
-  Mafdy Nader     Frontend & Backend
-  Sayed Said      Frontend & Backend
+| Team Member | Responsibility |
+|--------------|----------------|
+| **Adam Adel** | Full-Stack Development (Frontend & Backend) |
+| **Omar Yassien** |  Full-Stack Development (Frontend & Backend) |
+| **Mafdy Nader** |  Full-Stack Development (Frontend & Backend) |
+| **Sayed Said** |  Full-Stack Development (Frontend & Backend)|
 
 ------------------------------------------------------------------------
 
