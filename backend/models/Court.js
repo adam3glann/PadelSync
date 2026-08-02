@@ -8,16 +8,13 @@ const courtSchema = new mongoose.Schema(
             trim: true
         },
 
-        location: {
-            type: String,
-            required: true,
-            trim: true
-        },
+        location: { type: String, default: "Heliopolis, Cairo, Egypt", trim: true },
 
         pricePerHour: {
             type: Number,
-            required: true,
-            min: 0
+            default: 300,
+            min: 0,
+            max: 100000
         },
 
         description: {
@@ -30,10 +27,7 @@ const courtSchema = new mongoose.Schema(
             default: ""
         },
 
-        isAvailable: {
-            type: Boolean,
-            default: true
-        }
+        status: { type: String, enum: ["active", "maintenance"], default: "active" }
     },
     {
         timestamps: true
