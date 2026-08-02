@@ -6,24 +6,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var name = document.getElementById('name');
     var email = document.getElementById('email');
-    name.value = user.name;
+    name.value = user.fullName;
     email.value = user.email;
 
-    function save(data, success) {
-        var result = db.updateProfile(user.id, data);
-        if (!result.ok) {
-            auth.showToast(result.message, 'error');
-            return false;
-        }
-        localStorage.setItem('user', JSON.stringify(result.user));
-        user = result.user;
-        auth.showToast(success);
-        return true;
+    // Persist the updated user object returned by the API and refresh the form
+    function applyUpdatedUser(updatedUser) {
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        user = updatedUser;
+        name.value = user.fullName;
+        email.value = user.email;
     }
 
     document.getElementById('profile-form').addEventListener('submit', function (event) {
         event.preventDefault();
-        save({ name: name.value, email: email.value }, 'Profile saved');
+        api.put('/users/profile', { fullName: name.value, email: email.value })
+            .then(function (result) {
+                applyUpdatedUser(result.user);
+                auth.showToast('Profile saved');
+            })
+            .catch(function (err) {
+                auth.showToast(err.message, 'error');
+            });
     });
 
     document.getElementById('password-form').addEventListener('submit', function (event) {
@@ -32,7 +35,16 @@ document.addEventListener('DOMContentLoaded', function () {
         var next = document.getElementById('new-password').value;
         var confirm = document.getElementById('confirm-password').value;
         if (next !== confirm) return auth.showToast('New passwords do not match', 'error');
-        if (save({ name: name.value, email: email.value, currentPassword: current, newPassword: next }, 'Password updated')) event.target.reset();
+
+        api.put('/users/profile', { currentPassword: current, newPassword: next })
+            .then(function (result) {
+                applyUpdatedUser(result.user);
+                auth.showToast('Password updated');
+                event.target.reset();
+            })
+            .catch(function (err) {
+                auth.showToast(err.message, 'error');
+            });
     });
 
     document.getElementById('theme-button').addEventListener('click', auth.toggleTheme);
