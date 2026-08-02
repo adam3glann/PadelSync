@@ -1,15 +1,15 @@
 // Book a slot: show equipment and the required 50% reservation deposit.
-function bookSlot(slotId, courtName, timeBlock, date) {
+function bookSlot(slotId, courtName, timeBlock, date, pricePerHour) {
   var tFn = window.i18n ? window.i18n.t.bind(window.i18n) : function (k) { return k; };
-  var total = db.courtPrice;
-  var deposit = total / 2;
+  var total = Math.round((pricePerHour || 0) * 1.5 * 100) / 100;
+  var deposit = Math.round(total / 2 * 100) / 100;
 
   // Build modal content with equipment dropdown
   var modalHTML =
-    '<p style="color:var(--court-white);">' + tFn('book.bookAt', { court: courtName, time: timeBlock, date: date }) + '</p>' +
+    '<p style="color:var(--court-white);">' + tFn('book.bookAt', { court: escapeHtml(courtName), time: escapeHtml(timeBlock), date: escapeHtml(date) }) + '</p>' +
     '<div class="form-group mt-2">' +
     '<label>' + tFn('book.equipment') + '</label>' +
-    '<select id="equipment-select" class="form-group" style="margin-bottom: 0;">' +
+    '<select id="equipment-select" style="margin-bottom: 0;">' +
     '<option value="None">' + tFn('book.equipNone') + '</option>' +
     '<option value="2 Racquets & 1 Can of Balls">' + tFn('book.equip1') + '</option>' +
     '<option value="4 Racquets & 1 Can of Balls">' + tFn('book.equip2') + '</option>' +
@@ -33,10 +33,10 @@ function bookSlot(slotId, courtName, timeBlock, date) {
     '</div>' +
     '<div class="policy-box">' +
     '<strong>Cancellation refund policy</strong>' +
-    '<p>Within 2 hours: 100% of the deposit refunded. Within 3 hours: 25% refunded. After 3 hours: no refund.</p>' +
+    '<p>Cancel more than 2 hours before your match starts for a full deposit refund. Within 2 hours: 25% refunded. Once the match starts the deposit is not refunded.</p>' +
     '</div>';
 
-  auth.showModal(tFn('book.confirmBooking'), modalHTML, function () {
+  auth.showModal(tFn('book.confirmBooking'), modalHTML, async function () {
     var cardName = document.getElementById('card-name').value.trim();
     var cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
     if (cardName.length < 2 || !/^\d{16}$/.test(cardNumber)) {
@@ -45,7 +45,7 @@ function bookSlot(slotId, courtName, timeBlock, date) {
     }
 
     var equipment = document.getElementById('equipment-select').value;
-    var result = db.bookSlot(slotId, auth.getUser().id, equipment, { depositAmount: deposit });
+    var result = await db.bookSlot(slotId, equipment);
     if (!result.ok) { auth.showToast(result.message, 'error'); return false; }
     auth.showToast('Deposit of EGP ' + deposit + ' paid. The remaining EGP ' + deposit + ' is due in cash at the court.');
     fetchSlots(date);
@@ -55,9 +55,8 @@ function bookSlot(slotId, courtName, timeBlock, date) {
 // Cancel a booked slot with confirmation
 function cancelSlot(slotId) {
   var tFn = window.i18n ? window.i18n.t.bind(window.i18n) : function (k) { return k; };
-  auth.showModal(tFn('modal.cancelBooking'), tFn('modal.cancelBookingMsg'), function () {
-    var user = auth.getUser();
-    var result = db.cancelSlot(slotId, user.id, user.role);
+  auth.showModal(tFn('modal.cancelBooking'), tFn('modal.cancelBookingMsg'), async function () {
+    var result = await db.cancelSlot(slotId);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }
     auth.showToast(result.message);
     // Re-fetch slots for the currently selected date
@@ -70,6 +69,9 @@ function cancelSlot(slotId) {
 // Calendar and availability bar references
 var calendar;
 var availBar;
+
+// Guards against out-of-order slot responses when dates change quickly.
+var slotRequestSeq = 0;
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function () {
@@ -89,7 +91,22 @@ document.addEventListener('DOMContentLoaded', function () {
   // Show today's date and slots on load
   updateDateDisplay(today);
   fetchSlots(today);
+  loadWeather();
 });
+
+async function loadWeather() {
+  var widget = document.getElementById('weather-widget');
+  if (!widget) return;
+  try {
+    var weather = await db.getWeather();
+    var forecast = weather.forecast.map(function (day) {
+      return '<span style="margin-right:14px;">' + escapeHtml(day.date.slice(5)) + ': ' + day.temperature + '°C, ' + escapeHtml(day.description) + '</span>';
+    }).join('');
+    widget.innerHTML = '<h3 style="margin-bottom:6px;">Weather at ' + escapeHtml(weather.location) + '</h3><p style="color:var(--text-muted);">Now: ' + weather.current.temperature + '°C, ' + escapeHtml(weather.current.description) + '</p><p style="color:var(--text-muted);font-size:.9rem;">' + forecast + '</p>';
+  } catch (error) {
+    widget.innerHTML = '<p style="color:var(--text-muted);">Weather is temporarily unavailable. You can still reserve a court.</p>';
+  }
+}
 
 // Update the date display text above the slot grid
 function updateDateDisplay(dateStr) {
@@ -141,11 +158,13 @@ function formatDate(d) {
 }
 
 // Fetch slots for a date and display them
-function fetchSlots(date) {
+async function fetchSlots(date) {
+  var seq = ++slotRequestSeq;
   var container = document.getElementById('grid-container');
   container.innerHTML = '<div class="spinner"></div>';
   try {
-    var slots = db.getSlots(date);
+    var slots = await db.getSlots(date);
+    if (seq !== slotRequestSeq) return; // a newer request has superseded this one
     // Update availability bar
     availBar.total = slots.length;
     availBar.booked = 0;
@@ -155,6 +174,7 @@ function fetchSlots(date) {
     availBar.render();
     renderGrid(slots, date);
   } catch (err) {
+    if (seq !== slotRequestSeq) return;
     container.innerHTML = '<p class="text-center" style="color: var(--danger);">Failed to load slots.</p>';
   }
 }
@@ -175,19 +195,11 @@ function renderGrid(slots, date) {
         description: slot.courtId.description,
         status: slot.courtId.status,
         image: slot.courtId.image,
+        pricePerHour: slot.courtId.pricePerHour,
         slots: []
       };
     }
     courtsMap[courtId].slots.push(slot);
-  }
-
-  // Also include courts that have no slots yet (active courts with no slots for this date)
-  var activeCourts = db.getAllActiveCourts();
-  for (var j = 0; j < activeCourts.length; j++) {
-    var ac = activeCourts[j];
-    if (!courtsMap[ac._id]) {
-      courtsMap[ac._id] = { name: ac.name, description: ac.description, status: ac.status, image: ac.image, slots: [] };
-    }
   }
 
   var courtIds = Object.keys(courtsMap);
@@ -207,8 +219,12 @@ function renderGrid(slots, date) {
     var courtId = courtIds[k];
     var court = courtsMap[courtId];
     var isDown = court.status === 'maintenance';
-    var courtImg = court.image || courtPlaceholders[k % courtPlaceholders.length];
+    var courtImg = court.image
+      ? db.imageUrl(court.image)
+      : courtPlaceholders[k % courtPlaceholders.length];
     var borderColor = borderColors[k % borderColors.length];
+    var courtNameHtml = escapeHtml(court.name || '');
+    var courtNameSafe = (court.name || '').replace(/'/g, "\\'");
 
     // Count available slots for this court
     var courtAvail = 0;
@@ -220,8 +236,8 @@ function renderGrid(slots, date) {
     // Court card header
     html += '<div class="court-card"' + (isDown ? ' style="opacity: 0.6;"' : '') + '>';
     html += '<div class="court-card-header">';
-    html += '<img src="' + courtImg + '" alt="' + court.name + '" style="width:100%;height:160px;object-fit:cover;">';
-    html += '<div class="court-card-overlay"><h3 style="font-size:1.2rem;color:#fff;">' + court.name + '</h3>';
+    html += '<img src="' + courtImg + '" alt="' + courtNameHtml + '" style="width:100%;height:160px;object-fit:cover;">';
+    html += '<div class="court-card-overlay"><h3 style="font-size:1.2rem;color:#fff;">' + courtNameHtml + '</h3>';
 
     // Badge showing court availability
     if (isDown) {
@@ -233,7 +249,7 @@ function renderGrid(slots, date) {
     }
 
     html += '</div></div>';
-    html += '<p style="color: var(--text-muted); font-size: 0.85rem; padding: 0.75rem 1.25rem 0;">' + (court.description || '') + '</p>';
+    html += '<p style="color: var(--text-muted); font-size: 0.85rem; padding: 0.75rem 1.25rem 0;">' + escapeHtml(court.description || '') + '</p>';
     html += '<div class="slot-grid" style="padding: 0 1.25rem 1.25rem;">';
 
     // Slot buttons
@@ -254,8 +270,7 @@ function renderGrid(slots, date) {
           stateClass = 'available';
           stateText = '<span style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:2px;">' + s.timeBlock + '</span>' +
             '<span style="color:var(--optic-yellow);font-weight:800;">' + (window.i18n ? window.i18n.t('book.smashIt') : 'SMASH IT') + '</span>';
-          var courtNameSafe = court.name.replace(/'/g, "\\'");
-          clickHandler = 'onclick="bookSlot(\'' + s._id + '\', \'' + courtNameSafe + '\', \'' + s.timeBlock + '\', \'' + date + '\')"';
+          clickHandler = 'onclick="bookSlot(\'' + s._id + '\', \'' + courtNameSafe + '\', \'' + s.timeBlock + '\', \'' + date + '\', ' + (court.pricePerHour || 0) + ')"';
         } else if (s.bookedBy && s.bookedBy._id === user.id) {
           // This is the current user's own booking
           stateClass = 'booked-self';
