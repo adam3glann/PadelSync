@@ -18,7 +18,8 @@ const removeImage = async (filename) => {
 // Create Court (Admin)
 export const createCourt = async (req, res, next) => {
     try {
-<<<<<<< HEAD
+
+
         const name = String(req.body.name || "").trim();
         const pricePerHour = Number(req.body.pricePerHour || req.body.price || 300);
 
@@ -27,27 +28,14 @@ export const createCourt = async (req, res, next) => {
         }
         if (!Number.isFinite(pricePerHour) || pricePerHour < 0) {
             return res.status(400).json({ message: "Invalid price." });
-=======
-        const { name, location, pricePerHour, description } = req.body;
-
-        if (!name) {
-            return res.status(400).json({
-                message: "Please fill in all required fields."
-            });
->>>>>>> 906d52d (Implement authentication and authorization)
         }
 
         const court = await Court.create({
             name,
             location: req.body.location,
             pricePerHour,
-<<<<<<< HEAD
             description: req.body.description,
             image: req.file ? req.file.filename : ""
-=======
-            description,
-            image: req.file ? `/uploads/${req.file.filename}` : ""
->>>>>>> 906d52d (Implement authentication and authorization)
         });
 
         res.status(201).json({ message: "Court created successfully.", court });
@@ -59,47 +47,9 @@ export const getCourts = async (req, res, next) => {
     try {
         const page = Math.max(Number(req.query.page) || 1, 1);
         const limit = Math.min(Math.max(Number(req.query.limit) || 10, 1), 50);
-<<<<<<< HEAD
         const [total, data] = await Promise.all([Court.countDocuments(), Court.find().skip((page - 1) * limit).limit(limit)]);
         res.status(200).json({ data, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });
     } catch (error) { next(error); }
-=======
-
-        const [total, courts] = await Promise.all([
-            Court.countDocuments(),
-            Court.find()
-                .skip((page - 1) * limit)
-                .limit(limit)
-        ]);
-
-        const data = courts.map(court => {
-            const obj = court.toObject();
-
-            if (obj.image) {
-                if (!obj.image.startsWith("/uploads/")) {
-                    obj.image = "/uploads/" + obj.image;
-                }
-            }
-
-            return obj;
-        });
-
-        res.status(200).json({
-            data,
-            pagination: {
-                page,
-                limit,
-                total,
-                totalPages: Math.ceil(total / limit)
-            }
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            message: error.message
-        });
-    }
->>>>>>> 906d52d (Implement authentication and authorization)
 };
 
 // Get Court By ID
@@ -109,51 +59,14 @@ export const getCourtById = async (req, res, next) => {
         if (!court) {
             return res.status(404).json({ message: "Court not found." });
         }
-<<<<<<< HEAD
         res.status(200).json(court);
     } catch (error) { next(error); }
-=======
-
-        const obj = court.toObject();
-
-        if (obj.image && !obj.image.startsWith("/uploads/")) {
-            obj.image = "/uploads/" + obj.image;
-        }
-
-        res.status(200).json(obj);
-
-    } catch (error) {
-        res.status(500).json({
-            message: error.message
-        });
-    }
->>>>>>> 906d52d (Implement authentication and authorization)
 };
 
 // Update Court (Admin)
 export const updateCourt = async (req, res, next) => {
     try {
-<<<<<<< HEAD
         const court = await Court.findById(req.params.id);
-=======
-        const updateData = {
-            ...req.body
-        };
-
-        if (req.file) {
-            updateData.image = `/uploads/${req.file.filename}`;
-        }
-
-        const court = await Court.findByIdAndUpdate(
-            req.params.id,
-            updateData,
-            {
-                new: true,
-                runValidators: true
-            }
-        );
-
->>>>>>> 906d52d (Implement authentication and authorization)
         if (!court) {
             return res.status(404).json({ message: "Court not found." });
         }
