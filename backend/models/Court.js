@@ -13,8 +13,12 @@ const courtSchema = new mongoose.Schema(
         pricePerHour: {
             type: Number,
             default: 300,
+<<<<<<< HEAD
             min: 0,
             max: 100000
+=======
+            min: 0
+>>>>>>> 906d52d (Implement authentication and authorization)
         },
 
         description: {

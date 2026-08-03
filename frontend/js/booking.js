@@ -100,9 +100,15 @@ async function loadWeather() {
   try {
     var weather = await db.getWeather();
     var forecast = weather.forecast.map(function (day) {
+<<<<<<< HEAD
       return '<span style="margin-right:14px;">' + escapeHtml(day.date.slice(5)) + ': ' + day.temperature + '°C, ' + escapeHtml(day.description) + '</span>';
     }).join('');
     widget.innerHTML = '<h3 style="margin-bottom:6px;">Weather at ' + escapeHtml(weather.location) + '</h3><p style="color:var(--text-muted);">Now: ' + weather.current.temperature + '°C, ' + escapeHtml(weather.current.description) + '</p><p style="color:var(--text-muted);font-size:.9rem;">' + forecast + '</p>';
+=======
+      return '<span style="margin-right:14px;">' + day.date.slice(5) + ': ' + day.temperature + '°C, ' + day.description + '</span>';
+    }).join('');
+    widget.innerHTML = '<h3 style="margin-bottom:6px;">Weather at ' + weather.location + '</h3><p style="color:var(--text-muted);">Now: ' + weather.current.temperature + '°C, ' + weather.current.description + '</p><p style="color:var(--text-muted);font-size:.9rem;">' + forecast + '</p>';
+>>>>>>> 906d52d (Implement authentication and authorization)
   } catch (error) {
     widget.innerHTML = '<p style="color:var(--text-muted);">Weather is temporarily unavailable. You can still reserve a court.</p>';
   }
@@ -159,12 +165,18 @@ function formatDate(d) {
 
 // Fetch slots for a date and display them
 async function fetchSlots(date) {
+<<<<<<< HEAD
   var seq = ++slotRequestSeq;
+=======
+>>>>>>> 906d52d (Implement authentication and authorization)
   var container = document.getElementById('grid-container');
   container.innerHTML = '<div class="spinner"></div>';
   try {
     var slots = await db.getSlots(date);
+<<<<<<< HEAD
     if (seq !== slotRequestSeq) return; // a newer request has superseded this one
+=======
+>>>>>>> 906d52d (Implement authentication and authorization)
     // Update availability bar
     availBar.total = slots.length;
     availBar.booked = 0;
@@ -172,7 +184,7 @@ async function fetchSlots(date) {
       if (slots[i].isBooked) availBar.booked++;
     }
     availBar.render();
-    renderGrid(slots, date);
+    await renderGrid(slots, date);
   } catch (err) {
     if (seq !== slotRequestSeq) return;
     container.innerHTML = '<p class="text-center" style="color: var(--danger);">Failed to load slots.</p>';
@@ -180,7 +192,7 @@ async function fetchSlots(date) {
 }
 
 // Render the court/slot grid
-function renderGrid(slots, date) {
+async function renderGrid(slots, date) {
   var container = document.getElementById('grid-container');
   var user = auth.getUser();
 
@@ -202,6 +214,18 @@ function renderGrid(slots, date) {
     courtsMap[courtId].slots.push(slot);
   }
 
+<<<<<<< HEAD
+=======
+  // Also include courts that have no slots yet (active courts with no slots for this date)
+  var activeCourts = await db.getAllActiveCourts();
+  for (var j = 0; j < activeCourts.length; j++) {
+    var ac = activeCourts[j];
+    if (!courtsMap[ac._id]) {
+      courtsMap[ac._id] = { name: ac.name, description: ac.description, status: ac.status, image: ac.image, slots: [] };
+    }
+  }
+
+>>>>>>> 906d52d (Implement authentication and authorization)
   var courtIds = Object.keys(courtsMap);
 
   if (courtIds.length === 0) {
@@ -219,9 +243,17 @@ function renderGrid(slots, date) {
     var courtId = courtIds[k];
     var court = courtsMap[courtId];
     var isDown = court.status === 'maintenance';
+<<<<<<< HEAD
     var courtImg = court.image
       ? db.imageUrl(court.image)
       : courtPlaceholders[k % courtPlaceholders.length];
+=======
+   var courtImg = court.image
+    ? (court.image.startsWith("/uploads/")
+        ? window.location.origin + court.image
+        : UPLOADS_URL + court.image)
+    : courtPlaceholders[k % courtPlaceholders.length];
+>>>>>>> 906d52d (Implement authentication and authorization)
     var borderColor = borderColors[k % borderColors.length];
     var courtNameHtml = escapeHtml(court.name || '');
     var courtNameSafe = (court.name || '').replace(/'/g, "\\'");

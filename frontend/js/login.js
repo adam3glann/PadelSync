@@ -1,9 +1,8 @@
 // Redirect to dashboard if already logged in
 var _user = auth.getUser();
-if (_user && _user.role) {
+if (_user && _user.role && auth.getToken()) {
   window.location.href = _user.role === 'admin' ? 'admin/dashboard.html' : 'member/dashboard.html';
 }
-
 document.addEventListener('DOMContentLoaded', function () {
   var loginForm = document.getElementById('loginForm');
   var emailInput = document.getElementById('email');
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
   resetPassword.addEventListener('blur', function () {
     validateField(resetPassword, validationRules.password);
   });
-  
+
   // Clear error styling when user types
   emailInput.addEventListener('input', function () {
     emailInput.style.borderColor = '';
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Handle form submission
-  loginForm.addEventListener('submit', function (e) {
+  loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     // Validate both fields before submitting
@@ -84,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.textContent = window.i18n ? window.i18n.t('auth.signingIn') : 'Signing in...';
 
     // Try to log in
-    var result = db.login(emailInput.value.trim(), passwordInput.value);
+    var result = await db.login(emailInput.value.trim(), passwordInput.value);
     if (!result.ok) {
       auth.showToast(result.message, 'error');
       btn.disabled = false;
@@ -106,27 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!validateForm(resetForm, { resetEmail: validationRules.email, resetPassword: validationRules.password })) return;
 
-    var btn = document.getElementById('resetBtn');
-    var originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = '...';
-
-    var result = db.resetPassword(resetEmail.value.trim(), resetPassword.value);
-
-    setTimeout(function () {
-      btn.disabled = false;
-      btn.textContent = originalText;
-      if (result.ok) {
-        auth.showToast(window.i18n ? window.i18n.t('toast.passwordReset') : 'Password reset successfully');
-        resetForm.reset();
-        showLoginBtn.click();
-      } else {
-        if (result.errorType === 'same_password') {
-          auth.showToast(window.i18n ? window.i18n.t('val.samePassword') : result.message, 'error');
-        } else {
-          auth.showToast(window.i18n ? window.i18n.t('val.userNotFound') : 'User not found', 'error');
-        }
-      }
-    }, 500);
+    auth.showToast('For security, change your password from Settings after signing in.', 'error');
   });
 });

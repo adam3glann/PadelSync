@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Fetch and display users
-function fetchUsers(page) {
+async function fetchUsers(page) {
   usersPage = page || 1;
   var tbody = document.getElementById('users-table-body');
   tbody.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner" style="margin: 0 auto;"></div></td></tr>';
 
   try {
-    var result = db.getUsers(usersPage, USERS_PER_PAGE);
+    var result = await db.getUsers(usersPage, USERS_PER_PAGE);
     var users = result.data;
     var pagination = result.pagination;
     var me = auth.getUser();
@@ -28,15 +28,13 @@ function fetchUsers(page) {
     var rows = '';
     for (var i = 0; i < users.length; i++) {
       var u = users[i];
-      var isSelf = u._id === me.id;
+      var isSelf = u.id === me.id;
       var isAdmin = u.role === 'admin';
 
       var roleBadgeClass = isAdmin ? 'badge-admin' : 'badge-member';
       var roleLabel = isAdmin ? (window.i18n ? window.i18n.t('nav.admin') : 'Admin') : (window.i18n ? window.i18n.t('users.member') : 'Member');
 
-      var isRevealed = !!revealedPasswords[u._id];
-      var passwordDisplay = isRevealed ? escapeHtml(u.password) : '••••••••';
-      var toggleLabel = isRevealed ? (window.i18n ? window.i18n.t('users.hide') : 'Hide') : (window.i18n ? window.i18n.t('users.show') : 'Show');
+      var passwordDisplay = 'Protected';
 
       var joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '-';
 
@@ -53,8 +51,7 @@ function fetchUsers(page) {
       rows += '<tr>' +
         '<td>' + escapeHtml(u.name) + (isSelf ? ' <span style="color: var(--text-muted); font-size: 0.75rem;">(' + (window.i18n ? window.i18n.t('users.you') : 'you') + ')</span>' : '') + '</td>' +
         '<td style="color: var(--text-muted);">' + escapeHtml(u.email) + '</td>' +
-        '<td><span class="user-password" style="font-family: monospace;">' + passwordDisplay + '</span> ' +
-        '<button class="btn btn-outline" style="padding: 0.15rem 0.5rem; font-size: 0.75rem;" onclick="togglePasswordVisible(\'' + u._id + '\')">' + toggleLabel + '</button></td>' +
+        '<td><span class="user-password" style="font-family: monospace;">' + passwordDisplay + '</span></td>' +
         '<td><span class="badge ' + roleBadgeClass + '">' + roleLabel + '</span></td>' +
         '<td>' + joined + '</td>' +
         '<td class="text-center">' + u.activeBookings + '</td>' +
@@ -78,12 +75,6 @@ function fetchUsers(page) {
   }
 }
 
-// Show or hide a single user's plaintext password
-function togglePasswordVisible(id) {
-  revealedPasswords[id] = !revealedPasswords[id];
-  fetchUsers(usersPage);
-}
-
 // Open a modal to set a new password for a user
 function openChangePassword(id, name) {
   var title = window.i18n ? window.i18n.t('users.changePassword') : 'Change Password';
@@ -92,12 +83,12 @@ function openChangePassword(id, name) {
     '<input type="password" id="modal-new-password" placeholder="At least 6 characters, with a number">' +
     '</div>';
 
-  auth.showModal(title, msg, function () {
+  auth.showModal(title, msg, async function () {
     var input = document.getElementById('modal-new-password');
     var rules = validationRules.password;
     if (!validateField(input, rules)) return false;
 
-    var result = db.updateUser(id, { password: input.value });
+    var result = await db.updateUser(id, { password: input.value });
     if (!result.ok) { auth.showToast(result.message, 'error'); return false; }
     auth.showToast(window.i18n ? window.i18n.t('users.passwordChanged') : 'Password updated');
     fetchUsers(usersPage);
@@ -112,9 +103,8 @@ function toggleUserRole(id, currentRole) {
     ? (window.i18n ? window.i18n.t('users.confirmMakeAdmin') : 'Give this user administrator access?')
     : (window.i18n ? window.i18n.t('users.confirmMakeMember') : 'Remove administrator access from this user?');
 
-  auth.showModal(title, msg, function () {
-    var me = auth.getUser();
-    var result = db.updateUser(id, { role: newRole }, me.id);
+  auth.showModal(title, msg, async function () {
+    var result = await db.updateUser(id, { role: newRole });
     if (!result.ok) { auth.showToast(result.message, 'error'); return false; }
     auth.showToast(window.i18n ? window.i18n.t('users.roleChanged') : 'Role updated');
     fetchUsers(usersPage);
@@ -126,9 +116,8 @@ function deleteUserAccount(id, name) {
   var title = window.i18n ? window.i18n.t('users.deleteAccount') : 'Delete Account';
   var msg = window.i18n ? window.i18n.t('users.deleteAccountMsg', { name: name }) : 'Delete <strong>' + name + '</strong>\'s account? Any courts they currently have booked will be freed up. This cannot be undone.';
 
-  auth.showModal(title, msg, function () {
-    var me = auth.getUser();
-    var result = db.deleteUser(id, me.id);
+  auth.showModal(title, msg, async function () {
+    var result = await db.deleteUser(id);
     if (!result.ok) { auth.showToast(result.message, 'error'); return false; }
     auth.showToast(window.i18n ? window.i18n.t('users.accountDeleted') : 'Account deleted');
     delete revealedPasswords[id];

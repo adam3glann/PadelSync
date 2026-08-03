@@ -18,6 +18,7 @@ function formatDate(d) {
 }
 
 // Fetch and display dashboard stats and upcoming bookings
+<<<<<<< HEAD
 function fetchDashboardData() {
   Promise.all([
     api.get('/courts'),
@@ -27,17 +28,35 @@ function fetchDashboardData() {
     var reservations = results[1].data;
 
     // Show count of active courts
+=======
+async function fetchDashboardData() {
+  try {
+    // Show count of active courts
+    var courts = (await db.getCourts(1, 50)).data;
+>>>>>>> 906d52d (Implement authentication and authorization)
     var activeCourts = 0;
     for (var i = 0; i < courts.length; i++) {
       if (courts[i].isAvailable) activeCourts++;
     }
     document.getElementById('courts-count').textContent = activeCourts;
 
+<<<<<<< HEAD
     // Show count of upcoming bookings (today or later), soonest first
     var today = formatDate(new Date());
     var upcoming = reservations.filter(function (b) { return b.date >= today; });
     upcoming.sort(function (a, b) { return (a.date + a.timeBlock).localeCompare(b.date + b.timeBlock); });
 
+=======
+    // Show count of upcoming bookings
+    var user = auth.getUser();
+    var bookings = (await db.getMyBookings(1, 50)).data;
+    var now = new Date();
+    var today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    var upcoming = [];
+    for (var j = 0; j < bookings.length; j++) {
+      if (bookings[j].date >= today) upcoming.push(bookings[j]);
+    }
+>>>>>>> 906d52d (Implement authentication and authorization)
     document.getElementById('upcoming-count').textContent = upcoming.length;
 
     // Show up to 3 next upcoming bookings
@@ -71,8 +90,8 @@ function renderUpcoming(bookings) {
     }
 
     var paymentDisplay = '';
-    if (b.payment) {
-      paymentDisplay = '<p style="font-size:0.85rem;margin-top:0.5rem;"><span style="color:var(--text-muted);">Deposit paid:</span> EGP ' + b.payment.depositAmount + ' <br><span style="color:var(--text-muted);">Cash due at court:</span> EGP ' + b.payment.cashAmount + '</p>';
+    if (b.depositAmount) {
+      paymentDisplay = '<p style="font-size:0.85rem;margin-top:0.5rem;"><span style="color:var(--text-muted);">Deposit paid:</span> EGP ' + b.depositAmount + ' <br><span style="color:var(--text-muted);">Cash due at court:</span> EGP ' + b.cashAmount + '</p>';
     }
 
     html += '<div><div class="ticket-card">' +
@@ -97,6 +116,7 @@ function renderUpcoming(bookings) {
 function cancelBooking(id) {
   var title = window.i18n ? window.i18n.t('modal.cancelBooking') : 'Cancel Booking';
   var msg = window.i18n ? window.i18n.t('modal.cancelBookingMsg') : 'Are you sure you want to cancel this reservation?';
+<<<<<<< HEAD
   auth.showModal(title, msg, function () {
     api.del('/reservations/' + id).then(function (result) {
       auth.showToast(result.message);
@@ -104,5 +124,12 @@ function cancelBooking(id) {
     }).catch(function (err) {
       auth.showToast(err.message, 'error');
     });
+=======
+  auth.showModal(title, msg, async function () {
+    var result = await db.cancelSlot(id);
+    if (!result.ok) { auth.showToast(result.message, 'error'); return; }
+    auth.showToast(result.message);
+    fetchDashboardData();
+>>>>>>> 906d52d (Implement authentication and authorization)
   });
 }
