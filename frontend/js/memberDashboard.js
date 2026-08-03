@@ -5,40 +5,46 @@ document.addEventListener('DOMContentLoaded', function () {
   // Show welcome message with user's name
   var user = auth.getUser();
   if (user) {
-    var welcomeText = (window.i18n ? window.i18n.t('dash.welcomeBack') : 'Welcome back') + ', <span class="gradient-text">' + user.name + '</span>!';
+    var welcomeText = (window.i18n ? window.i18n.t('dash.welcomeBack') : 'Welcome back') + ', <span class="gradient-text">' + user.fullName + '</span>!';
     document.getElementById('welcome-msg').innerHTML = welcomeText;
   }
 
   fetchDashboardData();
 });
 
+// Format a Date object as YYYY-MM-DD
+function formatDate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
 // Fetch and display dashboard stats and upcoming bookings
 function fetchDashboardData() {
-  try {
+  Promise.all([
+    api.get('/courts'),
+    api.get('/reservations/my?limit=50')
+  ]).then(function (results) {
+    var courts = results[0];
+    var reservations = results[1].data;
+
     // Show count of active courts
-    var courts = db.getCourts(1, 50).data;
     var activeCourts = 0;
     for (var i = 0; i < courts.length; i++) {
-      if (courts[i].status === 'active') activeCourts++;
+      if (courts[i].isAvailable) activeCourts++;
     }
     document.getElementById('courts-count').textContent = activeCourts;
 
-    // Show count of upcoming bookings
-    var user = auth.getUser();
-    var bookings = db.getMyBookings(user.id, 1, 50).data;
-    var now = new Date();
-    var today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-    var upcoming = [];
-    for (var j = 0; j < bookings.length; j++) {
-      if (bookings[j].date >= today) upcoming.push(bookings[j]);
-    }
+    // Show count of upcoming bookings (today or later), soonest first
+    var today = formatDate(new Date());
+    var upcoming = reservations.filter(function (b) { return b.date >= today; });
+    upcoming.sort(function (a, b) { return (a.date + a.timeBlock).localeCompare(b.date + b.timeBlock); });
+
     document.getElementById('upcoming-count').textContent = upcoming.length;
 
     // Show up to 3 next upcoming bookings
     renderUpcoming(upcoming.slice(0, 3));
-  } catch (error) {
+  }).catch(function () {
     auth.showToast('Failed to load dashboard data', 'error');
-  }
+  });
 }
 
 // Render the upcoming bookings list
@@ -71,7 +77,7 @@ function renderUpcoming(bookings) {
 
     html += '<div><div class="ticket-card">' +
       '<div class="ticket-main">' +
-      '<div class="ticket-title">' + b.courtId.name + '</div>' +
+      '<div class="ticket-title">' + b.court.name + '</div>' +
       '<div class="ticket-datetime">' + b.date + ' &mdash; ' + b.timeBlock + '</div>' +
       '<div class="ticket-details">' +
       equipDisplay +
@@ -92,10 +98,11 @@ function cancelBooking(id) {
   var title = window.i18n ? window.i18n.t('modal.cancelBooking') : 'Cancel Booking';
   var msg = window.i18n ? window.i18n.t('modal.cancelBookingMsg') : 'Are you sure you want to cancel this reservation?';
   auth.showModal(title, msg, function () {
-    var user = auth.getUser();
-    var result = db.cancelSlot(id, user.id, user.role);
-    if (!result.ok) { auth.showToast(result.message, 'error'); return; }
-    auth.showToast(result.message);
-    fetchDashboardData();
+    api.del('/reservations/' + id).then(function (result) {
+      auth.showToast(result.message);
+      fetchDashboardData();
+    }).catch(function (err) {
+      auth.showToast(err.message, 'error');
+    });
   });
 }
