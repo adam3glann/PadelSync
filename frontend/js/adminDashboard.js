@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Fetch and display stats in the dashboard cards
-function fetchStats() {
+async function fetchStats() {
   try {
-    var stats = db.getStats();
+    var stats = await db.getStats();
     document.getElementById('total-courts').textContent = stats.totalCourts;
     document.getElementById('active-courts').textContent = stats.activeCourts;
     document.getElementById('today-bookings').textContent = stats.todayBookings;

@@ -10,7 +10,7 @@ export const register = async (req, res) => {
         const { fullName, email, password } = req.body;
 
         // Check if all fields are provided
-        if (!fullName || !email || !password) {
+        if (!fullName || !email || !password || password.length < 6 || !/^\S+@\S+\.\S+$/.test(email)) {
             return res.status(400).json({
                 message: "Please fill in all fields."
             });
@@ -39,6 +39,7 @@ export const register = async (req, res) => {
             message: "User registered successfully.",
             user: {
                 id: user._id,
+                name: user.fullName,
                 fullName: user.fullName,
                 email: user.email,
                 role: user.role

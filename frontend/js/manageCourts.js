@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (imageFile) {
       var reader = new FileReader();
       reader.onload = function (ev) {
-        doCreateCourt(name, description, ev.target.result);
+        doCreateCourt(name, description, imageFile);
       };
       reader.readAsDataURL(imageFile);
     } else {
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Create the court and refresh the list
-function doCreateCourt(name, description, imageData) {
-  var result = db.createCourt(name, description, imageData);
+async function doCreateCourt(name, description, imageData) {
+  var result = await db.createCourt(name, description, imageData);
   if (!result.ok) { auth.showToast(result.message, 'error'); return; }
   auth.showToast(window.i18n ? window.i18n.t('toast.courtAdded') : 'Court added');
   document.getElementById('create-court-form').reset();
@@ -55,13 +55,13 @@ function doCreateCourt(name, description, imageData) {
 }
 
 // Fetch and display courts with pagination
-function fetchCourts(page) {
+async function fetchCourts(page) {
   courtsPage = page;
   var list = document.getElementById('courts-list');
   list.innerHTML = '<div class="spinner"></div>';
 
   try {
-    var result = db.getCourts(page, COURTS_PER_PAGE);
+    var result = await db.getCourts(page, COURTS_PER_PAGE);
     var courts = result.data;
     var pagination = result.pagination;
 
@@ -88,7 +88,7 @@ function fetchCourts(page) {
 
       var imgHtml;
       if (court.image) {
-        imgHtml = '<img src="' + court.image + '" alt="' + court.name + '" style="width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">';
+    imgHtml = '<img src="' + window.location.origin + court.image + '" alt="' + court.name + '" style="width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">';
       } else {
         imgHtml = '<div style="width:100%;height:160px;background:var(--frost);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.85rem;">' + noImgLabel + '</div>';
       }
@@ -122,8 +122,8 @@ function fetchCourts(page) {
 }
 
 // Toggle a court between active and maintenance
-function toggleStatus(id, newStatus) {
-  var result = db.updateCourt(id, { status: newStatus });
+async function toggleStatus(id, newStatus) {
+  var result = await db.updateCourt(id, { status: newStatus });
   if (!result.ok) { auth.showToast(result.message, 'error'); return; }
   fetchCourts(courtsPage);
 }
@@ -132,8 +132,8 @@ function toggleStatus(id, newStatus) {
 function deleteCourt(id, name) {
   var title = window.i18n ? window.i18n.t('modal.deleteCourt') : 'Delete Court';
   var msg = window.i18n ? window.i18n.t('modal.deleteCourtMsg', { name: name }) : 'Delete <strong>' + name + '</strong> and all its time slots?';
-  auth.showModal(title, msg, function () {
-    var result = db.deleteCourt(id);
+  auth.showModal(title, msg, async function () {
+    var result = await db.deleteCourt(id);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }
     auth.showToast(window.i18n ? window.i18n.t('toast.courtDeleted') : 'Court deleted');
     fetchCourts(courtsPage);

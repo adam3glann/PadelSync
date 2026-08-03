@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Fetch and display bookings for a specific date
-function fetchBookings(date, page) {
+async function fetchBookings(date, page) {
   bookingsPage = page || 1;
   var tbody = document.getElementById('bookings-table-body');
 
@@ -30,7 +30,7 @@ function fetchBookings(date, page) {
   tbody.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner" style="margin: 0 auto;"></div></td></tr>';
 
   try {
-    var result = db.getAllBookings(date, bookingsPage, BOOKINGS_PER_PAGE);
+    var result = await db.getAllBookings(date, bookingsPage, BOOKINGS_PER_PAGE);
     var slots = result.data;
     var pagination = result.pagination;
 
@@ -51,12 +51,12 @@ function fetchBookings(date, page) {
         equipmentDisplay = '<span style="color: var(--text-muted);">' + (window.i18n ? window.i18n.t('bookings.none') : 'None') + '</span>';
       }
 
-      var playerName = slot.bookedBy ? slot.bookedBy.name : (window.i18n ? window.i18n.t('bookings.unknown') : 'Unknown');
-      var playerEmail = slot.bookedBy ? slot.bookedBy.email : '-';
+      var playerName = slot.user ? slot.user.fullName : (window.i18n ? window.i18n.t('bookings.unknown') : 'Unknown');
+      var playerEmail = slot.user ? slot.user.email : '-';
       var cancelLabel = window.i18n ? window.i18n.t('bookings.cancel') : 'Cancel';
 
       rows += '<tr>' +
-        '<td style="color: var(--padel-blue); font-weight: 500;">' + slot.courtId.name + '</td>' +
+        '<td style="color: var(--padel-blue); font-weight: 500;">' + slot.court.name + '</td>' +
         '<td>' + slot.date + '</td>' +
         '<td>' + slot.timeBlock + '</td>' +
         '<td>' + playerName + '</td>' +
@@ -81,9 +81,8 @@ function fetchBookings(date, page) {
 function adminCancel(id) {
   var title = window.i18n ? window.i18n.t('modal.cancelMemberBooking') : 'Cancel Member Booking';
   var msg = window.i18n ? window.i18n.t('modal.cancelMemberMsg') : 'Are you sure you want to cancel this booking?';
-  auth.showModal(title, msg, function () {
-    var user = auth.getUser();
-    var result = db.cancelSlot(id, user.id, user.role);
+  auth.showModal(title, msg, async function () {
+    var result = await db.cancelSlot(id);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }
     auth.showToast(result.message);
     fetchBookings(document.getElementById('filter-date').value, bookingsPage);
@@ -92,10 +91,10 @@ function adminCancel(id) {
 }
 
 // Show the permanent cancellation history for the club manager.
-function fetchCancelledSchedules() {
+async function fetchCancelledSchedules() {
   var body = document.getElementById('cancelled-table-body');
   var total = document.getElementById('cancelled-total');
-  var records = db.getCancellations();
+  var records = await db.getCancellations();
   total.textContent = records.length + (records.length === 1 ? ' cancelled' : ' cancelled');
 
   if (records.length === 0) {
@@ -107,12 +106,12 @@ function fetchCancelledSchedules() {
   for (var i = 0; i < records.length; i++) {
     var record = records[i];
     rows += '<tr>' +
-      '<td style="color:var(--padel-blue);font-weight:bold;">' + record.courtName + '</td>' +
+      '<td style="color:var(--padel-blue);font-weight:bold;">' + record.court.name + '</td>' +
       '<td>' + record.date + '<br><span style="color:var(--text-muted);font-size:0.8rem;">' + record.timeBlock + '</span></td>' +
-      '<td>' + record.memberName + '<br><span style="color:var(--text-muted);font-size:0.8rem;">' + record.memberEmail + '</span></td>' +
+      '<td>' + record.user.fullName + '<br><span style="color:var(--text-muted);font-size:0.8rem;">' + record.user.email + '</span></td>' +
       '<td>EGP ' + record.depositAmount + '</td>' +
       '<td class="refund-value">EGP ' + record.refundAmount + '</td>' +
-      '<td class="retained-value">EGP ' + record.retainedAmount + '</td>' +
+      '<td class="retained-value">EGP ' + (record.depositAmount - record.refundAmount) + '</td>' +
       '<td>' + new Date(record.cancelledAt).toLocaleString() + '</td>' +
       '</tr>';
   }

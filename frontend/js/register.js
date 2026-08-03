@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Handle form submission
-  registerForm.addEventListener('submit', function (e) {
+  registerForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     // Validate all fields
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.textContent = window.i18n ? window.i18n.t('auth.creatingAccount') : 'Creating account...';
 
     // Try to register
-    var result = db.register(nameInput.value.trim(), emailInput.value.trim(), passwordInput.value);
+    var result = await db.register(nameInput.value.trim(), emailInput.value.trim(), passwordInput.value);
     if (!result.ok) {
       auth.showToast(result.message, 'error');
       btn.disabled = false;

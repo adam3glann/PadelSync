@@ -9,15 +9,22 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Fetch and display the user's reservations
-function fetchReservations(page) {
+async function fetchReservations(page) {
   reservationsPage = page || 1;
   var list = document.getElementById('reservations-list');
   list.innerHTML = '<div class="spinner"></div>';
 
+<<<<<<< HEAD
   api.get('/reservations/my?page=' + reservationsPage + '&limit=' + RESERVATIONS_PER_PAGE)
     .then(function (result) {
       var bookings = result.data;
       var pagination = result.pagination;
+=======
+  try {
+    var result = await db.getMyBookings(reservationsPage, RESERVATIONS_PER_PAGE);
+    var bookings = result.data;
+    var pagination = result.pagination;
+>>>>>>> 906d52d (Implement authentication and authorization)
 
       // Show empty message if no reservations
       if (bookings.length === 0 && reservationsPage === 1) {
@@ -29,6 +36,7 @@ function fetchReservations(page) {
         return;
       }
 
+<<<<<<< HEAD
       // Build reservation cards
       var html = '';
       for (var i = 0; i < bookings.length; i++) {
@@ -64,6 +72,25 @@ function fetchReservations(page) {
       if (pagination && pagination.totalPages > 1) {
         html += '<div id="reservations-pagination" style="grid-column:1/-1;"></div>';
       }
+=======
+      var paymentDisplay = '';
+      if (b.depositAmount) {
+        paymentDisplay = '<div class="payment-summary mt-1">' +
+          '<p><strong>Online deposit paid:</strong> EGP ' + b.depositAmount + '</p>' +
+          '<p><strong>Cash due at court:</strong> EGP ' + b.cashAmount + '</p>' +
+          '</div>';
+      }
+
+      html += '<div class="card">' +
+        '<h3 style="color: var(--padel-blue); font-size: 1.1rem; font-style: normal;">' + b.court.name + '</h3>' +
+        '<p style="font-size:0.9rem;"><strong>' + b.date + '</strong> &mdash; ' + b.timeBlock + '</p>' +
+        equipDisplay +
+        paymentDisplay +
+        '<p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">' + bookedAtLabel + ' ' + new Date(b.createdAt).toLocaleString() + '</p>' +
+        '<button class="btn btn-danger mt-1" style="width: 100%;" onclick="cancelBooking(\'' + b._id + '\')">' + cancelLabel + '</button>' +
+        '</div>';
+    }
+>>>>>>> 906d52d (Implement authentication and authorization)
 
       list.innerHTML = html;
 
@@ -80,6 +107,7 @@ function fetchReservations(page) {
 function cancelBooking(id) {
   var title = window.i18n ? window.i18n.t('modal.cancelBooking') : 'Cancel Booking';
   var msg = window.i18n ? window.i18n.t('modal.cancelBookingMsg') : 'Are you sure you want to cancel this reservation?';
+<<<<<<< HEAD
   auth.showModal(title, msg, function () {
     api.del('/reservations/' + id).then(function (result) {
       auth.showToast(result.message);
@@ -87,5 +115,12 @@ function cancelBooking(id) {
     }).catch(function (err) {
       auth.showToast(err.message, 'error');
     });
+=======
+  auth.showModal(title, msg, async function () {
+    var result = await db.cancelSlot(id);
+    if (!result.ok) { auth.showToast(result.message, 'error'); return; }
+    auth.showToast(result.message);
+    fetchReservations(reservationsPage);
+>>>>>>> 906d52d (Implement authentication and authorization)
   });
 }

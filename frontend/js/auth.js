@@ -66,10 +66,7 @@ function logout() {
 function checkAuth(requiredRole) {
   var token = getToken();
   var user = getUser();
-  // Confirm that the saved session still belongs to a real account.
-  var storedUser = (window.db && user) ? db.getUser(user.id) : null;
-  var validToken = user && token === 'fake_token_' + user.id;
-  if (!token || !user || !storedUser || storedUser.role !== user.role || !validToken) {
+  if (!token || !user) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     window.location.href = getLoginPath();
