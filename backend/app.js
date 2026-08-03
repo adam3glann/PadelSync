@@ -1,8 +1,8 @@
-import https from "https";
-import fs from "fs";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
 
 import connectDB from "./config/db.js";
@@ -10,24 +10,31 @@ import courtRoutes from "./routes/courtRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
+import { securityHeaders, corsOptions } from "./middleware/security.js";
 import User from "./models/User.js";
 import bcrypt from "bcryptjs";
-import path from "path";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 dotenv.config();
+
+// Fail fast with a clear message when required configuration is missing.
+const missingEnv = ["MONGO_URI", "JWT_SECRET"].filter((key) => !process.env[key]);
+if (missingEnv.length) {
+    console.error(`Missing required environment variable(s): ${missingEnv.join(", ")}`);
+    console.error("Copy backend/.env.example to backend/.env and fill in the values.");
+    process.exit(1);
+}
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Middleware
+app.use(securityHeaders);
+app.use(cors(corsOptions));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/uploads", express.static("uploads"));
-app.use(express.static(path.join(__dirname, "../frontend")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static(path.join(__dirname, "..", "frontend")));
 app.use("/api/auth", authRoutes);
 app.use("/api/courts", courtRoutes);
 app.use("/api/bookings", bookingRoutes);
@@ -49,8 +56,9 @@ app.get("/api/weather", async (req, res) => {
     } catch (error) { res.status(503).json({ message: "Weather is temporarily unavailable. You can still reserve a court." }); }
 });
 
+// Test Route
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/login.html"));
+    res.json({ message: "PadelSync Backend is Running 🚀" });
 });
 
 app.use(notFound);
@@ -58,30 +66,38 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
+// Seed the first administrator from environment variables. No credentials are
+// hardcoded in the source. If the variables are missing a warning is printed.
 const seedAdmin = async () => {
-    const exists = await User.findOne({ email: "admin@padelsync.com" });
-    if (!exists) await User.create({ fullName: "Club Manager", email: "admin@padelsync.com", password: await bcrypt.hash("admin123", 10), role: "admin" });
+    const adminEmail = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+    const adminPassword = process.env.ADMIN_PASSWORD || "";
+    if (!adminEmail || !adminPassword) {
+        if (!(await User.findOne({ role: "admin" }))) {
+            console.warn("No administrator exists and ADMIN_EMAIL/ADMIN_PASSWORD are not set. Set them in backend/.env and restart.");
+        }
+        return;
+    }
+    try {
+        const exists = await User.findOne({ email: adminEmail });
+        if (!exists) {
+            await User.create({ fullName: "Club Manager", email: adminEmail, password: await bcrypt.hash(adminPassword, 10), role: "admin" });
+            console.log("Seeded administrator account.");
+        }
+    } catch (error) {
+        console.error("Failed to seed administrator:", error.message);
+    }
 };
 
 const startServer = async () => {
     await connectDB();
     await seedAdmin();
 
-    if (process.env.NODE_ENV === "production") {
-        app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-        });
-        return;
-    }
-
-    const httpsOptions = {
-        key: fs.readFileSync("./padelsync.local+2-key.pem"),
-        cert: fs.readFileSync("./padelsync.local+2.pem"),
-    };
-
-    https.createServer(httpsOptions, app).listen(PORT, () => {
-        console.log(`🚀 HTTPS Server running on https://padelsync.local:${PORT}`);
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
     });
 };
 
-startServer();
+startServer().catch((error) => {
+    console.error("Failed to start server:", error.message);
+    process.exit(1);
+});
