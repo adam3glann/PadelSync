@@ -82,8 +82,7 @@ var validationRules = {
   ],
   password: [
     { required: true, getMessage: function () { return _vmsg('val.passwordRequired'); } },
-    { minLength: 6, getMessage: function () { return _vmsg('val.passwordMin'); } },
-    { custom: function (v) { return /\d/.test(v); }, getMessage: function () { return _vmsg('val.passwordNumber'); } }
+    { minLength: 6, getMessage: function () { return _vmsg('val.passwordMin'); } }
   ],
   confirmPassword: [
     { required: true, getMessage: function () { return _vmsg('val.confirmRequired'); } }

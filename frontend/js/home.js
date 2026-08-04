@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
       themeButton.querySelector('.theme-label').textContent = isLight ? 'Dark' : 'Light';
     }
   }
+  // Re-attach the mobile menu behaviour to the rebuilt navigation.
+  if (auth.initHamburger) auth.initHamburger();
   if (window.i18n) {
     window.i18n.translatePage();
     window.i18n.addLanguageButton();

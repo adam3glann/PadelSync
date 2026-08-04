@@ -16,14 +16,36 @@ function getUser() {
 
 // Save login data (token + user) to localStorage
 function saveAuth(data) {
+  if (!data || !data.token || !data.user) return;
   localStorage.setItem('token', data.token);
   localStorage.setItem('user', JSON.stringify(data.user));
 }
 
+// Escape a string for safe insertion into innerHTML
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+// Check whether the stored JWT has expired (without trusting it).
+function isTokenExpired(token) {
+  try {
+    var payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    if (!payload || typeof payload.exp !== 'number') return false;
+    return payload.exp * 1000 < Date.now();
+  } catch (e) {
+    return false;
+  }
+}
+
 // Apply the saved colour theme. Dark is the default theme.
 function applyTheme(theme) {
+  theme = theme === 'light' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('padelsync_theme', theme);
+  if (localStorage.getItem('padelsync_theme') !== theme) {
+    localStorage.setItem('padelsync_theme', theme);
+  }
 }
 
 function toggleTheme() {
@@ -72,9 +94,12 @@ function checkAuth(requiredRole) {
     window.location.href = getLoginPath();
     return;
   }
+  if (isTokenExpired(token)) {
+    logout();
+    return;
+  }
   if (requiredRole && user.role !== requiredRole) {
     // Send the user to the dashboard that matches the account role.
-    // Redirecting to dashboard.html here would keep a member on an admin page.
     var base = isInSubdir() ? '../' : '';
     window.location.href = base + (user.role === 'admin' ? 'admin/dashboard.html' : 'member/dashboard.html');
     return;
@@ -131,6 +156,48 @@ function showModal(title, message, onConfirm) {
   overlay.classList.add('active');
 }
 
+// Add hamburger mobile menu (idempotent, safe to call after nav is rebuilt)
+function initHamburger() {
+  var navLinks = document.querySelector('.nav-links');
+  if (!navLinks) return;
+
+  var closeMenu = function () {
+    var hamburger = document.querySelector('.hamburger');
+    var overlay = document.querySelector('.nav-overlay');
+    if (hamburger) hamburger.classList.remove('active');
+    navLinks.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
+  };
+
+  var hamburger = document.querySelector('.hamburger');
+  if (!hamburger) {
+    hamburger = document.createElement('button');
+    hamburger.className = 'hamburger';
+    hamburger.setAttribute('aria-label', 'Menu');
+    hamburger.innerHTML = '<span></span><span></span><span></span>';
+
+    var overlay = document.createElement('div');
+    overlay.className = 'nav-overlay';
+
+    hamburger.addEventListener('click', function () {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+
+    overlay.addEventListener('click', closeMenu);
+
+    var brand = document.querySelector('.navbar .container');
+    if (brand) brand.appendChild(hamburger);
+    document.body.appendChild(overlay);
+  }
+
+  // Rebind close-on-link for any (rebuilt) nav links.
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+}
+
 // Expose auth functions globally
 window.auth = {
   getToken: getToken,
@@ -141,56 +208,19 @@ window.auth = {
   showToast: showToast,
   showModal: showModal,
   toggleTheme: toggleTheme,
-  renderThemeButton: renderThemeButton
+  renderThemeButton: renderThemeButton,
+  initHamburger: initHamburger
 };
+
+window.escapeHtml = escapeHtml;
 
 // Set the theme as early as possible to avoid a visible colour flash.
 applyTheme(localStorage.getItem('padelsync_theme') || 'dark');
 
-// Add hamburger mobile menu on page load
+// Add hamburger mobile menu and theme button on page load
 document.addEventListener('DOMContentLoaded', function () {
   var links = document.querySelector('.nav-links');
   if (links && !links.querySelector('.theme-toggle')) links.insertAdjacentHTML('afterbegin', renderThemeButton());
   updateThemeButton();
-
-  var navLinks = document.querySelector('.nav-links');
-  if (!navLinks) return;
-  if (navLinks.querySelector('.hamburger')) return;
-
-  // Create hamburger button
-  var hamburger = document.createElement('button');
-  hamburger.className = 'hamburger';
-  hamburger.setAttribute('aria-label', 'Menu');
-  hamburger.innerHTML = '<span></span><span></span><span></span>';
-
-  // Create overlay for closing menu when clicking outside
-  var overlay = document.createElement('div');
-  overlay.className = 'nav-overlay';
-
-  // Toggle menu on hamburger click
-  hamburger.addEventListener('click', function () {
-    hamburger.classList.toggle('active');
-    navLinks.classList.toggle('open');
-    overlay.classList.toggle('active');
-  });
-
-  // Close menu when clicking the overlay
-  overlay.addEventListener('click', function () {
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('open');
-    overlay.classList.remove('active');
-  });
-
-  // Close menu when clicking any nav link
-  navLinks.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function () {
-      hamburger.classList.remove('active');
-      navLinks.classList.remove('open');
-      overlay.classList.remove('active');
-    });
-  });
-
-  var brand = document.querySelector('.navbar .container');
-  if (brand) brand.appendChild(hamburger);
-  document.body.appendChild(overlay);
+  initHamburger();
 });

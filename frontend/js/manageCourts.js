@@ -32,22 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!name.trim()) return;
 
-    // If an image was uploaded, read it as base64 first
-    if (imageFile) {
-      var reader = new FileReader();
-      reader.onload = function (ev) {
-        doCreateCourt(name, description, imageFile);
-      };
-      reader.readAsDataURL(imageFile);
-    } else {
-      doCreateCourt(name, description, null);
-    }
+    doCreateCourt(name, description, imageFile);
   });
 });
 
 // Create the court and refresh the list
-async function doCreateCourt(name, description, imageData) {
-  var result = await db.createCourt(name, description, imageData);
+async function doCreateCourt(name, description, imageFile) {
+  var result = await db.createCourt(name, description, imageFile);
   if (!result.ok) { auth.showToast(result.message, 'error'); return; }
   auth.showToast(window.i18n ? window.i18n.t('toast.courtAdded') : 'Court added');
   document.getElementById('create-court-form').reset();
@@ -84,11 +75,12 @@ async function fetchCourts(page) {
       var deleteLabel = window.i18n ? window.i18n.t('courts.delete') : 'Delete';
       var noImgLabel = window.i18n ? window.i18n.t('courts.noImage') : 'No Image';
       var descText = court.description || (window.i18n ? window.i18n.t('courts.noDescription') : 'No description');
-      var courtNameSafe = court.name.replace(/'/g, "\\'");
+      var courtNameHtml = escapeHtml(court.name || '');
+      var courtNameSafe = (court.name || '').replace(/'/g, "\\'");
 
       var imgHtml;
       if (court.image) {
-    imgHtml = '<img src="' + window.location.origin + court.image + '" alt="' + court.name + '" style="width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">';
+        imgHtml = '<img src="' + db.imageUrl(court.image) + '" alt="' + courtNameHtml + '" style="width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">';
       } else {
         imgHtml = '<div style="width:100%;height:160px;background:var(--frost);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.85rem;">' + noImgLabel + '</div>';
       }
@@ -97,10 +89,10 @@ async function fetchCourts(page) {
         imgHtml +
         '<div style="padding:1.25rem;">' +
         '<div class="d-flex justify-between align-center mb-1">' +
-        '<h3 style="color:var(--court-white);font-size:1.1rem;font-style:normal;">' + court.name + '</h3>' +
+        '<h3 style="color:var(--court-white);font-size:1.1rem;font-style:normal;">' + courtNameHtml + '</h3>' +
         '<span class="badge ' + badgeClass + '">' + statusLabel + '</span>' +
         '</div>' +
-        '<p style="color:var(--text-muted);min-height:36px;font-size:0.9rem;">' + descText + '</p>' +
+        '<p style="color:var(--text-muted);min-height:36px;font-size:0.9rem;">' + escapeHtml(descText) + '</p>' +
         '<div class="d-flex justify-between mt-2" style="gap:10px;">' +
         '<button class="btn btn-outline" style="flex:1;" onclick="toggleStatus(\'' + court._id + '\', \'' + toggleStatus + '\')">' + toggleLabel + '</button>' +
         '<button class="btn btn-danger" style="padding:0.75rem;" onclick="deleteCourt(\'' + court._id + '\', \'' + courtNameSafe + '\')">' + deleteLabel + '</button>' +
@@ -111,10 +103,14 @@ async function fetchCourts(page) {
 
     list.innerHTML = html;
 
-    // Add pagination if needed
-    if (pagination && pagination.totalPages > 1) {
-      list.innerHTML += '<div id="courts-pagination" style="grid-column:1/-1;"></div>';
-      renderPagination('courts-pagination', pagination, fetchCourts);
+    // Render pagination into the existing container, clearing it when there is only one page
+    var pagEl = document.getElementById('courts-pagination');
+    if (pagEl) {
+      if (pagination && pagination.totalPages > 1) {
+        renderPagination('courts-pagination', pagination, fetchCourts);
+      } else {
+        pagEl.innerHTML = '';
+      }
     }
   } catch (error) {
     list.innerHTML = '<p class="text-center" style="color: var(--danger);">Failed to load courts.</p>';
@@ -131,7 +127,7 @@ async function toggleStatus(id, newStatus) {
 // Delete a court after confirmation
 function deleteCourt(id, name) {
   var title = window.i18n ? window.i18n.t('modal.deleteCourt') : 'Delete Court';
-  var msg = window.i18n ? window.i18n.t('modal.deleteCourtMsg', { name: name }) : 'Delete <strong>' + name + '</strong> and all its time slots?';
+  var msg = window.i18n ? window.i18n.t('modal.deleteCourtMsg', { name: escapeHtml(name) }) : 'Delete <strong>' + escapeHtml(name) + '</strong> and all its time slots?';
   auth.showModal(title, msg, async function () {
     var result = await db.deleteCourt(id);
     if (!result.ok) { auth.showToast(result.message, 'error'); return; }

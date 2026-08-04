@@ -37,15 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (err) err.remove();
     });
   }
-  // Clear errors when user starts typing
-  var allInputs = [nameInput, emailInput, passwordInput, confirmInput];
-  for (var i = 0; i < allInputs.length; i++) {
-    allInputs[i].addEventListener('input', function () {
-      this.style.borderColor = '';
-      var err = this.parentElement.querySelector('.field-error');
-      if (err) err.remove();
-    });
-  }
 
   // Handle form submission
   registerForm.addEventListener('submit', async function (e) {

@@ -25,9 +25,7 @@ const isRealDate = (date) => {
     return d <= monthLengths[m - 1];
 };
 
-// Validates a YYYY-MM-DD string. When opts.maxDays is set, the date must be
-// within [today, today + maxDays]. When opts.allowPast is false the date must
-// not be before today.
+
 export const isValidDate = (date, opts = {}) => {
     if (!isRealDate(date)) return false;
     if (!opts.maxDays && opts.allowPast !== false) return true;
