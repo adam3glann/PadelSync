@@ -57,8 +57,10 @@ app.get("/api/weather", async (req, res) => {
 });
 
 // Test Route
-app.get("/", (req, res) => {
-    res.json({ message: "PadelSync Backend is Running 🚀" });
+app.use(express.static(path.join(__dirname, "..", "frontend")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
 });
 
 app.use(notFound);
