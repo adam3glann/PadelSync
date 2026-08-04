@@ -36,12 +36,6 @@ var TEXT = {
   'auth.creatingAccount': 'Creating account...',
   'auth.hasAccount': 'Already a member?',
   'auth.signInLink': 'Sign in',
-  'auth.forgotPassword': 'Forgot Password?',
-  'auth.resetPasswordTitle': 'Reset Password',
-  'auth.resetPasswordSubtitle': 'Enter your email to set a new password.',
-  'auth.newPassword': 'New Password',
-  'auth.resetAction': 'Reset Password',
-  'auth.backToLogin': 'Back to Login',
   'dash.welcomeBack': 'Welcome back',
   'dash.smashIt': 'Smash It',
   'dash.upcoming': 'Upcoming',
@@ -89,8 +83,6 @@ var TEXT = {
   'users.activeBookings': 'Active Bookings',
   'users.noUsers': 'No users found.',
   'users.member': 'Member',
-  'users.show': 'Show',
-  'users.hide': 'Hide',
   'users.you': 'you',
   'users.changePassword': 'Change Password',
   'users.newPasswordFor': 'New password for {name}',
@@ -141,7 +133,6 @@ var TEXT = {
   'val.emailInvalid': 'Enter a valid email address',
   'val.passwordRequired': 'Password is required',
   'val.passwordMin': 'Password must be at least 6 characters',
-  'val.passwordNumber': 'Password must contain at least one number',
   'val.confirmRequired': 'Please confirm your password',
   'val.courtNameRequired': 'Court name is required',
   'val.courtNameMin': 'Name must be at least 2 characters',
@@ -153,7 +144,6 @@ var TEXT = {
   'toast.accountCreated': 'Account created!',
   'toast.courtAdded': 'Court added',
   'toast.courtDeleted': 'Court deleted',
-  'toast.passwordReset': 'Password reset successfully',
   'modal.deleteCourt': 'Delete Court',
   'modal.deleteCourtMsg': 'Delete <strong>{name}</strong> and all its time slots?',
   'modal.cancelBooking': 'Cancel Booking',
@@ -180,7 +170,17 @@ Object.assign(TEXT, {
   'settings.preferences': 'Preferences',
   'settings.preferencesText': 'Choose how PadelSync looks and reads for you.',
   'settings.theme': 'Toggle colour theme',
-  'settings.language': 'Change language'
+  'settings.language': 'Change language',
+  'auth.showPassword': 'Show password',
+  'booking.policyTitle': 'Reservation and cancellation policy',
+  'booking.policyText': 'Pay 50% online to reserve your court. Pay the remaining 50% in cash at the court. Cancel more than 2 hours before your match for a full deposit refund, within 2 hours for a 25% refund, and after the match starts the deposit is not refunded.',
+  'dash.ready': "Ready for your next match? Let's get on the court.",
+  'admin.deposits': 'Online Deposits Earned',
+  'admin.cashDue': 'Cash Due at Court',
+  'admin.cancelledSchedules': 'Cancelled Schedules',
+  'admin.expectedRevenue': 'Expected revenue from active reservations',
+  'admin.refundsIssued': 'Refunds issued',
+  'admin.viewCancellations': 'View cancellations'
 });
 
 var AR = {
@@ -221,12 +221,6 @@ var AR = {
   'auth.creatingAccount': 'جارٍ إنشاء الحساب...',
   'auth.hasAccount': 'لديك حساب بالفعل؟',
   'auth.signInLink': 'تسجيل الدخول',
-  'auth.forgotPassword': 'نسيت كلمة المرور؟',
-  'auth.resetPasswordTitle': 'إعادة تعيين كلمة المرور',
-  'auth.resetPasswordSubtitle': 'أدخل بريدك الإلكتروني لتعيين كلمة مرور جديدة.',
-  'auth.newPassword': 'كلمة المرور الجديدة',
-  'auth.resetAction': 'إعادة التعيين',
-  'auth.backToLogin': 'العودة لتسجيل الدخول',
   'dash.welcomeBack': 'مرحباً بعودتك',
   'dash.smashIt': 'العب الآن',
   'dash.upcoming': 'القادم',
@@ -274,8 +268,6 @@ var AR = {
   'users.activeBookings': 'الحجوزات النشطة',
   'users.noUsers': 'لا يوجد مستخدمون.',
   'users.member': 'عضو',
-  'users.show': 'إظهار',
-  'users.hide': 'إخفاء',
   'users.you': 'أنت',
   'users.changePassword': 'تغيير كلمة المرور',
   'users.newPasswordFor': 'كلمة المرور الجديدة لـ {name}',
@@ -326,7 +318,6 @@ var AR = {
   'val.emailInvalid': 'أدخل بريداً إلكترونياً صحيحاً',
   'val.passwordRequired': 'كلمة المرور مطلوبة',
   'val.passwordMin': 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل',
-  'val.passwordNumber': 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل',
   'val.confirmRequired': 'يرجى تأكيد كلمة المرور',
   'val.courtNameRequired': 'اسم الملعب مطلوب',
   'val.courtNameMin': 'يجب أن يتكون الاسم من حرفين على الأقل',
@@ -338,7 +329,6 @@ var AR = {
   'toast.accountCreated': 'تم إنشاء الحساب!',
   'toast.courtAdded': 'تمت إضافة الملعب',
   'toast.courtDeleted': 'تم حذف الملعب',
-  'toast.passwordReset': 'تمت إعادة تعيين كلمة المرور بنجاح',
   'modal.deleteCourt': 'حذف الملعب',
   'modal.deleteCourtMsg': 'هل تريد حذف <strong>{name}</strong> وكل فتراته الزمنية؟',
   'modal.cancelBooking': 'إلغاء الحجز',
@@ -440,20 +430,3 @@ window.i18n = {
   translatePage: translatePage,
   addLanguageButton: addLanguageButton
 };
-
-// Add these English labels before the page translates its buttons and cards.
-document.addEventListener('DOMContentLoaded', function () {
-  Object.assign(TEXT, {
-    'auth.showPassword': 'Show password',
-    'booking.policyTitle': 'Reservation and cancellation policy',
-    'booking.policyText': 'Pay 50% online to reserve your court. Pay the remaining 50% in cash at the court. Cancel within 2 hours for a full deposit refund, within 3 hours for a 25% refund, and after 3 hours the deposit is not refunded.',
-    'dash.ready': "Ready for your next match? Let's get on the court.",
-    'admin.deposits': 'Online Deposits Earned',
-    'admin.cashDue': 'Cash Due at Court',
-    'admin.cancelledSchedules': 'Cancelled Schedules',
-    'admin.expectedRevenue': 'Expected revenue from active reservations',
-    'admin.refundsIssued': 'Refunds issued',
-    'admin.viewCancellations': 'View cancellations'
-  });
-  translatePage();
-});

@@ -44,19 +44,20 @@ async function fetchBookings(date, page) {
     var rows = '';
     for (var i = 0; i < slots.length; i++) {
       var slot = slots[i];
+      var courtName = slot.court ? slot.court.name : (window.i18n ? window.i18n.t('bookings.unknown') : 'Court unavailable');
       var equipmentDisplay;
       if (slot.equipment && slot.equipment !== 'None') {
-        equipmentDisplay = '<span class="badge badge-equipment">' + slot.equipment + '</span>';
+        equipmentDisplay = '<span class="badge badge-equipment">' + escapeHtml(slot.equipment) + '</span>';
       } else {
         equipmentDisplay = '<span style="color: var(--text-muted);">' + (window.i18n ? window.i18n.t('bookings.none') : 'None') + '</span>';
       }
 
-      var playerName = slot.user ? slot.user.fullName : (window.i18n ? window.i18n.t('bookings.unknown') : 'Unknown');
-      var playerEmail = slot.user ? slot.user.email : '-';
+      var playerName = slot.user ? escapeHtml(slot.user.fullName) : (window.i18n ? window.i18n.t('bookings.unknown') : 'Unknown');
+      var playerEmail = slot.user ? escapeHtml(slot.user.email) : '-';
       var cancelLabel = window.i18n ? window.i18n.t('bookings.cancel') : 'Cancel';
 
       rows += '<tr>' +
-        '<td style="color: var(--padel-blue); font-weight: 500;">' + slot.court.name + '</td>' +
+        '<td style="color: var(--padel-blue); font-weight: 500;">' + escapeHtml(courtName) + '</td>' +
         '<td>' + slot.date + '</td>' +
         '<td>' + slot.timeBlock + '</td>' +
         '<td>' + playerName + '</td>' +
@@ -68,9 +69,13 @@ async function fetchBookings(date, page) {
     tbody.innerHTML = rows;
 
     // Render pagination if needed
-    if (pagination && pagination.totalPages > 1) {
-      var pagEl = document.getElementById('bookings-pagination');
-      if (pagEl) renderPagination('bookings-pagination', pagination, function (p) { fetchBookings(date, p); });
+    var pagEl = document.getElementById('bookings-pagination');
+    if (pagEl) {
+      if (pagination && pagination.totalPages > 1) {
+        renderPagination('bookings-pagination', pagination, function (p) { fetchBookings(date, p); });
+      } else {
+        pagEl.innerHTML = '';
+      }
     }
   } catch (error) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="color: var(--danger);">Failed to load bookings.</td></tr>';
@@ -94,26 +99,33 @@ function adminCancel(id) {
 async function fetchCancelledSchedules() {
   var body = document.getElementById('cancelled-table-body');
   var total = document.getElementById('cancelled-total');
-  var records = await db.getCancellations();
-  total.textContent = records.length + (records.length === 1 ? ' cancelled' : ' cancelled');
+  try {
+    var records = await db.getCancellations();
+    total.textContent = records.length + (records.length === 1 ? ' cancelled' : ' cancelled');
 
-  if (records.length === 0) {
-    body.innerHTML = '<tr><td colspan="7" class="text-center">No cancelled schedules yet.</td></tr>';
-    return;
-  }
+    if (records.length === 0) {
+      body.innerHTML = '<tr><td colspan="7" class="text-center">No cancelled schedules yet.</td></tr>';
+      return;
+    }
 
-  var rows = '';
-  for (var i = 0; i < records.length; i++) {
-    var record = records[i];
-    rows += '<tr>' +
-      '<td style="color:var(--padel-blue);font-weight:bold;">' + record.court.name + '</td>' +
-      '<td>' + record.date + '<br><span style="color:var(--text-muted);font-size:0.8rem;">' + record.timeBlock + '</span></td>' +
-      '<td>' + record.user.fullName + '<br><span style="color:var(--text-muted);font-size:0.8rem;">' + record.user.email + '</span></td>' +
-      '<td>EGP ' + record.depositAmount + '</td>' +
-      '<td class="refund-value">EGP ' + record.refundAmount + '</td>' +
-      '<td class="retained-value">EGP ' + (record.depositAmount - record.refundAmount) + '</td>' +
-      '<td>' + new Date(record.cancelledAt).toLocaleString() + '</td>' +
-      '</tr>';
+    var rows = '';
+    for (var i = 0; i < records.length; i++) {
+      var record = records[i];
+      var courtName = record.court ? escapeHtml(record.court.name) : (window.i18n ? window.i18n.t('bookings.unknown') : 'Court unavailable');
+      var memberName = record.user ? escapeHtml(record.user.fullName) : 'Unknown';
+      var memberEmail = record.user ? escapeHtml(record.user.email) : '-';
+      rows += '<tr>' +
+        '<td style="color:var(--padel-blue);font-weight:bold;">' + courtName + '</td>' +
+        '<td>' + record.date + '<br><span style="color:var(--text-muted);font-size:0.8rem;">' + record.timeBlock + '</span></td>' +
+        '<td>' + memberName + '<br><span style="color:var(--text-muted);font-size:0.8rem;">' + memberEmail + '</span></td>' +
+        '<td>EGP ' + record.depositAmount + '</td>' +
+        '<td class="refund-value">EGP ' + record.refundAmount + '</td>' +
+        '<td class="retained-value">EGP ' + ((record.depositAmount || 0) - (record.refundAmount || 0)) + '</td>' +
+        '<td>' + (record.cancelledAt ? new Date(record.cancelledAt).toLocaleString() : '-') + '</td>' +
+        '</tr>';
+    }
+    body.innerHTML = rows;
+  } catch (error) {
+    body.innerHTML = '<tr><td colspan="7" class="text-center" style="color: var(--danger);">Failed to load cancelled schedules.</td></tr>';
   }
-  body.innerHTML = rows;
 }
