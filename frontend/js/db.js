@@ -1,5 +1,5 @@
-var API_URL = 'http://localhost:3000/api';
-var UPLOADS_URL = 'http://localhost:3000/uploads/';
+var API_URL = 'https://padelsync-production.up.railway.app/api';
+var UPLOADS_URL = 'https://padelsync-production.up.railway.app/uploads/';
 
 async function request(path, options) {
   options = options || {};
