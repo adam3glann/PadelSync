@@ -1,5 +1,5 @@
-var API_URL = 'https://padelsync-production.up.railway.app/api';
-var UPLOADS_URL = 'https://padelsync-production.up.railway.app/uploads/';
+var API_URL = '/api';
+var UPLOADS_URL = '/uploads/';
 
 async function request(path, options) {
   options = options || {};
@@ -42,7 +42,7 @@ function splitSlot(slotId) {
 function imageUrl(image) {
   if (!image) return '';
   if (/^https?:\/\//i.test(image)) return image;
-  if (image.charAt(0) === '/') return 'http://localhost:3000' + image;
+  if (image.charAt(0) === '/') return window.location.origin + image;
   return UPLOADS_URL + image;
 }
 
