@@ -43,7 +43,7 @@ export const createReservation = async (req, res) => {
             });
         }
 
-        if (!court.isAvailable) {
+        if (court.status !== "active") {
             return res.status(400).json({
                 message: "This court is currently out of service."
             });
@@ -54,7 +54,7 @@ export const createReservation = async (req, res) => {
             court: courtId,
             date,
             timeBlock,
-            status: "booked"
+            status: "confirmed"
         });
 
         if (existing) {
@@ -73,14 +73,10 @@ export const createReservation = async (req, res) => {
             date,
             timeBlock,
             equipment: equipment || "None",
-            status: "booked",
-            bookedAt: new Date(),
-            payment: {
-                totalAmount,
-                depositAmount,
-                cashAmount,
-                paidAt: new Date()
-            }
+            status: "confirmed",
+            totalAmount,
+            depositAmount,
+            cashAmount
         });
 
         res.status(201).json({
@@ -115,11 +111,11 @@ export const getAvailability = async (req, res) => {
             });
         }
 
-        const filter = { date, status: "booked" };
+        const filter = { date, status: "confirmed" };
         if (courtId) filter.court = courtId;
 
         const bookings = await Booking.find(filter)
-            .populate("court", "name description pricePerHour image isAvailable")
+            .populate("court", "name description pricePerHour image status")
             .populate("user", "fullName email");
 
         res.status(200).json(bookings);
@@ -227,16 +223,13 @@ export const cancelReservation = async (req, res) => {
             });
         }
 
-        const deposit = booking.payment?.depositAmount || 0;
-        const refundAmount = calculateRefund(deposit, booking.bookedAt);
+        const deposit = booking.depositAmount || 0;
+        const refundAmount = calculateRefund(deposit, booking.createdAt);
 
         booking.status = "cancelled";
-        booking.cancellation = {
-            cancelledAt: new Date(),
-            cancelledBy: req.user.role === "admin" ? "admin" : "member",
-            refundAmount,
-            retainedAmount: deposit - refundAmount
-        };
+        booking.refundAmount = refundAmount;
+        booking.paymentStatus = refundAmount > 0 ? "refunded" : "not-refunded";
+        booking.cancelledAt = new Date();
 
         await booking.save();
 
