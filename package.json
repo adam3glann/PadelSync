@@ -1,0 +1,14 @@
+{
+  "name": "padelsync",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PadelSync monorepo root. Delegates install/start to the backend, which serves both the API and the static frontend from a single Express server.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "postinstall": "npm install --prefix backend",
+    "build": "npm install --prefix backend",
+    "start": "node backend/app.js"
+  }
+}
