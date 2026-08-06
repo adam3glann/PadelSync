@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
 
@@ -28,12 +29,22 @@ const app = express();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// The uploads folder is gitignored (so real uploads never get committed), which
+// means it doesn't exist at all on a fresh deploy. Multer will throw ENOENT if
+// it tries to write into a missing folder, so create it here before anything
+// tries to read or write to it.
+const UPLOADS_DIR = path.join(__dirname, "uploads");
+if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+    console.log(`Created missing uploads directory at ${UPLOADS_DIR}`);
+}
+
 // Middleware
 app.use(securityHeaders);
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(UPLOADS_DIR));
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 app.use("/api/auth", authRoutes);
 app.use("/api/courts", courtRoutes);
