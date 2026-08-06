@@ -9,41 +9,39 @@ export const getStats = async (req, res) => {
     try {
         const today = new Date().toISOString().split("T")[0];
 
-        const [totalCourts, activeCourts, totalMembers, todayBookings, bookedBookings, cancelledBookings] =
+        const [totalCourts, activeCourts, totalMembers, todayBookings, confirmedBookings, cancelledBookings] =
             await Promise.all([
                 Court.countDocuments(),
-                Court.countDocuments({ isAvailable: true }),
+                Court.countDocuments({ status: "active" }),
                 User.countDocuments({ role: "member" }),
-                Booking.countDocuments({ date: today, status: "booked" }),
-                Booking.find({ status: "booked" }),
+                Booking.countDocuments({ date: today, status: "confirmed" }),
+                Booking.find({ status: "confirmed" }),
                 Booking.find({ status: "cancelled" })
             ]);
 
         let onlineDeposits = 0;
         let cashDue = 0;
 
-        bookedBookings.forEach((b) => {
-            onlineDeposits += b.payment?.depositAmount || 0;
-            cashDue += b.payment?.cashAmount || 0;
+        confirmedBookings.forEach((b) => {
+            onlineDeposits += b.depositAmount || 0;
+            cashDue += b.cashAmount || 0;
         });
 
         let refundTotal = 0;
-        let retainedCancelledDeposits = 0;
 
         cancelledBookings.forEach((b) => {
-            refundTotal += b.cancellation?.refundAmount || 0;
-            retainedCancelledDeposits += b.cancellation?.retainedAmount || 0;
+            refundTotal += b.refundAmount || 0;
         });
 
         res.status(200).json({
             totalCourts,
             activeCourts,
             todayBookings,
-            totalBookings: bookedBookings.length,
+            totalBookings: confirmedBookings.length,
             totalMembers,
-            totalEarned: onlineDeposits + retainedCancelledDeposits,
+            totalEarned: onlineDeposits - refundTotal,
             cashDue,
-            expectedRevenue: onlineDeposits + cashDue,
+            expectedRevenue: onlineDeposits + cashDue - refundTotal,
             cancelledCount: cancelledBookings.length,
             refundTotal
         });
@@ -65,7 +63,7 @@ export const getAllBookings = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
-        const filter = { status: "booked" };
+        const filter = { status: "confirmed" };
         if (date) filter.date = date;
 
         const [bookings, total] = await Promise.all([
@@ -114,11 +112,11 @@ export const cancelBookingByAdmin = async (req, res) => {
             });
         }
 
-        const deposit = booking.payment?.depositAmount || 0;
+        const deposit = booking.depositAmount || 0;
         let refundAmount = 0;
 
-        if (booking.bookedAt) {
-            const hoursSinceBooking = (Date.now() - new Date(booking.bookedAt).getTime()) / 3600000;
+        if (booking.createdAt) {
+            const hoursSinceBooking = (Date.now() - new Date(booking.createdAt).getTime()) / 3600000;
 
             if (hoursSinceBooking <= 2) {
                 refundAmount = deposit;
@@ -128,12 +126,9 @@ export const cancelBookingByAdmin = async (req, res) => {
         }
 
         booking.status = "cancelled";
-        booking.cancellation = {
-            cancelledAt: new Date(),
-            cancelledBy: "admin",
-            refundAmount,
-            retainedAmount: deposit - refundAmount
-        };
+        booking.refundAmount = refundAmount;
+        booking.paymentStatus = refundAmount > 0 ? "refunded" : "not-refunded";
+        booking.cancelledAt = new Date();
 
         await booking.save();
 
@@ -157,7 +152,7 @@ export const getCancellations = async (req, res) => {
         const cancellations = await Booking.find({ status: "cancelled" })
             .populate("court", "name")
             .populate("user", "fullName email")
-            .sort({ "cancellation.cancelledAt": -1 });
+            .sort({ cancelledAt: -1 });
 
         res.status(200).json(cancellations);
 
