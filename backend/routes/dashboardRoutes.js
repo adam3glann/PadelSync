@@ -1,10 +1,10 @@
 import express from "express";
 import {
   getStats,
-  getAllBookings,
-  cancelBookingByAdmin,
+  getBookings,
+  cancelBooking,
   getCancellations,
-} from "../controllers/adminDashboardController.js";
+} from "../controllers/bookingController.js";
 
 import { protect } from "../middleware/auth.js";
 import { isAdmin } from "../middleware/roleCheck.js";
@@ -15,8 +15,8 @@ const router = express.Router();
 router.use(protect, isAdmin);
 
 router.get("/stats", getStats);
-router.get("/bookings", getAllBookings);
-router.delete("/bookings/:id", cancelBookingByAdmin);
+router.get("/bookings", getBookings);
+router.delete("/bookings/:id", cancelBooking);
 router.get("/cancellations", getCancellations);
 
 export default router;
