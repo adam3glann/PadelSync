@@ -169,6 +169,26 @@ function showModal(title, message, onConfirm) {
   overlay.classList.add("active");
 }
 
+// Confirm-and-cancel a booking (shared by the member dashboard and the
+// reservations list, which otherwise duplicated this exact flow).
+function confirmCancelBooking(id, onSuccess) {
+  var title = window.i18n
+    ? window.i18n.t("modal.cancelBooking")
+    : "Cancel Booking";
+  var msg = window.i18n
+    ? window.i18n.t("modal.cancelBookingMsg")
+    : "Are you sure you want to cancel this reservation?";
+  showModal(title, msg, async function () {
+    var result = await db.cancelSlot(id);
+    if (!result.ok) {
+      showToast(result.message, "error");
+      return;
+    }
+    showToast(result.message);
+    if (onSuccess) onSuccess();
+  });
+}
+
 // Add hamburger mobile menu (idempotent, safe to call after nav is rebuilt)
 function initHamburger() {
   var navLinks = document.querySelector(".nav-links");
@@ -220,6 +240,7 @@ window.auth = {
   checkAuth: checkAuth,
   showToast: showToast,
   showModal: showModal,
+  confirmCancelBooking: confirmCancelBooking,
   toggleTheme: toggleTheme,
   renderThemeButton: renderThemeButton,
   initHamburger: initHamburger,
