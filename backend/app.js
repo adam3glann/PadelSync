@@ -10,8 +10,6 @@ import connectDB from "./config/db.js";
 import courtRoutes from "./routes/courtRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import reservationRoutes from "./routes/reservationRoutes.js";
-import dashboardRoutes from "./routes/dashboardRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
 import { securityHeaders, corsOptions } from "./middleware/security.js";
 import User from "./models/User.js";
@@ -59,10 +57,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/courts", courtRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/users", userRoutes);
-// Alias APIs that mirror /api/bookings under the naming the course spec expects.
-// They operate on the same Booking model/collection, now aligned to its real schema.
-app.use("/api/reservations", reservationRoutes);
-app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/api/weather", async (req, res) => {
   if (!process.env.OPENWEATHER_API_KEY)
