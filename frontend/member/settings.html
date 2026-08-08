@@ -8,30 +8,7 @@
   </head>
 
   <body>
-    <nav class="navbar">
-      <div class="container d-flex justify-between align-center">
-        <a href="dashboard.html" class="navbar-brand"
-          >PadelSync<span class="ball"></span
-        ></a>
-        <div class="nav-links">
-          <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
-          <a href="book.html" data-i18n="nav.bookCourt">Book Court</a>
-          <a href="reservations.html" data-i18n="nav.reservations"
-            >Reservations</a
-          >
-          <a href="settings.html" class="active" data-i18n="nav.settings"
-            >Settings</a
-          >
-          <a
-            href="#"
-            onclick="auth.logout()"
-            class="btn btn-outline"
-            data-i18n="nav.logout"
-            >Logout</a
-          >
-        </div>
-      </div>
-    </nav>
+    <nav class="navbar" id="navbar"></nav>
     <main class="container settings-page">
       <div class="settings-heading">
         <p class="eyebrow" data-i18n="settings.account">Account</p>
@@ -119,6 +96,7 @@
     <script src="../js/db.js"></script>
     <script src="../js/i18n.js"></script>
     <script src="../js/auth.js"></script>
+    <script src="../js/navbar.js"></script>
     <script src="../js/settings.js"></script>
   </body>
 </html>
