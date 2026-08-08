@@ -73,19 +73,6 @@ export const getCourts = async (req, res, next) => {
   }
 };
 
-// Get Court By ID
-export const getCourtById = async (req, res, next) => {
-  try {
-    const court = await Court.findById(req.params.id);
-    if (!court) {
-      return res.status(404).json({ message: "Court not found." });
-    }
-    res.status(200).json(court);
-  } catch (error) {
-    next(error);
-  }
-};
-
 // Update Court (Admin)
 export const updateCourt = async (req, res, next) => {
   try {

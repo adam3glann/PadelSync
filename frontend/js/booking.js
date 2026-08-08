@@ -318,6 +318,7 @@ function renderGrid(slots, date) {
     var courtImg = court.image
       ? db.imageUrl(court.image)
       : courtPlaceholders[k % courtPlaceholders.length];
+    var courtImgFallback = courtPlaceholders[k % courtPlaceholders.length];
     var borderColor = borderColors[k % borderColors.length];
     var courtNameHtml = escapeHtml(court.name || "");
     var courtNameSafe = (court.name || "").replace(/'/g, "\\'");
@@ -340,7 +341,9 @@ function renderGrid(slots, date) {
       courtImg +
       '" alt="' +
       courtNameHtml +
-      '" style="width:100%;height:160px;object-fit:cover;">';
+      '" onerror="this.onerror=null;this.src=\'' +
+      courtImgFallback +
+      '\';" style="width:100%;height:160px;object-fit:cover;">';
     html +=
       '<div class="court-card-overlay"><h3 style="font-size:1.2rem;color:#fff;">' +
       courtNameHtml +

@@ -80,13 +80,6 @@ window.db = {
   getCourts: function (page, limit) {
     return request("/courts?page=" + (page || 1) + "&limit=" + (limit || 50));
   },
-  getAllActiveCourts: function () {
-    return request("/courts?page=1&limit=50").then(function (data) {
-      return data.data.filter(function (court) {
-        return court.status === "active";
-      });
-    });
-  },
   createCourt: function (name, description, imageFile) {
     var form = new FormData();
     form.append("name", name);

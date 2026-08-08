@@ -114,7 +114,9 @@ async function fetchCourts(page) {
           db.imageUrl(court.image) +
           '" alt="' +
           courtNameHtml +
-          '" style="width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">';
+          '" onerror="this.onerror=null;this.src=\'../assets/court-' +
+          ((i % 3) + 1) +
+          '.jpg\';" style="width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm) var(--radius-sm) 0 0;">';
       } else {
         imgHtml =
           '<div style="width:100%;height:160px;background:var(--frost);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.85rem;">' +
