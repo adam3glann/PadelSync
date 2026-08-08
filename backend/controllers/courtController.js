@@ -1,23 +1,34 @@
 import Court from "../models/Court.js";
 import Booking from "../models/Booking.js";
-import { fileURLToPath } from "url";
-import path from "path";
-import { promises as fs } from "fs";
+import cloudinary from "../config/cloudinary.js";
 
-const UPLOADS_DIR = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "..",
-  "uploads",
-);
-
-const removeImage = async (filename) => {
-  if (!filename) return;
+// Images now live on Cloudinary (not local disk), so every device/server
+// instance resolves the same URL instead of only whoever handled the upload.
+const removeImage = async (publicId) => {
+  if (!publicId) return;
   try {
-    await fs.unlink(path.join(UPLOADS_DIR, filename));
+    await cloudinary.uploader.destroy(publicId);
   } catch {
-    // Ignore missing files.
+    // Ignore failures (e.g. asset already removed).
   }
 };
+
+// Streams the in-memory file buffer (from multer's memoryStorage) to
+// Cloudinary and resolves with { url, publicId }.
+const uploadImage = (file) =>
+  new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "padelsync/courts",
+        public_id: `court-${Date.now()}-${Math.round(Math.random() * 1e9)}`,
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve({ url: result.secure_url, publicId: result.public_id });
+      },
+    );
+    stream.end(file.buffer);
+  });
 
 // Create Court (Admin)
 export const createCourt = async (req, res, next) => {
@@ -34,12 +45,15 @@ export const createCourt = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid price." });
     }
 
+    const uploaded = req.file ? await uploadImage(req.file) : null;
+
     const court = await Court.create({
       name,
       location: req.body.location,
       pricePerHour,
       description: req.body.description,
-      image: req.file ? req.file.filename : "",
+      image: uploaded ? uploaded.url : "",
+      imagePublicId: uploaded ? uploaded.publicId : "",
     });
 
     res.status(201).json({ message: "Court created successfully.", court });
@@ -82,7 +96,7 @@ export const updateCourt = async (req, res, next) => {
     }
 
     const updates = {};
-    const oldImage = court.image;
+    const oldImagePublicId = court.imagePublicId;
     if (req.body.name !== undefined)
       updates.name = String(req.body.name).trim();
     if (req.body.location !== undefined) updates.location = req.body.location;
@@ -103,14 +117,16 @@ export const updateCourt = async (req, res, next) => {
     }
 
     if (req.file) {
-      updates.image = req.file.filename;
+      const uploaded = await uploadImage(req.file);
+      updates.image = uploaded.url;
+      updates.imagePublicId = uploaded.publicId;
     }
 
     Object.assign(court, updates);
     await court.save();
 
-    if (req.file && oldImage) {
-      removeImage(oldImage);
+    if (req.file && oldImagePublicId) {
+      removeImage(oldImagePublicId);
     }
 
     res.status(200).json({ message: "Court updated successfully.", court });
@@ -127,7 +143,7 @@ export const deleteCourt = async (req, res, next) => {
       return res.status(404).json({ message: "Court not found." });
     }
     await Booking.deleteMany({ court: court._id });
-    removeImage(court.image);
+    removeImage(court.imagePublicId);
     res.status(200).json({ message: "Court deleted successfully." });
   } catch (error) {
     next(error);

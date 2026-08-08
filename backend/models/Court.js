@@ -27,6 +27,14 @@ const courtSchema = new mongoose.Schema(
       default: "",
     },
 
+    // Cloudinary's public_id for the uploaded image, kept alongside the URL so
+    // the old asset can be deleted from Cloudinary when it's replaced or the
+    // court is removed.
+    imagePublicId: {
+      type: String,
+      default: "",
+    },
+
     status: {
       type: String,
       enum: ["active", "maintenance"],
