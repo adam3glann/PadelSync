@@ -126,19 +126,5 @@ function renderUpcoming(bookings) {
 
 // Cancel a booking with confirmation
 function cancelBooking(id) {
-  var title = window.i18n
-    ? window.i18n.t("modal.cancelBooking")
-    : "Cancel Booking";
-  var msg = window.i18n
-    ? window.i18n.t("modal.cancelBookingMsg")
-    : "Are you sure you want to cancel this reservation?";
-  auth.showModal(title, msg, async function () {
-    var result = await db.cancelSlot(id);
-    if (!result.ok) {
-      auth.showToast(result.message, "error");
-      return;
-    }
-    auth.showToast(result.message);
-    fetchDashboardData();
-  });
+  auth.confirmCancelBooking(id, fetchDashboardData);
 }
