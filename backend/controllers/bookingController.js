@@ -169,6 +169,26 @@ export const getBookings = async (req, res, next) => {
   }
 };
 
+export const getBookingById = async (req, res, next) => {
+  try {
+    const booking = await Booking.findById(req.params.id)
+      .populate("court", "name description pricePerHour image")
+      .populate("user", "fullName email");
+    if (!booking)
+      return res.status(404).json({ message: "Booking not found." });
+    const isOwner =
+      booking.user &&
+      booking.user._id.toString() === req.user._id.toString();
+    if (!isOwner && req.user.role !== "admin")
+      return res
+        .status(403)
+        .json({ message: "Access denied. This is not your booking." });
+    res.json(booking);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const cancelBooking = async (req, res, next) => {
   try {
     const booking = await Booking.findById(req.params.id);
@@ -257,6 +277,18 @@ export const getStats = async (req, res, next) => {
       expectedRevenue: Math.round((deposits + cashDue - refunds) * 100) / 100,
       refundTotal: refunds,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCancellations = async (req, res, next) => {
+  try {
+    const cancellations = await Booking.find({ status: "cancelled" })
+      .populate("court", "name")
+      .populate("user", "fullName email")
+      .sort({ cancelledAt: -1 });
+    res.json(cancellations);
   } catch (error) {
     next(error);
   }
