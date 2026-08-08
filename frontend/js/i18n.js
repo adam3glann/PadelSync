@@ -28,6 +28,7 @@ var TEXT = {
   'auth.signIn': 'Sign In',
   'auth.signingIn': 'Signing in...',
   'auth.noAccount': 'No account?',
+  'auth.register': 'Register',
   'auth.joinTitle': 'Join PadelSync',
   'auth.registerSubtitle': 'Create your account and start booking.',
   'auth.fullName': 'Full Name',

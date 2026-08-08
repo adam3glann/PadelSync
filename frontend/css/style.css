@@ -31,11 +31,13 @@ html[data-theme="light"] {
 }
 
 body {
-  font-family: 'Inter', Arial, sans-serif;
-  background-color: #111315;
-  color: #F8F9FA;
+  font-family: "Inter", Arial, sans-serif;
+  background-color: var(--court-dark);
+  color: #f8f9fa;
   line-height: 1.6;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
 
 img {
@@ -48,7 +50,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Barlow Condensed', Arial, sans-serif;
+  font-family: "Barlow Condensed", Arial, sans-serif;
   font-weight: bold;
   text-transform: uppercase;
   color: #ffffff;
@@ -56,11 +58,11 @@ h6 {
 
 a {
   text-decoration: none;
-  color: #005BC5;
+  color: #005bc5;
 }
 
 a:hover {
-  color: #DFFF00;
+  color: #dfff00;
 }
 
 /* Helper classes */
@@ -112,7 +114,7 @@ a:hover {
 }
 
 .gradient-text {
-  color: #DFFF00;
+  color: #dfff00;
 }
 
 /* Navbar */
@@ -144,7 +146,7 @@ a:hover {
   display: inline-block;
   width: 10px;
   height: 10px;
-  background-color: #DFFF00;
+  background-color: #dfff00;
   border-radius: 50%;
   margin-left: 2px;
 }
@@ -178,7 +180,9 @@ a:hover {
   cursor: pointer;
   font: inherit;
   font-size: 12px;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .theme-toggle:hover {
@@ -197,7 +201,9 @@ a:hover {
   cursor: pointer;
   font: inherit;
   font-size: 12px;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .language-toggle:hover {
@@ -237,12 +243,14 @@ main {
   border-radius: 4px;
   border: none;
   cursor: pointer;
-  font-family: 'Barlow Condensed', Arial, sans-serif;
+  font-family: "Barlow Condensed", Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
   text-transform: uppercase;
   text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .btn:hover {
@@ -256,7 +264,7 @@ main {
 }
 
 .btn-primary {
-  background-color: #DFFF00;
+  background-color: #dfff00;
   color: #111315;
 }
 
@@ -265,7 +273,7 @@ main {
 }
 
 .btn-blue {
-  background-color: #005BC5;
+  background-color: #005bc5;
   color: #ffffff;
 }
 
@@ -301,7 +309,10 @@ main {
   border-radius: 4px;
   padding: 30px;
   margin-top: 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
   animation: rise-in 0.45s ease both;
 }
 
@@ -345,7 +356,7 @@ main {
   border: 1px solid #444444;
   border-radius: 4px;
   color: #ffffff;
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   font-size: 16px;
   box-sizing: border-box;
 }
@@ -353,7 +364,7 @@ main {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #005BC5;
+  border-color: #005bc5;
   outline: none;
 }
 
@@ -402,7 +413,6 @@ main {
   accent-color: var(--padel-blue);
 }
 
-
 .payment-summary,
 .policy-box {
   padding: 14px;
@@ -447,7 +457,7 @@ main {
 .badge-equipment {
   background-color: #112244;
   color: #5da8ff;
-  border: 1px solid #005BC5;
+  border: 1px solid #005bc5;
 }
 
 .badge-admin {
@@ -469,16 +479,16 @@ main {
   margin: -10px;
 }
 
-.grid>* {
+.grid > * {
   padding: 10px;
   box-sizing: border-box;
 }
 
-.grid-3>* {
+.grid-3 > * {
   width: 33.33%;
 }
 
-.grid-4>* {
+.grid-4 > * {
   width: 25%;
 }
 
@@ -533,7 +543,7 @@ main {
 }
 
 .slot.available {
-  border-color: #DFFF00;
+  border-color: #dfff00;
   color: #ffffff;
 }
 
@@ -542,9 +552,9 @@ main {
 }
 
 .slot.booked-self {
-  background-color: #005BC5;
+  background-color: #005bc5;
   color: #ffffff;
-  border-color: #005BC5;
+  border-color: #005bc5;
 }
 
 .slot.booked-other {
@@ -577,7 +587,7 @@ main {
 
 .stat-info h3 {
   font-size: 36px;
-  color: #DFFF00;
+  color: #dfff00;
   margin-bottom: 0;
 }
 
@@ -607,7 +617,11 @@ main {
   padding: 18px 22px;
   border: 1px solid #39424f;
   border-radius: 4px;
-  background: linear-gradient(100deg, rgba(0, 91, 197, 0.18), rgba(223, 255, 0, 0.08));
+  background: linear-gradient(
+    100deg,
+    rgba(0, 91, 197, 0.18),
+    rgba(223, 255, 0, 0.08)
+  );
 }
 
 .finance-strip div {
@@ -726,7 +740,7 @@ main {
   width: 40px;
   height: 40px;
   border: 3px solid #444444;
-  border-left-color: #DFFF00;
+  border-left-color: #dfff00;
   border-radius: 50%;
   margin: 30px auto;
 }
@@ -1006,16 +1020,16 @@ html[data-theme="light"] .policy-box strong {
 }
 
 .cal-today {
-  border: 1px solid #005BC5;
+  border: 1px solid #005bc5;
 }
 
 .cal-selected {
-  background-color: #005BC5;
+  background-color: #005bc5;
   color: #ffffff;
 }
 
 .cal-selected:hover {
-  background-color: #005BC5;
+  background-color: #005bc5;
 }
 
 /* Availability Bar */
@@ -1027,7 +1041,7 @@ html[data-theme="light"] .policy-box strong {
 
 .avail-bar-fill {
   height: 100%;
-  background-color: #DFFF00;
+  background-color: #dfff00;
 }
 
 .avail-stats {
@@ -1072,8 +1086,8 @@ html[data-theme="light"] .policy-box strong {
 }
 
 .pag-active {
-  background-color: #005BC5;
-  border-color: #005BC5;
+  background-color: #005bc5;
+  border-color: #005bc5;
 }
 
 /* Mobile Menu */
@@ -1119,8 +1133,8 @@ html[data-theme="light"] .policy-box strong {
     margin: 10px 0;
   }
 
-  .grid-3>*,
-  .grid-4>* {
+  .grid-3 > *,
+  .grid-4 > * {
     width: 100%;
   }
 
@@ -1161,7 +1175,7 @@ html[data-theme="light"] .policy-box strong {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../assets/hero-bg.png');
+  background-image: url("../assets/hero-bg.png");
   background-size: cover;
   background-position: center;
   opacity: 0.1;
@@ -1191,7 +1205,9 @@ html[data-theme="light"] .policy-box strong {
 
 /* Dashboard Redesign: Stat Cards Micro-animations */
 .stat-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .stat-card:hover {
@@ -1217,7 +1233,9 @@ html[data-theme="light"] .policy-box strong {
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .ticket-card:hover {
@@ -1246,7 +1264,7 @@ html[data-theme="light"] .policy-box strong {
 
 .ticket-stub::before,
 .ticket-stub::after {
-  content: '';
+  content: "";
   position: absolute;
   left: -11px;
   width: 20px;
@@ -1291,7 +1309,7 @@ html[data-theme="light"] .policy-box strong {
   color: var(--text-muted);
 }
 
-.grid-2>* {
+.grid-2 > * {
   width: 50%;
 }
 
@@ -1316,9 +1334,9 @@ html[data-theme="light"] .policy-box strong {
 
 .eyebrow {
   color: var(--optic-yellow);
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  letter-spacing: .12em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 

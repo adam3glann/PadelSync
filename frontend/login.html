@@ -1,48 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - PadelSync</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-<body>
+  <body>
     <div class="auth-split">
-        <div class="auth-image-panel" style="background-image: url('assets/login-bg.jpg');"></div>
-        <div class="auth-form-panel">
-            <div style="width: 100%; max-width: 380px;">
-                <div class="text-center mb-2" id="loginHeader">
-                    <h2 data-i18n="auth.welcomeBack">Welcome Back</h2>
-                    <p style="color: #aaaaaa;" data-i18n="auth.signInSubtitle">Sign in to your PadelSync account.</p>
-                </div>
-                <div class="card" id="loginCard">
-                    <form id="loginForm" novalidate>
-                        <div class="form-group"> <label for="email" data-i18n="auth.email">Email</label> <input
-                                type="email" id="email" required placeholder="you@example.com"> </div>
-                        <div class="form-group"> <label for="password" data-i18n="auth.password">Password</label> <input
-                                type="password" id="password" required placeholder="Enter your password"> <label
-                                class="password-toggle"><input type="checkbox" id="show-login-password"> <span
-                                    data-i18n="auth.showPassword">Show password</span></label> </div>
-                        <button type="submit" class="btn btn-primary"
-                            style="width: 100%; margin-top: 10px;" id="loginBtn" data-i18n="auth.signIn">Sign
-                            In</button>
-                    </form>
-                    <div class="text-center mt-2">
-                        <p style="color: #aaaaaa; font-size: 14px;"> <span data-i18n="auth.noAccount">No account?</span>
-                            <a href="register.html" data-i18n="auth.register">Register</a>
-                        </p>
-                    </div>
-                </div>
+      <div
+        class="auth-image-panel"
+        style="background-image: url(&quot;assets/login-bg.jpg&quot;)"
+      ></div>
+      <div class="auth-form-panel">
+        <div style="width: 100%; max-width: 380px">
+          <div class="text-center mb-2" id="loginHeader">
+            <h2 data-i18n="auth.welcomeBack">Welcome Back</h2>
+            <p style="color: #aaaaaa" data-i18n="auth.signInSubtitle">
+              Sign in to your PadelSync account.
+            </p>
+          </div>
+          <div class="card" id="loginCard">
+            <form id="loginForm" novalidate>
+              <div class="form-group">
+                <label for="email" data-i18n="auth.email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div class="form-group">
+                <label for="password" data-i18n="auth.password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  required
+                  placeholder="Enter your password"
+                />
+                <label class="password-toggle"
+                  ><input type="checkbox" id="show-login-password" />
+                  <span data-i18n="auth.showPassword"
+                    >Show password</span
+                  ></label
+                >
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="width: 100%; margin-top: 10px"
+                id="loginBtn"
+                data-i18n="auth.signIn"
+              >
+                Sign In
+              </button>
+            </form>
+            <div class="text-center mt-2">
+              <p style="color: #aaaaaa; font-size: 14px">
+                <span data-i18n="auth.noAccount">No account?</span>
+                <a href="register.html" data-i18n="auth.register">Register</a>
+              </p>
             </div>
+          </div>
         </div>
+      </div>
     </div>
     <script src="js/db.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/validation.js"></script>
     <script src="js/login.js"></script>
-</body>
-
+  </body>
 </html>

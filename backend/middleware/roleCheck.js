@@ -3,21 +3,22 @@
 // having already been attached from the verified JWT.
 
 export const checkRole = (...allowedRoles) => {
-    return (req, res, next) => {
-        if (!req.user) {
-            return res.status(401).json({
-                message: "Not authorized. Please log in."
-            });
-        }
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Not authorized. Please log in.",
+      });
+    }
 
-        if (!allowedRoles.includes(req.user.role)) {
-            return res.status(403).json({
-                message: "Access denied. You do not have permission to perform this action."
-            });
-        }
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        message:
+          "Access denied. You do not have permission to perform this action.",
+      });
+    }
 
-        next();
-    };
+    next();
+  };
 };
 
 // Members and admins can access member-facing features (admins can act as members too)

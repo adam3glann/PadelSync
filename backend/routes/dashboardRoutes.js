@@ -1,9 +1,9 @@
 import express from "express";
 import {
-    getStats,
-    getAllBookings,
-    cancelBookingByAdmin,
-    getCancellations
+  getStats,
+  getAllBookings,
+  cancelBookingByAdmin,
+  getCancellations,
 } from "../controllers/adminDashboardController.js";
 
 import { protect } from "../middleware/auth.js";
