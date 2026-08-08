@@ -2,7 +2,10 @@
 class MiniCalendar {
   constructor(container, onSelect) {
     // Accept either an element ID string or the actual element
-    this.container = typeof container === 'string' ? document.getElementById(container) : container;
+    this.container =
+      typeof container === "string"
+        ? document.getElementById(container)
+        : container;
     this.onSelect = onSelect;
 
     // Set today's date with no time component
@@ -19,21 +22,59 @@ class MiniCalendar {
 
   // Build and display the calendar HTML
   render() {
-    const monthsEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const monthsAr = ['\u064a\u0646\u0627\u064a\u0631', '\u0641\u0628\u0631\u0627\u064a\u0631', '\u0645\u0627\u0631\u0633', '\u0623\u0628\u0631\u064a\u0644', '\u0645\u0627\u064a\u0648', '\u064a\u0648\u0646\u064a\u0648', '\u064a\u0648\u0644\u064a\u0648', '\u0623\u063a\u0633\u0637\u0633', '\u0633\u0628\u062a\u0645\u0628\u0631', '\u0623\u0643\u062a\u0648\u0628\u0631', '\u0646\u0648\u0641\u0645\u0628\u0631', '\u062f\u064a\u0633\u0645\u0628\u0631'];
-    const daysEn = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-    const daysAr = ['\u0627\u0644\u0623\u062d\u062f', '\u0627\u0644\u0627\u062b\u0646\u064a\u0646', '\u0627\u0644\u062b\u0644\u0627\u062b\u0627\u0621', '\u0627\u0644\u0623\u0631\u0628\u0639\u0627\u0621', '\u0627\u0644\u062e\u0645\u064a\u0633', '\u0627\u0644\u062c\u0645\u0639\u0629', '\u0627\u0644\u0633\u0628\u062a'];
+    const monthsEn = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const monthsAr = [
+      "\u064a\u0646\u0627\u064a\u0631",
+      "\u0641\u0628\u0631\u0627\u064a\u0631",
+      "\u0645\u0627\u0631\u0633",
+      "\u0623\u0628\u0631\u064a\u0644",
+      "\u0645\u0627\u064a\u0648",
+      "\u064a\u0648\u0646\u064a\u0648",
+      "\u064a\u0648\u0644\u064a\u0648",
+      "\u0623\u063a\u0633\u0637\u0633",
+      "\u0633\u0628\u062a\u0645\u0628\u0631",
+      "\u0623\u0643\u062a\u0648\u0628\u0631",
+      "\u0646\u0648\u0641\u0645\u0628\u0631",
+      "\u062f\u064a\u0633\u0645\u0628\u0631",
+    ];
+    const daysEn = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+    const daysAr = [
+      "\u0627\u0644\u0623\u062d\u062f",
+      "\u0627\u0644\u0627\u062b\u0646\u064a\u0646",
+      "\u0627\u0644\u062b\u0644\u0627\u062b\u0627\u0621",
+      "\u0627\u0644\u0623\u0631\u0628\u0639\u0627\u0621",
+      "\u0627\u0644\u062e\u0645\u064a\u0633",
+      "\u0627\u0644\u062c\u0645\u0639\u0629",
+      "\u0627\u0644\u0633\u0628\u062a",
+    ];
 
     // Pick month/day names based on current language
-    const lang = (window.i18n && window.i18n.getLang()) || 'en';
-    const months = lang === 'ar' ? monthsAr : monthsEn;
-    const days = lang === 'ar' ? daysAr : daysEn;
+    const lang = (window.i18n && window.i18n.getLang()) || "en";
+    const months = lang === "ar" ? monthsAr : monthsEn;
+    const days = lang === "ar" ? daysAr : daysEn;
 
     const firstDay = new Date(this.viewYear, this.viewMonth, 1).getDay();
-    const daysInMonth = new Date(this.viewYear, this.viewMonth + 1, 0).getDate();
+    const daysInMonth = new Date(
+      this.viewYear,
+      this.viewMonth + 1,
+      0,
+    ).getDate();
 
     // Build calendar day cells
-    let cells = '';
+    let cells = "";
 
     // Empty cells before the first day of the month
     for (let i = 0; i < firstDay; i++) {
@@ -49,16 +90,17 @@ class MiniCalendar {
       const isPast = date < this.today;
       const isToday = date.getTime() === this.today.getTime();
       const isSelected = date.getTime() === this.selected.getTime();
-      const isWithin30Days = date <= new Date(this.today.getTime() + 30 * 86400000);
+      const isWithin30Days =
+        date <= new Date(this.today.getTime() + 30 * 86400000);
 
       // Build class list
-      let cls = 'cal-cell';
-      if (isPast || !isWithin30Days) cls += ' cal-disabled';
-      if (isToday) cls += ' cal-today';
-      if (isSelected) cls += ' cal-selected';
+      let cls = "cal-cell";
+      if (isPast || !isWithin30Days) cls += " cal-disabled";
+      if (isToday) cls += " cal-today";
+      if (isSelected) cls += " cal-selected";
 
       // Add click handler only for valid (non-past, within 30 days) cells
-      let clickAttr = '';
+      let clickAttr = "";
       if (!isPast && isWithin30Days) {
         clickAttr = `data-date="${dateStr}" onclick="window._miniCalSelect('${dateStr}')"`;
       }
@@ -67,7 +109,7 @@ class MiniCalendar {
     }
 
     // Build day-of-week header row
-    let dayHeaders = '';
+    let dayHeaders = "";
     for (let i = 0; i < days.length; i++) {
       dayHeaders += `<div class="cal-cell cal-day-label">${days[i]}</div>`;
     }
@@ -87,22 +129,34 @@ class MiniCalendar {
 
     // Set global handlers for calendar navigation and selection
     window._miniCalSelect = (dateStr) => {
-      this.selected = new Date(dateStr + 'T00:00:00');
+      this.selected = new Date(dateStr + "T00:00:00");
       this.render();
       if (this.onSelect) this.onSelect(dateStr);
     };
 
     window._miniCalNav = (dir) => {
       this.viewMonth += dir;
-      if (this.viewMonth > 11) { this.viewMonth = 0; this.viewYear++; }
-      if (this.viewMonth < 0) { this.viewMonth = 11; this.viewYear--; }
+      if (this.viewMonth > 11) {
+        this.viewMonth = 0;
+        this.viewYear++;
+      }
+      if (this.viewMonth < 0) {
+        this.viewMonth = 11;
+        this.viewYear--;
+      }
       this.render();
     };
   }
 
   // Format a Date object as YYYY-MM-DD
   formatDate(d) {
-    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    return (
+      d.getFullYear() +
+      "-" +
+      String(d.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(d.getDate()).padStart(2, "0")
+    );
   }
 }
 
@@ -112,22 +166,41 @@ function initAvailabilityBar(containerId) {
     total: 0,
     booked: 0,
     render: function () {
-      var pct = this.total > 0 ? Math.round((this.booked / this.total) * 100) : 0;
+      var pct =
+        this.total > 0 ? Math.round((this.booked / this.total) * 100) : 0;
       var avail = this.total - this.booked;
       var el = document.getElementById(containerId);
       if (!el) return;
 
-      var tFn = (window.i18n && window.i18n.t.bind(window.i18n)) || function (k) { return k; };
+      var tFn =
+        (window.i18n && window.i18n.t.bind(window.i18n)) ||
+        function (k) {
+          return k;
+        };
 
       el.innerHTML =
         '<div class="avail-bar">' +
-        '<div class="avail-bar-fill" style="width: ' + pct + '%"></div>' +
-        '</div>' +
+        '<div class="avail-bar-fill" style="width: ' +
+        pct +
+        '%"></div>' +
+        "</div>" +
         '<div class="avail-stats">' +
-        '<span class="avail-stat"><span style="color:var(--success)">' + avail + '</span> ' + tFn('book.available') + '</span>' +
-        '<span class="avail-stat"><span style="color:var(--danger)">' + this.booked + '</span> ' + tFn('book.booked') + '</span>' +
-        '<span class="avail-stat"><span style="color:var(--text-muted)">' + this.total + '</span> ' + tFn('book.total') + '</span>' +
-        '</div>';
-    }
+        '<span class="avail-stat"><span style="color:var(--success)">' +
+        avail +
+        "</span> " +
+        tFn("book.available") +
+        "</span>" +
+        '<span class="avail-stat"><span style="color:var(--danger)">' +
+        this.booked +
+        "</span> " +
+        tFn("book.booked") +
+        "</span>" +
+        '<span class="avail-stat"><span style="color:var(--text-muted)">' +
+        this.total +
+        "</span> " +
+        tFn("book.total") +
+        "</span>" +
+        "</div>";
+    },
   };
 }

@@ -1,10 +1,10 @@
 import express from "express";
 import {
-    createReservation,
-    getAvailability,
-    getMyReservations,
-    getReservationById,
-    cancelReservation
+  createReservation,
+  getAvailability,
+  getMyReservations,
+  getReservationById,
+  cancelReservation,
 } from "../controllers/reservationController.js";
 
 import { protect } from "../middleware/auth.js";

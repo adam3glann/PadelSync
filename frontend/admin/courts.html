@@ -1,61 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Courts - PadelSync</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Courts - PadelSync</title>
-  <link rel="stylesheet" href="../css/style.css">
-</head>
-
-<body>
-  <nav class="navbar" style="border-bottom-color: #005BC5;">
-    <div class="container d-flex justify-between align-center">
-      <a href="dashboard.html" class="navbar-brand">PadelSync<span class="ball"></span> <span class="badge badge-admin"
-          data-i18n="nav.admin">Admin</span></a>
-      <div class="nav-links">
-        <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
-        <a href="courts.html" class="active" data-i18n="nav.courts">Courts</a>
-        <a href="bookings.html" data-i18n="nav.bookings">Bookings</a>
-        <a href="users.html" data-i18n="nav.users">Users</a>
-        <a href="#" onclick="auth.logout()" class="btn btn-outline" data-i18n="nav.logout">Logout</a>
+  <body>
+    <nav class="navbar" style="border-bottom-color: #005bc5">
+      <div class="container d-flex justify-between align-center">
+        <a href="dashboard.html" class="navbar-brand"
+          >PadelSync<span class="ball"></span>
+          <span class="badge badge-admin" data-i18n="nav.admin">Admin</span></a
+        >
+        <div class="nav-links">
+          <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
+          <a href="courts.html" class="active" data-i18n="nav.courts">Courts</a>
+          <a href="bookings.html" data-i18n="nav.bookings">Bookings</a>
+          <a href="users.html" data-i18n="nav.users">Users</a>
+          <a
+            href="#"
+            onclick="auth.logout()"
+            class="btn btn-outline"
+            data-i18n="nav.logout"
+            >Logout</a
+          >
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <main class="container">
-    <div class="card mb-3">
-      <h3 data-i18n="courts.addNew">Add New Court</h3>
-      <form id="create-court-form" novalidate class="mt-1" style="display: flex; gap: 15px; align-items: flex-end;">
-        <div class="form-group" style="margin-bottom: 0; flex: 1;">
-          <label data-i18n="courts.name">Court Name</label>
-          <input type="text" id="court-name" required placeholder="e.g., Court 5">
-        </div>
-        <div class="form-group" style="margin-bottom: 0; flex: 2;">
-          <label data-i18n="courts.description">Description</label>
-          <input type="text" id="court-desc" placeholder="Surface / description">
-        </div>
-        <div class="form-group" style="margin-bottom: 0; flex: 1;">
-          <label data-i18n="courts.photo">Court Photo</label>
-          <input type="file" id="court-image" accept="image/*">
-        </div>
-        <button type="submit" class="btn btn-blue" id="createBtn" data-i18n="courts.addCourt">Add Court</button>
-      </form>
-    </div>
+    <main class="container">
+      <div class="card mb-3">
+        <h3 data-i18n="courts.addNew">Add New Court</h3>
+        <form
+          id="create-court-form"
+          novalidate
+          class="mt-1"
+          style="display: flex; gap: 15px; align-items: flex-end"
+        >
+          <div class="form-group" style="margin-bottom: 0; flex: 1">
+            <label data-i18n="courts.name">Court Name</label>
+            <input
+              type="text"
+              id="court-name"
+              required
+              placeholder="e.g., Court 5"
+            />
+          </div>
+          <div class="form-group" style="margin-bottom: 0; flex: 2">
+            <label data-i18n="courts.description">Description</label>
+            <input
+              type="text"
+              id="court-desc"
+              placeholder="Surface / description"
+            />
+          </div>
+          <div class="form-group" style="margin-bottom: 0; flex: 1">
+            <label data-i18n="courts.photo">Court Photo</label>
+            <input type="file" id="court-image" accept="image/*" />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-blue"
+            id="createBtn"
+            data-i18n="courts.addCourt"
+          >
+            Add Court
+          </button>
+        </form>
+      </div>
 
-    <h2 class="mb-2" data-i18n="courts.title">Courts</h2>
-    <div id="courts-list" class="grid grid-3">
-      <div class="spinner"></div>
-    </div>
-    <div id="courts-pagination"></div>
-  </main>
+      <h2 class="mb-2" data-i18n="courts.title">Courts</h2>
+      <div id="courts-list" class="grid grid-3">
+        <div class="spinner"></div>
+      </div>
+      <div id="courts-pagination"></div>
+    </main>
 
-  <script src="../js/db.js"></script>
-  <script src="../js/i18n.js"></script>
-  <script src="../js/auth.js"></script>
-  <script src="../js/validation.js"></script>
-  <script src="../js/pagination.js"></script>
-  <script src="../js/manageCourts.js"></script>
-</body>
-
+    <script src="../js/db.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/validation.js"></script>
+    <script src="../js/pagination.js"></script>
+    <script src="../js/manageCourts.js"></script>
+  </body>
 </html>

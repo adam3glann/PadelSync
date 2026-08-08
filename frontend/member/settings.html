@@ -1,67 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Settings - PadelSync</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
 
-<body>
+  <body>
     <nav class="navbar">
-        <div class="container d-flex justify-between align-center"> <a href="dashboard.html"
-                class="navbar-brand">PadelSync<span class="ball"></span></a>
-            <div class="nav-links"> <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a> <a href="book.html"
-                    data-i18n="nav.bookCourt">Book Court</a> <a href="reservations.html"
-                    data-i18n="nav.reservations">Reservations</a> <a href="settings.html" class="active"
-                    data-i18n="nav.settings">Settings</a> <a href="#" onclick="auth.logout()" class="btn btn-outline"
-                    data-i18n="nav.logout">Logout</a> </div>
+      <div class="container d-flex justify-between align-center">
+        <a href="dashboard.html" class="navbar-brand"
+          >PadelSync<span class="ball"></span
+        ></a>
+        <div class="nav-links">
+          <a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
+          <a href="book.html" data-i18n="nav.bookCourt">Book Court</a>
+          <a href="reservations.html" data-i18n="nav.reservations"
+            >Reservations</a
+          >
+          <a href="settings.html" class="active" data-i18n="nav.settings"
+            >Settings</a
+          >
+          <a
+            href="#"
+            onclick="auth.logout()"
+            class="btn btn-outline"
+            data-i18n="nav.logout"
+            >Logout</a
+          >
         </div>
+      </div>
     </nav>
     <main class="container settings-page">
-        <div class="settings-heading">
-            <p class="eyebrow" data-i18n="settings.account">Account</p>
-            <h1 data-i18n="settings.title">Settings</h1>
-            <p data-i18n="settings.subtitle">Update your profile, password, and preferences.</p>
-        </div>
-        <div class="settings-grid">
-            <section class="card settings-card">
-                <h2 data-i18n="settings.profile">Profile details</h2>
-                <form id="profile-form" class="simple-form">
-                    <div class="form-group"><label for="name" data-i18n="auth.fullName">Full Name</label><input
-                            id="name" required minlength="2"></div>
-                    <div class="form-group"><label for="email" data-i18n="auth.email">Email</label><input id="email"
-                            type="email" required></div> <button class="btn btn-primary" type="submit"
-                        data-i18n="settings.saveProfile">Save profile</button>
-                </form>
-            </section>
-            <section class="card settings-card">
-                <h2 data-i18n="settings.password">Change password</h2>
-                <form id="password-form" class="simple-form">
-                    <div class="form-group"><label for="current-password" data-i18n="settings.currentPassword">Current
-                            password</label><input id="current-password" type="password" required></div>
-                    <div class="form-group"><label for="new-password" data-i18n="settings.newPassword">New
-                            password</label><input id="new-password" type="password" required minlength="6"></div>
-                    <div class="form-group"><label for="confirm-password" data-i18n="settings.confirmPassword">Confirm
-                            new password</label><input id="confirm-password" type="password" required minlength="6">
-                    </div> <button class="btn btn-primary" type="submit" data-i18n="settings.updatePassword">Update
-                        password</button>
-                </form>
-            </section>
-            <section class="card settings-card settings-preferences">
-                <h2 data-i18n="settings.preferences">Preferences</h2>
-                <p data-i18n="settings.preferencesText">Choose how PadelSync looks and reads for you.</p>
-                <div class="settings-actions"> <button id="theme-button" class="btn btn-outline" type="button"
-                        data-i18n="settings.theme">Toggle colour theme</button>
-                </div>
-            </section>
-        </div>
+      <div class="settings-heading">
+        <p class="eyebrow" data-i18n="settings.account">Account</p>
+        <h1 data-i18n="settings.title">Settings</h1>
+        <p data-i18n="settings.subtitle">
+          Update your profile, password, and preferences.
+        </p>
+      </div>
+      <div class="settings-grid">
+        <section class="card settings-card">
+          <h2 data-i18n="settings.profile">Profile details</h2>
+          <form id="profile-form" class="simple-form">
+            <div class="form-group">
+              <label for="name" data-i18n="auth.fullName">Full Name</label
+              ><input id="name" required minlength="2" />
+            </div>
+            <div class="form-group">
+              <label for="email" data-i18n="auth.email">Email</label
+              ><input id="email" type="email" required />
+            </div>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              data-i18n="settings.saveProfile"
+            >
+              Save profile
+            </button>
+          </form>
+        </section>
+        <section class="card settings-card">
+          <h2 data-i18n="settings.password">Change password</h2>
+          <form id="password-form" class="simple-form">
+            <div class="form-group">
+              <label for="current-password" data-i18n="settings.currentPassword"
+                >Current password</label
+              ><input id="current-password" type="password" required />
+            </div>
+            <div class="form-group">
+              <label for="new-password" data-i18n="settings.newPassword"
+                >New password</label
+              ><input
+                id="new-password"
+                type="password"
+                required
+                minlength="6"
+              />
+            </div>
+            <div class="form-group">
+              <label for="confirm-password" data-i18n="settings.confirmPassword"
+                >Confirm new password</label
+              ><input
+                id="confirm-password"
+                type="password"
+                required
+                minlength="6"
+              />
+            </div>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              data-i18n="settings.updatePassword"
+            >
+              Update password
+            </button>
+          </form>
+        </section>
+        <section class="card settings-card settings-preferences">
+          <h2 data-i18n="settings.preferences">Preferences</h2>
+          <p data-i18n="settings.preferencesText">
+            Choose how PadelSync looks and reads for you.
+          </p>
+          <div class="settings-actions">
+            <button
+              id="theme-button"
+              class="btn btn-outline"
+              type="button"
+              data-i18n="settings.theme"
+            >
+              Toggle colour theme
+            </button>
+          </div>
+        </section>
+      </div>
     </main>
     <script src="../js/db.js"></script>
     <script src="../js/i18n.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/settings.js"></script>
-</body>
-
+  </body>
 </html>

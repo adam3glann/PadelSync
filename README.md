@@ -57,6 +57,7 @@ The application supports two user roles:
 ## ✨ Features
 
 ### Member
+
 - User registration & secure login (JWT)
 - Browse available courts with photos and pricing
 - Book a court in fixed 90-minute time blocks
@@ -66,12 +67,14 @@ The application supports two user roles:
 - Responsive dashboard with live weather for the club location
 
 ### Administrator
+
 - Dashboard with live stats: courts, members, today's bookings, revenue, refunds
 - Manage courts — create, edit, activate/deactivate, delete, upload photos
 - Manage users — view, promote/demote roles, change passwords, delete
 - Manage bookings — view all bookings, cancel any booking, view cancellation history
 
 ### Platform-wide
+
 - 🌍 **Localization** — full English/Arabic translation with automatic RTL layout switch
 - 📄 **Pagination** — on courts, bookings, and users lists
 - 🔒 **Security** — JWT auth, bcrypt password hashing, role-based access control, rate limiting on auth/booking endpoints, security headers, and a CORS allow-list
@@ -141,33 +144,43 @@ PadelSync/
 ## 📸 Screenshots
 
 ### Home
+
 ![Home page](frontend/screenshots/home.png)
 
 ### Login
+
 ![Login page](frontend/screenshots/login.png)
 
 ### Register
+
 ![Register page](frontend/screenshots/register.png)
 
 ### Member Dashboard
+
 ![Member dashboard](frontend/screenshots/member-dashboard.png)
 
 ### Book a Court
+
 ![Book court page](frontend/screenshots/book-court.png)
 
 ### My Reservations
+
 ![Reservations page](frontend/screenshots/reservations.png)
 
 ### Admin Dashboard
+
 ![Admin dashboard](frontend/screenshots/admin-dashboard.png)
 
 ### Manage Courts
+
 ![Manage courts page](frontend/screenshots/manage-courts.png)
 
 ### Manage Bookings
+
 ![Manage bookings page](frontend/screenshots/manage-bookings.png)
 
 ### Manage Users
+
 ![Manage users page](frontend/screenshots/manage-users.png)
 
 ---
@@ -267,12 +280,12 @@ Branches: `main` · `adam` · `omar` · `mafdy` · `sayed`
 
 ## 👥 Team Members
 
-| Team Member | Responsibility |
-|---|---|
-| **Adam Adel** | Full-Stack Development (Frontend & Backend) |
+| Team Member      | Responsibility                              |
+| ---------------- | ------------------------------------------- |
+| **Adam Adel**    | Full-Stack Development (Frontend & Backend) |
 | **Omar Yassien** | Full-Stack Development (Frontend & Backend) |
-| **Mafdy Nader** | Full-Stack Development (Frontend & Backend) |
-| **Sayed Said** | Full-Stack Development (Frontend & Backend) |
+| **Mafdy Nader**  | Full-Stack Development (Frontend & Backend) |
+| **Sayed Said**   | Full-Stack Development (Frontend & Backend) |
 
 ---
 

@@ -4,7 +4,7 @@ function renderPagination(containerId, pagination, onPageChange) {
 
   // If no container or less than 2 pages, don't show pagination
   if (!container || !pagination || pagination.totalPages <= 1) {
-    if (container) container.innerHTML = '';
+    if (container) container.innerHTML = "";
     return;
   }
 
@@ -25,35 +25,58 @@ function renderPagination(containerId, pagination, onPageChange) {
   }
 
   // Build the individual page buttons
-  var pagesHTML = '';
+  var pagesHTML = "";
   for (var i = start; i <= end; i++) {
-    var activeClass = i === page ? ' pag-active' : '';
-    pagesHTML += '<button class="pag-btn' + activeClass + '" data-page="' + i + '">' + i + '</button>';
+    var activeClass = i === page ? " pag-active" : "";
+    pagesHTML +=
+      '<button class="pag-btn' +
+      activeClass +
+      '" data-page="' +
+      i +
+      '">' +
+      i +
+      "</button>";
   }
 
   // Build the whole pagination HTML
-  var infoText = window.i18n ? window.i18n.t('pag.showing', { from: from, to: to, total: total }) : 'Showing ' + from + '-' + to + ' of ' + total;
-  var prevLabel = window.i18n ? window.i18n.t('pag.prev') : 'Prev';
-  var nextLabel = window.i18n ? window.i18n.t('pag.next') : 'Next';
+  var infoText = window.i18n
+    ? window.i18n.t("pag.showing", { from: from, to: to, total: total })
+    : "Showing " + from + "-" + to + " of " + total;
+  var prevLabel = window.i18n ? window.i18n.t("pag.prev") : "Prev";
+  var nextLabel = window.i18n ? window.i18n.t("pag.next") : "Next";
 
-  var prevDisabled = page <= 1 ? 'disabled' : '';
-  var nextDisabled = page >= totalPages ? 'disabled' : '';
+  var prevDisabled = page <= 1 ? "disabled" : "";
+  var nextDisabled = page >= totalPages ? "disabled" : "";
 
   container.innerHTML =
     '<div class="pagination">' +
-    '<span class="pag-info">' + infoText + '</span>' +
+    '<span class="pag-info">' +
+    infoText +
+    "</span>" +
     '<div class="pag-controls">' +
-    '<button class="pag-btn" data-page="' + (page - 1) + '" ' + prevDisabled + '>&#8249; ' + prevLabel + '</button>' +
+    '<button class="pag-btn" data-page="' +
+    (page - 1) +
+    '" ' +
+    prevDisabled +
+    ">&#8249; " +
+    prevLabel +
+    "</button>" +
     pagesHTML +
-    '<button class="pag-btn" data-page="' + (page + 1) + '" ' + nextDisabled + '>' + nextLabel + ' &#8250;</button>' +
-    '</div>' +
-    '</div>';
+    '<button class="pag-btn" data-page="' +
+    (page + 1) +
+    '" ' +
+    nextDisabled +
+    ">" +
+    nextLabel +
+    " &#8250;</button>" +
+    "</div>" +
+    "</div>";
 
   // Attach click events to all active buttons
-  var buttons = container.querySelectorAll('.pag-btn:not([disabled])');
+  var buttons = container.querySelectorAll(".pag-btn:not([disabled])");
   for (var j = 0; j < buttons.length; j++) {
-    buttons[j].addEventListener('click', function () {
-      var p = parseInt(this.getAttribute('data-page'), 10);
+    buttons[j].addEventListener("click", function () {
+      var p = parseInt(this.getAttribute("data-page"), 10);
       if (p >= 1 && p <= totalPages) {
         onPageChange(p);
       }
