@@ -8,24 +8,14 @@ import {
 
 import { protect, admin } from "../middleware/auth.js";
 import multer from "multer";
-import path from "path";
-import { fileURLToPath } from "url";
 
-const UPLOADS_DIR = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "..",
-  "uploads",
-);
-
-// Store uploads with their original extension so served files keep a sane
-// content type. Only image files up to 5 MB are accepted.
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOADS_DIR),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname || "").toLowerCase();
-    cb(null, `court-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
-  },
-});
+// Uploaded files are held in memory only, then streamed straight to
+// Cloudinary in the controller — nothing ever touches local disk. That's
+// what makes an image uploaded on one device/server instance visible from
+// every other one; local disk storage only exists wherever the request
+// happened to land, which is why one teammate's upload wasn't visible to
+// anyone else.
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   if (
