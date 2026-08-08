@@ -17,7 +17,11 @@ import { securityHeaders, corsOptions } from "./middleware/security.js";
 import User from "./models/User.js";
 import bcrypt from "bcryptjs";
 
-dotenv.config();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load backend/.env regardless of the folder the server is started from (so
+// `npm start` from the repo root and `node app.js` from backend/ both work).
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 // Fail fast with a clear message when required configuration is missing.
 const missingEnv = ["MONGO_URI", "JWT_SECRET"].filter(
@@ -35,8 +39,6 @@ if (missingEnv.length) {
 
 const app = express();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 // The uploads folder is gitignored (so real uploads never get committed), which
 // means it doesn't exist at all on a fresh deploy. Multer will throw ENOENT if
 // it tries to write into a missing folder, so create it here before anything
@@ -51,7 +53,6 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 app.use(securityHeaders);
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(UPLOADS_DIR));
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 app.use("/api/auth", authRoutes);
@@ -107,8 +108,6 @@ app.get("/api/weather", async (req, res) => {
     });
   }
 });
-
-// Test Route
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
