@@ -2,8 +2,6 @@ import Court from "../models/Court.js";
 import Booking from "../models/Booking.js";
 import cloudinary from "../config/cloudinary.js";
 
-// Images now live on Cloudinary (not local disk), so every device/server
-// instance resolves the same URL instead of only whoever handled the upload.
 const removeImage = async (publicId) => {
   if (!publicId) return;
   try {
@@ -13,8 +11,6 @@ const removeImage = async (publicId) => {
   }
 };
 
-// Streams the in-memory file buffer (from multer's memoryStorage) to
-// Cloudinary and resolves with { url, publicId }.
 const uploadImage = (file) =>
   new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -30,20 +26,40 @@ const uploadImage = (file) =>
     stream.end(file.buffer);
   });
 
+// A price/discount pair is valid when both are finite numbers in range.
+// Returns an error message string, or null when the pair is fine.
+const validatePricing = (pricePerHour, discountPercent) => {
+  if (pricePerHour !== undefined) {
+    if (!Number.isFinite(pricePerHour) || pricePerHour < 0) {
+      return "Invalid price.";
+    }
+  }
+  if (discountPercent !== undefined) {
+    if (
+      !Number.isFinite(discountPercent) ||
+      discountPercent < 0 ||
+      discountPercent > 100
+    ) {
+      return "Discount must be a number between 0 and 100.";
+    }
+  }
+  return null;
+};
+
 // Create Court (Admin)
 export const createCourt = async (req, res, next) => {
   try {
     const name = String(req.body.name || "").trim();
     const pricePerHour = Number(req.body.pricePerHour || req.body.price || 300);
+    const discountPercent = Number(req.body.discountPercent || 0);
 
     if (!name) {
       return res
         .status(400)
         .json({ message: "Please fill in all required fields." });
     }
-    if (!Number.isFinite(pricePerHour) || pricePerHour < 0) {
-      return res.status(400).json({ message: "Invalid price." });
-    }
+    const pricingError = validatePricing(pricePerHour, discountPercent);
+    if (pricingError) return res.status(400).json({ message: pricingError });
 
     const uploaded = req.file ? await uploadImage(req.file) : null;
 
@@ -51,6 +67,7 @@ export const createCourt = async (req, res, next) => {
       name,
       location: req.body.location,
       pricePerHour,
+      discountPercent,
       description: req.body.description,
       image: uploaded ? uploaded.url : "",
       imagePublicId: uploaded ? uploaded.publicId : "",
@@ -110,10 +127,15 @@ export const updateCourt = async (req, res, next) => {
     }
     if (req.body.pricePerHour !== undefined) {
       const pricePerHour = Number(req.body.pricePerHour);
-      if (!Number.isFinite(pricePerHour) || pricePerHour < 0) {
-        return res.status(400).json({ message: "Invalid price." });
-      }
+      const pricingError = validatePricing(pricePerHour, undefined);
+      if (pricingError) return res.status(400).json({ message: pricingError });
       updates.pricePerHour = pricePerHour;
+    }
+    if (req.body.discountPercent !== undefined) {
+      const discountPercent = Number(req.body.discountPercent);
+      const pricingError = validatePricing(undefined, discountPercent);
+      if (pricingError) return res.status(400).json({ message: pricingError });
+      updates.discountPercent = discountPercent;
     }
 
     if (req.file) {
@@ -130,6 +152,43 @@ export const updateCourt = async (req, res, next) => {
     }
 
     res.status(200).json({ message: "Court updated successfully.", court });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Bulk Pricing — set a price and/or discount on every court at once (Admin).
+// Either field can be omitted; at least one must be provided.
+export const bulkUpdatePricing = async (req, res, next) => {
+  try {
+    const hasPrice = req.body.pricePerHour !== undefined;
+    const hasDiscount = req.body.discountPercent !== undefined;
+    if (!hasPrice && !hasDiscount) {
+      return res.status(400).json({
+        message: "Provide a price and/or a discount percentage to apply.",
+      });
+    }
+
+    const pricePerHour = hasPrice ? Number(req.body.pricePerHour) : undefined;
+    const discountPercent = hasDiscount
+      ? Number(req.body.discountPercent)
+      : undefined;
+    const pricingError = validatePricing(pricePerHour, discountPercent);
+    if (pricingError) return res.status(400).json({ message: pricingError });
+
+    const updates = {};
+    if (hasPrice) updates.pricePerHour = pricePerHour;
+    if (hasDiscount) updates.discountPercent = discountPercent;
+
+    const result = await Court.updateMany({}, { $set: updates });
+
+    res.status(200).json({
+      message: `Pricing applied to ${result.modifiedCount} court(s).`,
+      matchedCount: result.matchedCount,
+      modifiedCount: result.modifiedCount,
+      pricePerHour,
+      discountPercent,
+    });
   } catch (error) {
     next(error);
   }

@@ -288,6 +288,11 @@ function renderGrid(slots, date) {
         status: slot.courtId.status,
         image: slot.courtId.image,
         pricePerHour: slot.courtId.pricePerHour,
+        discountPercent: slot.courtId.discountPercent || 0,
+        effectivePrice:
+          slot.courtId.effectivePrice !== undefined
+            ? slot.courtId.effectivePrice
+            : slot.courtId.pricePerHour,
         slots: [],
       };
     }
@@ -349,10 +354,28 @@ function renderGrid(slots, date) {
       '" onerror="this.onerror=null;this.src=\'' +
       courtImgFallback +
       '\';" style="width:100%;height:160px;object-fit:cover;">';
+    var priceLine =
+      court.discountPercent > 0
+        ? '<span style="text-decoration:line-through;opacity:.7;margin-right:6px;">EGP ' +
+          court.pricePerHour +
+          "</span>" +
+          '<span style="color:var(--optic-yellow);font-weight:700;">EGP ' +
+          court.effectivePrice +
+          "</span>" +
+          " (" +
+          court.discountPercent +
+          "% " +
+          (window.i18n ? window.i18n.t("courts.off") : "off") +
+          ")"
+        : "EGP " + court.pricePerHour;
+
     html +=
       '<div class="court-card-overlay"><h3 style="font-size:1.2rem;color:#fff;">' +
       courtNameHtml +
-      "</h3>";
+      "</h3>" +
+      '<p style="font-size:0.85rem;color:#fff;margin:2px 0 0;">' +
+      priceLine +
+      " / 90 min</p>";
 
     // Badge showing court availability
     if (isDown) {
@@ -423,7 +446,7 @@ function renderGrid(slots, date) {
             "', '" +
             date +
             "', " +
-            (court.pricePerHour || 0) +
+            (court.effectivePrice || 0) +
             ')"';
         } else if (s.bookedBy && s.bookedBy._id === user.id) {
           // This is the current user's own booking

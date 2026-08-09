@@ -78,16 +78,40 @@ window.db = {
   getCourts: function (page, limit) {
     return request("/courts?page=" + (page || 1) + "&limit=" + (limit || 50));
   },
-  createCourt: function (name, description, imageFile) {
+  createCourt: function (
+    name,
+    description,
+    imageFile,
+    pricePerHour,
+    discountPercent,
+  ) {
     var form = new FormData();
     form.append("name", name);
     form.append("description", description || "");
+    if (pricePerHour !== undefined && pricePerHour !== "")
+      form.append("pricePerHour", pricePerHour);
+    if (discountPercent !== undefined && discountPercent !== "")
+      form.append("discountPercent", discountPercent);
     if (imageFile) form.append("image", imageFile);
     return result(request("/courts", { method: "POST", body: form }));
   },
   updateCourt: function (id, data) {
     return result(
       request("/courts/" + id, { method: "PUT", body: JSON.stringify(data) }),
+    );
+  },
+  // Apply a price and/or a discount percentage to every court at once.
+  bulkUpdatePricing: function (pricePerHour, discountPercent) {
+    var body = {};
+    if (pricePerHour !== undefined && pricePerHour !== "")
+      body.pricePerHour = Number(pricePerHour);
+    if (discountPercent !== undefined && discountPercent !== "")
+      body.discountPercent = Number(discountPercent);
+    return result(
+      request("/courts/pricing/bulk", {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }),
     );
   },
   deleteCourt: function (id) {

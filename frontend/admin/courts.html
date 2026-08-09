@@ -37,6 +37,27 @@
             />
           </div>
           <div class="form-group" style="margin-bottom: 0; flex: 1">
+            <label data-i18n="courts.price">Price / 90 min (EGP)</label>
+            <input
+              type="number"
+              id="court-price"
+              min="0"
+              step="1"
+              placeholder="300"
+            />
+          </div>
+          <div class="form-group" style="margin-bottom: 0; flex: 1">
+            <label data-i18n="courts.discount">Discount %</label>
+            <input
+              type="number"
+              id="court-discount"
+              min="0"
+              max="100"
+              step="1"
+              placeholder="0"
+            />
+          </div>
+          <div class="form-group" style="margin-bottom: 0; flex: 1">
             <label data-i18n="courts.photo">Court Photo</label>
             <input type="file" id="court-image" accept="image/*" />
           </div>
@@ -47,6 +68,58 @@
             data-i18n="courts.addCourt"
           >
             Add Court
+          </button>
+        </form>
+      </div>
+
+      <div class="card mb-3">
+        <h3 data-i18n="courts.bulkPricing">Bulk Pricing</h3>
+        <p
+          class="mt-1"
+          style="color: var(--text-muted); font-size: 0.9rem"
+          data-i18n="courts.bulkPricingDesc"
+        >
+          Apply a new price and/or a discount to every court at once. Leave a
+          field blank to leave that setting unchanged.
+        </p>
+        <form
+          id="bulk-pricing-form"
+          novalidate
+          class="mt-2"
+          style="display: flex; gap: 15px; align-items: flex-end"
+        >
+          <div class="form-group" style="margin-bottom: 0; flex: 1">
+            <label data-i18n="courts.newPriceAll"
+              >New price for all courts (EGP)</label
+            >
+            <input
+              type="number"
+              id="bulk-price"
+              min="0"
+              step="1"
+              placeholder="e.g., 350"
+            />
+          </div>
+          <div class="form-group" style="margin-bottom: 0; flex: 1">
+            <label data-i18n="courts.discountAll"
+              >Discount % for all courts</label
+            >
+            <input
+              type="number"
+              id="bulk-discount"
+              min="0"
+              max="100"
+              step="1"
+              placeholder="e.g., 15"
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-blue"
+            id="applyBulkPricingBtn"
+            data-i18n="courts.applyToAll"
+          >
+            Apply to All Courts
           </button>
         </form>
       </div>

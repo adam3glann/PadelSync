@@ -48,6 +48,8 @@ export const getSlots = async (req, res, next) => {
             status: court.status,
             image: court.image,
             pricePerHour: court.pricePerHour,
+            discountPercent: court.discountPercent,
+            effectivePrice: court.effectivePrice,
           },
           date,
           timeBlock,
@@ -86,8 +88,9 @@ export const createBooking = async (req, res, next) => {
     if (!court || court.status !== "active")
       return res.status(400).json({ message: "This court is not available." });
 
+    // effectivePrice already has any admin discount baked in (see Court model).
     const totalAmount =
-      Math.round(court.pricePerHour * BLOCK_HOURS * 100) / 100;
+      Math.round(court.effectivePrice * BLOCK_HOURS * 100) / 100;
     try {
       const booking = await Booking.create({
         court: courtId,
@@ -177,8 +180,7 @@ export const getBookingById = async (req, res, next) => {
     if (!booking)
       return res.status(404).json({ message: "Booking not found." });
     const isOwner =
-      booking.user &&
-      booking.user._id.toString() === req.user._id.toString();
+      booking.user && booking.user._id.toString() === req.user._id.toString();
     if (!isOwner && req.user.role !== "admin")
       return res
         .status(403)

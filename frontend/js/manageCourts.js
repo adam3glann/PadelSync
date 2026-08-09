@@ -32,16 +32,35 @@ document.addEventListener("DOMContentLoaded", function () {
       var name = document.getElementById("court-name").value;
       var description = document.getElementById("court-desc").value;
       var imageFile = document.getElementById("court-image").files[0];
+      var price = document.getElementById("court-price").value;
+      var discount = document.getElementById("court-discount").value;
 
       if (!name.trim()) return;
 
-      doCreateCourt(name, description, imageFile);
+      doCreateCourt(name, description, imageFile, price, discount);
     });
+
+  // Handle the "apply to all courts" bulk pricing form
+  var bulkForm = document.getElementById("bulk-pricing-form");
+  if (bulkForm) {
+    bulkForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var price = document.getElementById("bulk-price").value;
+      var discount = document.getElementById("bulk-discount").value;
+      doBulkPricing(price, discount);
+    });
+  }
 });
 
 // Create the court and refresh the list
-async function doCreateCourt(name, description, imageFile) {
-  var result = await db.createCourt(name, description, imageFile);
+async function doCreateCourt(name, description, imageFile, price, discount) {
+  var result = await db.createCourt(
+    name,
+    description,
+    imageFile,
+    price,
+    discount,
+  );
   if (!result.ok) {
     auth.showToast(result.message, "error");
     return;
@@ -51,6 +70,115 @@ async function doCreateCourt(name, description, imageFile) {
   );
   document.getElementById("create-court-form").reset();
   fetchCourts(courtsPage);
+}
+
+// Apply a price and/or discount to every court in one call
+async function doBulkPricing(price, discount) {
+  if (
+    (price === "" || price == null) &&
+    (discount === "" || discount == null)
+  ) {
+    auth.showToast(
+      window.i18n
+        ? window.i18n.t("val.bulkPricingRequired")
+        : "Enter a price and/or a discount to apply.",
+      "error",
+    );
+    return;
+  }
+  if (discount !== "" && discount != null) {
+    var d = Number(discount);
+    if (!Number.isFinite(d) || d < 0 || d > 100) {
+      auth.showToast(
+        window.i18n
+          ? window.i18n.t("val.discountInvalid")
+          : "Discount must be between 0 and 100.",
+        "error",
+      );
+      return;
+    }
+  }
+
+  var result = await db.bulkUpdatePricing(price, discount);
+  if (!result.ok) {
+    auth.showToast(result.message, "error");
+    return;
+  }
+  auth.showToast(
+    window.i18n
+      ? window.i18n.t("toast.bulkPriceApplied")
+      : "Pricing applied to all courts",
+  );
+  document.getElementById("bulk-pricing-form").reset();
+  fetchCourts(courtsPage);
+}
+
+// Open a small modal to edit one court's price and discount
+function editCourtPricing(id, name, currentPrice, currentDiscount) {
+  var tFn = window.i18n
+    ? window.i18n.t.bind(window.i18n)
+    : function (k) {
+        return k;
+      };
+  var title = tFn("courts.editPrice") + " — " + escapeHtml(name);
+  var modalHTML =
+    '<div class="form-group">' +
+    "<label>" +
+    tFn("courts.price") +
+    "</label>" +
+    '<input type="number" id="edit-price-input" min="0" step="1" value="' +
+    currentPrice +
+    '">' +
+    "</div>" +
+    '<div class="form-group">' +
+    "<label>" +
+    tFn("courts.discount") +
+    "</label>" +
+    '<input type="number" id="edit-discount-input" min="0" max="100" step="1" value="' +
+    (currentDiscount || 0) +
+    '">' +
+    "</div>";
+
+  auth.showModal(title, modalHTML, function () {
+    var priceVal = document.getElementById("edit-price-input").value;
+    var discountVal = document.getElementById("edit-discount-input").value;
+    var price = Number(priceVal);
+    var discount = Number(discountVal);
+
+    if (!Number.isFinite(price) || price < 0) {
+      auth.showToast(
+        tFn("val.priceInvalid") === "val.priceInvalid"
+          ? "Enter a valid price."
+          : tFn("val.priceInvalid"),
+        "error",
+      );
+      return false;
+    }
+    if (!Number.isFinite(discount) || discount < 0 || discount > 100) {
+      auth.showToast(
+        tFn("val.discountInvalid") === "val.discountInvalid"
+          ? "Discount must be between 0 and 100."
+          : tFn("val.discountInvalid"),
+        "error",
+      );
+      return false;
+    }
+
+    db.updateCourt(id, { pricePerHour: price, discountPercent: discount }).then(
+      function (result) {
+        if (!result.ok) {
+          auth.showToast(result.message, "error");
+          return;
+        }
+        auth.showToast(
+          tFn("toast.priceUpdated") === "toast.priceUpdated"
+            ? "Price updated"
+            : tFn("toast.priceUpdated"),
+        );
+        fetchCourts(courtsPage);
+      },
+    );
+  });
 }
 
 // Fetch and display courts with pagination
@@ -107,6 +235,31 @@ async function fetchCourts(page) {
       var courtNameHtml = escapeHtml(court.name || "");
       var courtNameSafe = (court.name || "").replace(/'/g, "\\'");
 
+      // Price / discount display
+      var price = court.pricePerHour || 0;
+      var discount = court.discountPercent || 0;
+      var effectivePrice =
+        court.effectivePrice !== undefined
+          ? court.effectivePrice
+          : Math.round(price * (1 - discount / 100) * 100) / 100;
+      var priceHtml;
+      if (discount > 0) {
+        priceHtml =
+          '<span style="text-decoration:line-through;color:var(--text-muted);margin-right:6px;">EGP ' +
+          price +
+          "</span>" +
+          '<span style="color:var(--optic-yellow);font-weight:700;">EGP ' +
+          effectivePrice +
+          "</span>" +
+          '<span class="badge badge-active" style="margin-left:6px;">' +
+          discount +
+          "% " +
+          (window.i18n ? window.i18n.t("courts.off") : "off") +
+          "</span>";
+      } else {
+        priceHtml = "EGP " + price;
+      }
+
       var imgHtml;
       if (court.image) {
         imgHtml =
@@ -143,7 +296,23 @@ async function fetchCourts(page) {
         '<p style="color:var(--text-muted);min-height:36px;font-size:0.9rem;">' +
         escapeHtml(descText) +
         "</p>" +
-        '<div class="d-flex justify-between mt-2" style="gap:10px;">' +
+        '<p style="font-size:0.95rem;margin-bottom:0.5rem;">' +
+        priceHtml +
+        "</p>" +
+        '<div class="d-flex justify-between mt-1" style="gap:10px;">' +
+        '<button class="btn btn-outline" style="flex:1;" onclick="editCourtPricing(\'' +
+        court._id +
+        "', '" +
+        courtNameSafe +
+        "', " +
+        price +
+        ", " +
+        discount +
+        ')">' +
+        (window.i18n ? window.i18n.t("courts.editPrice") : "Edit Price") +
+        "</button>" +
+        "</div>" +
+        '<div class="d-flex justify-between mt-1" style="gap:10px;">' +
         '<button class="btn btn-outline" style="flex:1;" onclick="toggleStatus(\'' +
         court._id +
         "', '" +
