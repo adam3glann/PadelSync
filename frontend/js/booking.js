@@ -53,7 +53,7 @@ function bookSlot(slotId, courtName, timeBlock, date, pricePerHour) {
     "</div>" +
     '<div class="form-group mt-1">' +
     '<label for="card-name">Card holder name</label>' +
-    '<input id="card-name" type="text" placeholder="Name on card" autocomplete="cc-name">' +
+    '<input id="card-name" type="text" placeholder="Name on card" autocomplete="cc-name" pattern="[A-Za-z\\s\'-]+" oninput="this.value = this.value.replace(/[^A-Za-z\\s\'-]/g, \'\')">' +
     "</div>" +
     '<div class="form-group">' +
     '<label for="card-number">Card number</label>' +
@@ -69,11 +69,16 @@ function bookSlot(slotId, courtName, timeBlock, date, pricePerHour) {
     var cardNumber = document
       .getElementById("card-number")
       .value.replace(/\s/g, "");
-    if (cardName.length < 2 || !/^\d{16}$/.test(cardNumber)) {
+    var NAME_REGEX = /^[A-Za-z\s'-]{2,50}$/;
+    if (!NAME_REGEX.test(cardName)) {
       auth.showToast(
-        "Enter the card holder name and a 16-digit card number.",
+        "Card holder name can only contain letters, spaces, hyphens, and apostrophes.",
         "error",
       );
+      return false;
+    }
+    if (!/^\d{16}$/.test(cardNumber)) {
+      auth.showToast("Enter a valid 16-digit card number.", "error");
       return false;
     }
 
