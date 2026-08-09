@@ -12,6 +12,7 @@ import userRoutes from "./routes/userRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
 import { securityHeaders, corsOptions } from "./middleware/security.js";
 import User from "./models/User.js";
+import Booking from "./models/Booking.js";
 import bcrypt from "bcryptjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -138,6 +139,18 @@ const seedAdmin = async () => {
 
 const startServer = async () => {
   await connectDB();
+
+  // Rebuild indexes to match the current schema. This is what actually
+  // applies the Booking model's index fix (see models/Booking.js) to an
+  // existing database — the old plain-unique index was already built on
+  // Atlas from earlier deploys, and a schema change alone doesn't touch an
+  // index that already exists there.
+  try {
+    await Booking.syncIndexes();
+  } catch (error) {
+    console.error("Failed to sync Booking indexes:", error.message);
+  }
+
   await seedAdmin();
 
   app.listen(PORT, () => {

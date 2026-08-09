@@ -1,5 +1,4 @@
 var API_URL = "/api";
-var UPLOADS_URL = "/uploads/";
 
 async function request(path, options) {
   options = options || {};
@@ -48,11 +47,10 @@ function splitSlot(slotId) {
   };
 }
 
+// Court images are always full Cloudinary URLs (see backend/controllers/courtController.js),
+// so there's nothing to resolve here anymore — just pass the URL through as-is.
 function imageUrl(image) {
-  if (!image) return "";
-  if (/^https?:\/\//i.test(image)) return image;
-  if (image.charAt(0) === "/") return window.location.origin + image;
-  return UPLOADS_URL + image;
+  return image || "";
 }
 
 window.db = {
