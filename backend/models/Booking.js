@@ -31,8 +31,10 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// Prevent double-booking: only one confirmed booking may exist per court/date/block.
-bookingSchema.index({ court: 1, date: 1, timeBlock: 1 }, { unique: true });
+bookingSchema.index(
+  { court: 1, date: 1, timeBlock: 1 },
+  { unique: true, partialFilterExpression: { status: "confirmed" } },
+);
 bookingSchema.index({ user: 1, status: 1 });
 bookingSchema.index({ court: 1, date: 1, status: 1 });
 
